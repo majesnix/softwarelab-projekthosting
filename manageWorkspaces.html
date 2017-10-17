@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dashboard Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+	
+	<style>
+		body {
+			padding-top: 3.5rem;
+      /*background-color: #343a40!important;
+      color: #fff;*/
+		}
+
+		h1 {
+			margin-bottom: 20px;
+			padding-bottom: 9px;
+			border-bottom: 1px solid #eee;
+		}
+
+		.sidebar {
+			position: fixed;
+			top: 51px;
+			bottom: 0;
+			left: 0;
+			z-index: 1000;
+			padding: 20px;
+			overflow-x: hidden;
+			overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+      /*background-color: #343a40!important;*/
+			border-right: 1px solid #eee;
+		}
+
+		.sidebar {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		.sidebar .nav {
+			margin-bottom: 20px;
+		}
+
+		.sidebar .nav-item {
+			width: 100%;
+		}
+
+		.sidebar .nav-item + .nav-item {
+			margin-left: 0;
+		}
+
+		.sidebar .nav-link {
+			border-radius: 0;
+		}
+		
+		.placeholders {
+			padding-bottom: 3rem;
+		}
+
+		.placeholder img {
+			padding-top: 1.5rem;
+			padding-bottom: 1.5rem;
+		}
+	</style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Student Dashboard</a>
+      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="./dashboard_student.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./settings.html">Settings</a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="./createWorkspace.html">Create Workspace</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Help</a>
+          </li>
+        </ul>
+		<ul class="navbar-nav mt-2 mt-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="./dashboard_student.html">Overview </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./manageWorkspaces.html">Manage Workspaces <span class="sr-only">(current)</span></a>
+            </li>
+            
+
+          </ul>
+        </nav>
+
+        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+          <h1>Workspaces</h1>
+
+          <section class="row text-center placeholders">
+            <div class="col-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+              <h4>Disk Quota</h4>
+              <div class="text-muted">100MB/100MB</div>
+            </div>
+            <div class="col-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+          </section>
+
+          <h2>Active Workspaces</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Description</th>
+                  <th>Type</th>
+                  <th>State</th>
+                  <th>???</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+					<td>1234</td>
+					<td>First Workspace</td>
+					<td>Static Webspace</td>
+					<td><span class="badge badge-success">Active</span></td>
+					<td>n/A</td>
+                </tr>
+                <tr>
+					<td>4443</td>
+					<td>Git</td>
+					<td>Git Repository</td>
+					<td><span class="badge badge-warning">Suspended</span></td>
+					<td>n/A</td>
+                </tr>
+                <tr>
+					<td>5675</td>
+					<td>Webentwicklung</td>
+					<td>NodeJS</td>
+					<td><span class="badge badge-success">Active</span></td>
+					<td>n/A</td>
+                </tr>
+                <tr>
+					<td>5777</td>
+					<td>Test</td>
+					<td>PHP</td>
+					<td><span class="badge badge-info">Creating</span></td>
+					<td>n/A</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="assets/js/bootstrap.min.js"></script>
+  </body>
+</html>
