@@ -5,84 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Webmanagement Console</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/font-awesome.css" rel="stylesheet">
-	
-	<style>
-		body {
-			padding-top: 3.5rem;
-      /*background-color: #343a40!important;
-      color: #fff;*/
-		}
-
-		h1 {
-			margin-bottom: 20px;
-			padding-bottom: 9px;
-			border-bottom: 1px solid #eee;
-		}
-
-        a {
-            text-decoration: none !important;
-        }
-
-		.sidebar {
-			position: fixed;
-			top: 51px;
-			bottom: 0;
-			left: 0;
-			z-index: 1000;
-			padding: 20px;
-			overflow-x: hidden;
-			overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-      /*background-color: #343a40!important;*/
-			border-right: 1px solid #eee;
-		}
-
-		.sidebar {
-			padding-left: 0;
-			padding-right: 0;
-		}
-
-		.sidebar .nav {
-			margin-bottom: 20px;
-		}
-
-		.sidebar .nav-item {
-			width: 100%;
-		}
-
-		.sidebar .nav-item + .nav-item {
-			margin-left: 0;
-		}
-
-		.sidebar .nav-link {
-			border-radius: 0;
-		}
-		
-		.placeholders {
-			padding-bottom: 3rem;
-		}
-
-		.placeholder img {
-			padding-top: 1.5rem;
-			padding-bottom: 1.5rem;
-		}
-        .nav-link[data-toggle].collapsed:after {
-            content: "▾";
-        }
-        .nav-link[data-toggle]:not(.collapsed):after {
-            content: "▴";
-        }
-        .pa{
-            position: absolute;
-        }
-        .pr{
-            position: relative;
-        }
-	</style>
+	<link href="assets/css/style.css" rel="stylesheet">
   </head>
 
   <body>
@@ -121,7 +49,7 @@
             </li>
             <li><hr></li>
             <li class="nav-item"><a class="nav-link collapsed active" href="./projectOverview.html" data-toggle="collapse" data-target="#submenu1">Project 01</a>
-                <div class="collapse" id="submenu1" aria-expanded="false">
+                <div class="collapse show" id="submenu1" aria-expanded="false">
                     <ul class="flex-column pl-2 nav">
                         <li class="nav-item"><a class="nav-link py-0" href="./projectOverview.html">Overview</a></li>
                         <li class="nav-item"><a class="nav-link collapsed py-0" href="#servicesub" data-toggle="collapse" data-target="#servicesub"><i class="fa fa-fw fa-cog"></i>Services</a>
@@ -133,7 +61,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link p-0" href="">
+                                            <a class="nav-link p-0" href="./service1.html">
                                                 <i class="fa fa-fw fa-cog"></i> Fail2Ban
                                             </a>
                                         </li>
@@ -195,12 +123,6 @@
                     </ul>
                 </div>
             </li>
-
-
-
-
-
-
             <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 02</a></li>
             <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 03</a></li>
             <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 04</a></li>
