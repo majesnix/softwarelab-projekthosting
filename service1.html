@@ -44,12 +44,14 @@
     }
     
     ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
         border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb {
         border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.8); 
     }
 
@@ -100,7 +102,7 @@
 
   <body>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-          <a class="navbar-brand" href="#">Student Dashboard</a>
+          <a class="navbar-brand" href="./dashboard_student.html">Student Dashboard</a>
           <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -110,7 +112,15 @@
             </ul>
         <ul class="navbar-nav mt-2 mt-md-0">
               <li class="nav-item">
-                <a class="nav-link" href="index.html">Logout</a>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Max Musterman
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <a class="dropdown-item" href="./index.html">Logout</a>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
@@ -144,7 +154,7 @@
                       2017-05-29 11:45:47,806 fail2ban.filter : INFO   Set maxRetry = 5 <br>
                       2017-05-29 11:45:47,807 fail2ban.filter : INFO   Set findtime = 600 <br>
                       2017-05-29 11:45:47,808 fail2ban.actions: INFO   Set banTime = 3600 <br>
-                      2017-05-29 11:45:47,808 fail2ban.filter : ERROR  Unable to compile regular expression '\smtp-auth login failed from (?:::f{4,6}:)?(?P<host>[\w\-.^_]+) (no such user)\'<br> 
+                      2017-05-29 11:45:47,808 fail2ban.filter : ERROR  Unable to compile regular expression '\smtp-auth login failed from (?:::f{4,6}:)?(?P&lt;host&gt;[\w\-.^_]+) (no such user)\'<br> 
                       2017-05-29 11:45:47,817 fail2ban.jail   : INFO   Creating new jail 'ssh-ddos' <br>
                       2017-05-29 11:45:47,817 fail2ban.jail   : INFO   Jail 'ssh-ddos' uses poller <br>
                       2017-05-29 11:45:47,818 fail2ban.filter : INFO   Added logfile = /var/log/auth.log <br>
