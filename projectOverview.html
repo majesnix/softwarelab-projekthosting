@@ -70,22 +70,42 @@
 			padding-top: 1.5rem;
 			padding-bottom: 1.5rem;
 		}
+        .nav-link[data-toggle].collapsed:after {
+            content: "▾";
+        }
+        .nav-link[data-toggle]:not(.collapsed):after {
+            content: "▴";
+        }
+        .pa{
+            position: absolute;
+        }
+        .pr{
+            position: relative;
+        }
 	</style>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">Student Dashboard</a>
-      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="./dashboard_student.html">Student Dashboard</a>
+      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#n1" aria-controls="n1" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <div class="collapse navbar-collapse" id="n1">
         <ul class="navbar-nav mr-auto">
         </ul>
 		<ul class="navbar-nav mt-2 mt-md-0">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Logout</a>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Max Musterman
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Settings</a>
+                  <a class="dropdown-item" href="./index.html">Logout</a>
+                </div>
+              </div>
           </li>
         </ul>
       </div>
@@ -100,7 +120,87 @@
               <a class="nav-link " href="./dashboard_student.html">Dashboard <span class="sr-only">(current)</span></a>
             </li>
             <li><hr></li>
-            <li class="nav-item "><a class="nav-link active" href="./projectOverview.html">Project 01</a></li>
+            <li class="nav-item"><a class="nav-link collapsed active" href="./projectOverview.html" data-toggle="collapse" data-target="#submenu1">Project 01</a>
+                <div class="collapse" id="submenu1" aria-expanded="false">
+                    <ul class="flex-column pl-2 nav">
+                        <li class="nav-item"><a class="nav-link py-0" href="./projectOverview.html">Overview</a></li>
+                        <li class="nav-item"><a class="nav-link collapsed py-0" href="#servicesub" data-toggle="collapse" data-target="#servicesub"><i class="fa fa-fw fa-cog"></i>Services</a>
+                            <div class="collapse small" id="servicesub" aria-expanded="false">
+                                    <ul class="flex-column nav pl-4">
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="">
+                                                <i class="fa fa-fw fa-cog"></i> PM2
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="">
+                                                <i class="fa fa-fw fa-cog"></i> Fail2Ban
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="">
+                                                <i class="fa fa-fw fa-cog"></i> Nginx
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-pills btn-sm btn-secondary p-0" href="">
+                                                <i class="fa fa-fw fa-plus"></i> Request New&nbsp
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link collapsed py-0" href="#cronsub" data-toggle="collapse" data-target="#cronsub"><i class="fa fa-fw fa-clock-o"></i>Cronjobs</a>
+                            <div class="collapse small" id="cronsub" aria-expanded="false">
+                                <ul class="flex-column nav pl-4">
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="">
+                                            <i class="fa fa-fw fa-clock-o"></i> Cron 01
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="">
+                                            <i class="fa fa-fw fa-clock-o"></i> Cron 02
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-pills btn-sm btn-secondary p-0" href="">
+                                            <i class="fa fa-fw fa-plus"></i> Request New&nbsp
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link collapsed py-0" href="#dbsub" data-toggle="collapse" data-target="#dbsub"><i class="fa fa-fw fa-database"></i>Databases</a>
+                            <div class="collapse small" id="dbsub" aria-expanded="false">
+                                <ul class="flex-column nav pl-4">
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="">
+                                            <i class="fa fa-fw fa-database"></i> DB 01
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="">
+                                            <i class="fa fa-fw fa-database"></i> DB 01
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-pills btn-sm btn-secondary p-0" href="">
+                                            <i class="fa fa-fw fa-plus"></i> Request New&nbsp
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+
+
+
+
             <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 02</a></li>
             <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 03</a></li>
             <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 04</a></li>
@@ -113,11 +213,11 @@
                 <div class="col-sm-6 col-lg-3 p-3">
                     <div class="card">
                         <div class="card-body"> 
-                            <a style="display:block;"href="#"><h4 class="card-title">Services</h4></a>
+                            <a style="display:block;"href="./services.html"><h4 class="card-title">Services</h4></a>
                             <ul class="list-group">
-                                <a href="#"><li class="list-group-item">PM2<span style='width:25px;' class="badge badge-success float-right">&nbsp</span></li></a>
-                                <a href="./service1.html"><li class="list-group-item">Fail2Ban<span style='width:25px;' class="badge badge-danger float-right">1</span></li></a>
-                                <a href="#"><li class="list-group-item">Nginx<span style='width:25px;' class="badge badge-info float-right">0</span></li></a>
+                                <a href="#"><li class="list-group-item">PM2<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
+                                <a href="./service1.html"><li class="list-group-item">Fail2Ban<span style="width:25px;" class="badge badge-danger float-right">1</span></li></a>
+                                <a href="#"><li class="list-group-item">Nginx<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
                             </ul>
                         </div>
                     </div>
@@ -127,9 +227,9 @@
                         <div class="card-body"> 
                             <a style="display:block;"href="#"><h4 class="card-title">Cronjobs</h4></a>
                             <ul class="list-group">
-                                <a href="#"><li class="list-group-item">Backup Databases<span style='width:25px;' class="badge badge-success float-right">&nbsp</span></li></a>
-                                <a href="#"><li class="list-group-item">Renew Certificate<span style='width:25px;' class="badge badge-danger float-right">1</span></li></a>
-                                <a href="#"><li class="list-group-item">Logwatch Report<span style='width:25px;' class="badge badge-info float-right">0</span></li></a>
+                                <a href="#"><li class="list-group-item">Backup Databases<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
+                                <a href="#"><li class="list-group-item">Renew Certificate<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
+                                <a href="#"><li class="list-group-item">Logwatch Report<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
                             </ul>
                         </div>
                     </div>
