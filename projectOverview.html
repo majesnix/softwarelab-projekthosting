@@ -57,7 +57,7 @@
                                     <ul class="flex-column nav pl-4">
                                         <li class="nav-item">
                                             <a class="nav-link p-0" href="">
-                                                <i class="fa fa-fw fa-cog"></i> PM2
+                                                <i class="fa fa-fw fa-cog"></i> Node JS
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -72,32 +72,13 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-pills btn-sm btn-secondary p-0" href="">
-                                                <i class="fa fa-fw fa-plus"></i> Request New&nbsp
+                                                <i class="fa fa-fw fa-plus"></i> Create New&nbsp
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                         </li>
-                        <li class="nav-item"><a class="nav-link collapsed py-0" href="#cronsub" data-toggle="collapse" data-target="#cronsub"><i class="fa fa-fw fa-clock-o"></i>Cronjobs</a>
-                            <div class="collapse small" id="cronsub" aria-expanded="false">
-                                <ul class="flex-column nav pl-4">
-                                    <li class="nav-item">
-                                        <a class="nav-link p-0" href="">
-                                            <i class="fa fa-fw fa-clock-o"></i> Cron 01
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-0" href="">
-                                            <i class="fa fa-fw fa-clock-o"></i> Cron 02
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-pills btn-sm btn-secondary p-0" href="">
-                                            <i class="fa fa-fw fa-plus"></i> Request New&nbsp
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <li class="nav-item"><a class="nav-link py-0" href="./cronjobs.html"><i class="fa fa-fw fa-clock-o"></i>Cronjobs</a>
                         </li>
                         <li class="nav-item"><a class="nav-link collapsed py-0" href="#dbsub" data-toggle="collapse" data-target="#dbsub"><i class="fa fa-fw fa-database"></i>Databases</a>
                             <div class="collapse small" id="dbsub" aria-expanded="false">
@@ -114,7 +95,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-pills btn-sm btn-secondary p-0" href="">
-                                            <i class="fa fa-fw fa-plus"></i> Request New&nbsp
+                                            <i class="fa fa-fw fa-plus"></i> Create New&nbsp
                                         </a>
                                     </li>
                                 </ul>
@@ -137,7 +118,7 @@
                         <div class="card-body"> 
                             <a style="display:block;"href="./services.html"><h4 class="card-title">Services</h4></a>
                             <ul class="list-group">
-                                <a href="#"><li class="list-group-item">PM2<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
+                                <a href="#"><li class="list-group-item">Node JS<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
                                 <a href="./service1.html"><li class="list-group-item">Fail2Ban<span style="width:25px;" class="badge badge-danger float-right">1</span></li></a>
                                 <a href="#"><li class="list-group-item">Nginx<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
                             </ul>
@@ -147,23 +128,23 @@
                 <div class="col-sm-6 col-lg-3 p-3">
                     <div class="card">
                         <div class="card-body"> 
-                            <a style="display:block;"href="#"><h4 class="card-title">Cronjobs</h4></a>
-                            <ul class="list-group">
-                                <a href="#"><li class="list-group-item">Backup Databases<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
-                                <a href="#"><li class="list-group-item">Renew Certificate<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
-                                <a href="#"><li class="list-group-item">Logwatch Report<span style="width:25px;" class="badge badge-success float-right">&nbsp</span></li></a>
-                            </ul>
+                            <a style="display:block;"href="./cronjobs.html"><h4 class="card-title">Cronjobs</h4></a>
+                            <p class="card-text">
+                                Last run: <span id="lastRunCJ" class="badge badge-danger">Backup Databases</span><br>
+                                Next run: <span id="nextRunCJ" class="badge badge-primary">Update Node</span><br>
+                                <div class="alert alert-danger" role="alert">
+                                    Backup Databases failed!
+                                  </div>
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3 p-3">
                     <div  class="card">
                         <div class="card-body"> 
-                            <h4 class="card-title">Services</h4>
+                            <a style="display:block;" href="./databases.html"><h4 class="card-title">Databases</h4></a>
                             <ul class="list-group">
-                                <li class="list-group-item">Service 01</li>
-                                <li class="list-group-item">Service 02</li>
-                                <li class="list-group-item">Service 03</li>
+                                <li class="list-group-item">Databases: 2 / 10</li>
                             </ul>
                         </div>
                     </div>
