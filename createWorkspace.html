@@ -1,137 +1,110 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Webmanagement Console</title>
+  <title>Webmanagement Console</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/font-awesome.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
-  </head>
+  <!-- Bootstrap core CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/font-awesome.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
 
-  <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="./dashboard_student.html">Student Dashboard</a>
-      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="./dashboard_student.html">Student Dashboard</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#n1" aria-controls="n1" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="./dashboard_student.html">Home</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="./settings.html">Settings</a>
-          </li>
-		  <li class="nav-item">
-            <a class="nav-link" href="./createWorkspace.html">Create Workspace <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Help</a>
-          </li>
-        </ul>
-		<ul class="navbar-nav mt-2 mt-md-0">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="container-fluid">
-      <div class="row">
-        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Manage Workspaces</a>
-            </li>
-            
-
-          </ul>
-        </nav>
-
-        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-          <h1>Dashboard</h1>
-
-          <section class="row text-center placeholders">
-            <div class="col-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-              <h4>Disk Quota</h4>
-              <div class="text-muted">100MB/100MB</div>
+    <div class="collapse navbar-collapse" id="n1">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="createWorkspace.html">Create Workspace</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Help</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav mt-2 mt-md-0">
+        <li class="nav-item">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Max Musterman
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="./index.html">Logout</a>
             </div>
-            <div class="col-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-          </section>
-
-          <h2>Active Workspaces</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Description</th>
-                  <th>Type</th>
-                  <th>State</th>
-                  <th>???</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-					<td>1234</td>
-					<td>First Workspace</td>
-					<td>Static Webspace</td>
-					<td><span class="badge badge-success">Active</span></td>
-					<td>n/A</td>
-                </tr>
-                <tr>
-					<td>4443</td>
-					<td>Git</td>
-					<td>Git Repository</td>
-					<td><span class="badge badge-warning">Suspended</span></td>
-					<td>n/A</td>
-                </tr>
-                <tr>
-					<td>5675</td>
-					<td>Webentwicklung</td>
-					<td>NodeJS</td>
-					<td><span class="badge badge-success">Active</span></td>
-					<td>n/A</td>
-                </tr>
-                <tr>
-					<td>5777</td>
-					<td>Test</td>
-					<td>PHP</td>
-					<td><span class="badge badge-info">Creating</span></td>
-					<td>n/A</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
-        </main>
-      </div>
+        </li>
+      </ul>
     </div>
+  </nav>
 
-    <script src="assets/js/bootstrap.min.js"></script>
-  </body>
+  <div class="container">
+    <div class="row">
+
+      <main class="col-12 pt-3" role="main">
+        <h1>Create Project</h1>
+
+        <h2>Project Details</h2>
+        <section class="row">
+          <form class="col-12">
+            <div class="form-group">
+              <label for="formGroupExampleInput">Name</label>
+              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="My First Project">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Environment</label>
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>NodeJS</option>
+                <option>PHP</option>
+                <option>Python</option>
+                <option>Ruby</option>
+                <option>Mono</option>
+                <option>Custom...</option>
+              </select>
+            </div>
+            <fieldset class="form-group">
+              <div class="row">
+                <legend class="col-form-legend col-12">Additional Services</legend>
+                <div class="col-12">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" name="services" id="services1" value="database" checked>
+                      Database
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" name="services" id="services2" value="webspace">
+                      Git Repository
+                    </label>
+                  </div>
+                  <div class="form-check disabled">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" name="services" id="services3" value="webspace" disabled>
+                      Webspace (exceeeds quota)
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <div class="alert alert-info" role="alert">
+              More Options...
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Project</button>
+          </form>
+        </section>
+      </main>    
+  </div>
+</div>
+
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
 </html>
