@@ -11,24 +11,33 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
-  </head>
+</head>
 
-  <body>
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<body>
+    <!-- TOP NAVBAR START-->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="./dashboard_student.html">Student Dashboard</a>
+        
+        <!--ELEMENT USED ??-->
         <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#n1" aria-controls="n1" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-  
+        <!---->
+
+
         <div class="collapse navbar-collapse" id="n1">
           <ul class="navbar-nav mr-auto">
+            <!--TOP NAVBAR "CREATE WORKSPACE"-->
             <li class="nav-item">
               <a class="nav-link" href="createWorkspace.html">Create Workspace</a>
             </li>
+            <!--TOP NAVBAR "HELP"-->
             <li class="nav-item">
               <a class="nav-link" href="#">Help</a>
             </li>
           </ul>
+
+          <!--TOP NAVBAR "USER DROPDOWN"-->
           <ul class="navbar-nav mt-2 mt-md-0">
             <li class="nav-item">
               <div class="dropdown">
@@ -43,78 +52,154 @@
             </li>
           </ul>
         </div>
-    </nav>
+    </nav><!--TOP NAVBAR END-->
     
-        <div class="container-fluid">
-          <div class="row">
-    <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-      <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-          <a class="nav-link" href="./dashboard_student.html">Dashboard </a>
-        </li>
-        <li><hr></li>
-        <li class="nav-item"><a class="nav-link collapsed active" href="./projectOverview.html" data-toggle="collapse" data-target="#submenu1">Project 01</a>
-            <div class="collapse show" id="submenu1" aria-expanded="false">
-                <ul class="flex-column pl-2 nav">
-                    <li class="nav-item"><a class="nav-link py-0" href="./projectOverview.html">Overview</a></li>
-                    <li class="nav-item"><a class="nav-link collapsed py-0 active" href="#servicesub" data-toggle="collapse" data-target="#servicesub"><i class="fa fa-fw fa-cog"></i>Services <span class="sr-only">(current)</span></a>
-                        <div class="collapse small show" id="servicesub" aria-expanded="false">
-                                <ul class="flex-column nav pl-4">
-                                    <li class="nav-item">
-                                        <a class="nav-link p-0" href="">
-                                            <i class="fa fa-fw fa-cog"></i> Node JS
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-0" href="">
-                                            <i class="fa fa-fw fa-cog"></i> Fail2Ban
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-0" href="">
-                                            <i class="fa fa-fw fa-cog"></i> Nginx
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-pills btn-sm btn-secondary p-0" href="">
-                                            <i class="fa fa-fw fa-plus"></i> Create New&nbsp
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                    </li>
-                    <li class="nav-item"><a class="nav-link py-0" href="./cronjobs.html"><i class="fa fa-fw fa-clock-o"></i>Cronjobs</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link collapsed py-0" href="#dbsub" data-toggle="collapse" data-target="#dbsub"><i class="fa fa-fw fa-database"></i>Databases</a>
-                        <div class="collapse small" id="dbsub" aria-expanded="false">
-                            <ul class="flex-column nav pl-4">
-                                <li class="nav-item">
-                                    <a class="nav-link p-0" href="">
-                                        <i class="fa fa-fw fa-database"></i> DB 01
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link p-0" href="">
-                                        <i class="fa fa-fw fa-database"></i> DB 01
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-pills btn-sm btn-secondary p-0" href="">
-                                        <i class="fa fa-fw fa-plus"></i> Create New&nbsp
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 02</a></li>
-        <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 03</a></li>
-        <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 04</a></li>
-      </ul>
-    </nav>
 
+    <!-- BODY START-->
+    <div class="container-fluid">
+        <div class="row">
+
+        <!--LEFT NAVBAR START-->
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+            <ul class="nav nav-pills flex-column">
+
+                <!--LEFT NAVBAR "DASHBOARD"-->
+                <li class="nav-item">
+                    <a class="nav-link" href="./dashboard_student.html">Dashboard </a>
+                </li>
+
+                <!--LEFT NAVBAR DIVIDER-->
+                <li><hr></li>
+
+                <!--LEFT NAVBAR PROJECTS PART-->
+
+                <!--PROJECT 01-->
+<!--ACTIVE-->   <li class="nav-item"><a class="nav-link collapsed active" href="./projectOverview.html" data-toggle="collapse" data-target="#submenu1">Project 01</a>
+<!--SHOW-->         <div class="collapse show" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-2 nav">
+                            <!--PROJECT OVERVIEW-->
+                            <li class="nav-item"><a class="nav-link py-0" href="./projectOverview.html">Overview</a></li>
+
+                            <!--PROJECT SETTINGS-->
+                            <li class="nav-item"><a class="nav-link py-0" href="./projectOverview.html">Project Settings</a></li>
+
+                            <!--SERVICES DROPDOWN START-->
+                            <li class="nav-item">
+<!--ACTIVE-->                   <a class="nav-link collapsed py-0 active" href="#servicesub" data-toggle="collapse" data-target="#servicesub">
+                                    <i class="fa fa-fw fa-cog"></i>Services
+                                </a>
+<!--SHOW-->                     <div class="collapse small show" id="servicesub" aria-expanded="false">
+                                    <ul class="flex-column nav pl-4">
+
+                                        <!--SERVICES "OVERVIEW"-->
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="./services.html">
+                                                <i class="fa fa-fw fa-cog"></i> Service Overview
+                                            </a>
+                                        </li>
+
+                                        <!--SERVICES "NODE JS"-->
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="">
+                                                <i class="fa fa-fw fa-cog"></i> Node JS
+                                            </a>
+                                        </li>
+
+                                        <!--SERVICES "Fail2Ban"-->
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="./fail2ban.html">
+                                                <i class="fa fa-fw fa-cog"></i> Fail2Ban
+                                            </a>
+                                        </li>
+
+                                        <!--SERVICES "NGINX"-->
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="">
+                                                <i class="fa fa-fw fa-cog"></i> Nginx
+                                            </a>
+                                        </li>
+
+                                        <!--SERVICES NEW-->
+                                        <li class="nav-item">
+                                            <a class="nav-pills btn-sm btn-secondary p-0" href="">
+                                                <i class="fa fa-fw fa-plus"></i> Create New&nbsp
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li> <!--SERVICES DROPDOWN END-->
+
+                            <!--CRONJOBS-->
+                            <li class="nav-item">
+                                <a class="nav-link py-0" href="./cronjobs.html">
+                                    <i class="fa fa-fw fa-clock-o"></i>Cronjobs
+                                </a>
+                            </li><!--CRONJOBS END-->
+
+                            <!--DATABASES DROPDOWN START-->
+                            <li class="nav-item">
+                                <a class="nav-link collapsed py-0" href="#dbsub" data-toggle="collapse" data-target="#dbsub">
+                                    <i class="fa fa-fw fa-database"></i>Databases
+                                </a>
+                                <div class="collapse small" id="dbsub" aria-expanded="false">
+                                    <ul class="flex-column nav pl-4">
+
+                                        <!-- DATABASE OVERVIEW -->
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="./databases.html">
+                                                Databases Overview
+                                            </a>
+                                        </li>
+
+                                        <!-- DATABASE "DB 01"-->
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="">
+                                                <i class="fa fa-fw fa-database"></i> DB 01
+                                            </a>
+                                        </li>
+
+                                        <!-- DATABASE "DB 02"-->
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="">
+                                                <i class="fa fa-fw fa-database"></i> DB 02
+                                            </a>
+                                        </li>
+
+                                        <!-- DATABASE NEW-->
+                                        <li class="nav-item">
+                                            <a class="nav-pills btn-sm btn-secondary p-0" href="">
+                                                <i class="fa fa-fw fa-plus"></i> Create New&nbsp
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li> <!--DATABASES DROPDOWN END-->
+
+                            <!--TICKETS START-->
+                            <li class="nav-item">
+                                <a class="nav-link py-0" href="./tickets.html">
+                                    <i class="fa fa-fw fa-ticket"></i>Tickets
+                                </a>
+                            </li><!--TICKETS END-->
+
+                        </ul>
+                    </div>
+                </li>
+
+                <!--PROJECT 02-->
+                <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 02</a></li>
+
+                <!--PROJECT 03-->
+                <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 03</a></li>
+
+                <!--PROJECT 04-->
+                <li class="nav-item"><a class="nav-link" href="./projectOverview.html">Project 04</a></li>
+
+            </ul>
+        </nav><!--LEFT NAVBAR END-->
+
+
+        <!--CONTENT START-->
         <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
           <h1>Services</h1>
             <div class="row">
