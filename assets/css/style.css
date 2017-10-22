@@ -70,15 +70,15 @@ h1 {
 }
 
 .code {
-  max-height: 80%;
-  overflow: auto;
-  overflow-x:hidden;
-  background: #666;
-  color: #eee;
-  padding: 10px;
-  border-radius: 10px;
-  border: #444 solid 1px;
-  box-shadow: inset rgba(0, 0, 0, 20) 0px 0px 10px 0px;
+  max-height: 80% !important;
+  overflow: auto !important;
+  overflow-x:hidden !important;
+  background: #666 !important;
+  color: #eee !important;
+  padding: 10px !important;
+  border-radius: 10px !important;
+  border: #444 solid 1px !important;
+  box-shadow: inset rgba(0, 0, 0, 20) 0px 0px 10px 0px !important;
 }
 
 ::-webkit-scrollbar {
