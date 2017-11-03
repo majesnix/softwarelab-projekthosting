@@ -1,0 +1,25 @@
+html
+  include parts/head.pug
+
+  body
+    include parts/header.pug
+
+    case sidebar
+      when true
+        include parts/sidebar/sidebar.pug
+      when false
+        - break;
+
+    case page
+      when "dashboard"
+        include parts/content/dashboard.pug
+      when "project"
+        include parts/content/project.pug
+      when "gitlab"
+        include parts/content/gitlab.pug
+      when "node"
+        include parts/content/node.pug
+      when "databases"
+        include parts/content/databases.pug
+      default
+        - break;
