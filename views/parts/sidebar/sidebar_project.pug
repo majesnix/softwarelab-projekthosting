@@ -1,0 +1,9 @@
+li.nav-item
+    a(class="nav-link collapsed", href="./projectOverview.html", data-toggle="collapse", data-target="#submenu1") Project 01
+        div(class="collapse", id="submenu1", aria-expanded="false")
+            ul(class="flex-column pl-2 nav")
+                li.nav-item
+                    a(class="nav-link py-0", href="./projectOverview.html") Overview
+                include sidebar_node.pug
+                include sidebar_gitlab.pug
+                include sidebar_db.pug

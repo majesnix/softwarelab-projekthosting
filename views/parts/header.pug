@@ -1,0 +1,19 @@
+nav(class="navbar bavbar-expand-md navbar-dark fixed-top bg-dark")
+    a(class="navbar-brand" href="/dashboard") Dashboard
+    button(class="navbar-toggler d-lg-none", 
+        type="button", data-toggle="collapse", 
+        data-target="#n1", aria-controls="n1", 
+        aria-expanded="false", aria-label="Toggle navigation")
+        span(class="navbar-toggler-icon")
+    
+    div(class="collapse navbar-collapse", id="n1")
+        ul(class="navbar-nav mt-2 mt-md-0")
+            li.nav-item
+                div.dropdown
+                    button(class="btn btn-secondary dropdown-toggle", 
+                            type="button", id="dropdownMenuButton",
+                            data-toggle="dropdown", aria-haspopup="true", 
+                            aria-expanded="false") #(user.name)
+                    div(class="dropdown-menu", aria-labelledby="dropdownMenuButton")
+                        a(class="dropdown-item", href="#") Settings
+                        a(class="dropdown-item", href="./index.html") Logout
