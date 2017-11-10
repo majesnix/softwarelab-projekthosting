@@ -5,9 +5,12 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const index = require('./routes/index');
-const project = require('./routes/project');
-const login = require('./routes/login');
+const rProject = require('./routes/project');
+const rLogin = require('./routes/login');
+const rDashboard = require('./routes/dashboard');
+const rDatabases = require('./routes/databases');
+const rGitlab = require('./routes/gitlab');
+const rNode = require('./routes/node');
 
 
 const app = express();
@@ -24,9 +27,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', login);
-app.use('/project', project);
-app.use('/index', index);
+app.use('/', rLogin);
+app.use('/project', rProject);
+app.use('/dashboard', rDashboard);
+app.use('/gitlab', rGitlab);
+app.use('/node', rNode);
+app.use('/databases', rDatabases);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
