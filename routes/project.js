@@ -3,7 +3,9 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
   res.render('project', {
-      sidebar: true
+    sidebar: true,
+    user: require('../user.json'),
+    activeID: req.query.id
   });
 });
 

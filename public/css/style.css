@@ -68,6 +68,12 @@ h1 {
 .pr{
     position: relative;
 }
+.b {
+  display: block;
+}
+.w25p {
+  width: 25px;
+}
 
 .code {
   max-height: 80%;

@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
-  res.render('index', {
-    sidebar: true
+  res.render('node', {
+      sidebar: true,
+      user: require('../user.json')
   });
 });
 

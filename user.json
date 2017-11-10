@@ -1,0 +1,17 @@
+{
+    "name": "peter",
+    "projects":[
+        {
+            "id": "1",
+            "name": "p1"
+        },
+        {
+            "id": "2",
+            "name": "p2"
+        },
+        {
+            "id": "3",
+            "name": "Webentwicklung mit dem peter und dem hansi und der heidi :)"
+        }
+    ]
+}

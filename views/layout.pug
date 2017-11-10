@@ -4,10 +4,14 @@ html
     body
         include parts/header.pug
 
-        case sidebar
-            when true
-                include parts/sidebar/sidebar.pug
-            when false
-                - break;
+        .container-fluid
+            .row
+                case sidebar
+                    when true
+                        include parts/sidebar/sidebar.pug
+                    when false
+                        - break;
 
-        block content
+                block content
+
+        include scripts

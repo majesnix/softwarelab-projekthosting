@@ -3,7 +3,8 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
   res.render('gitlab', {
-      sidebar: true
+      sidebar: true,
+      user: require('../user.json')
   });
 });
 

@@ -1,4 +1,22 @@
 extends layout
 
 block content
-    h1 Project
+    main( class="col-sm-9 ml-sm-auto col-md-10 pt-3", role="main")
+        h1= user.projects[parseInt(activeID)].name
+            .row
+                .col-sm-6.col-lg-3.p-3
+                    .card
+                        .card-body
+                            a(href="/node?id="+activeID)
+                                h4.card-title Node
+                .col-sm-6.col-lg-3.p-3
+                    .card
+                        .card-body
+                            a(href="/gitlab?id="+activeID)
+                                h4.card-title Gitlab
+                .col-sm-6.col-lg-3.p-3
+                    .card
+                        .card-body
+                            a(href="/databases?id="+activeID)
+                                h4.card-title Datenbanken
+                
