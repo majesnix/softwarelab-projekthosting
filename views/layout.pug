@@ -1,7 +1,13 @@
-doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    include parts/head.pug
+
+    body
+        include parts/header.pug
+
+        case sidebar
+            when true
+                include parts/sidebar/sidebar.pug
+            when false
+                - break;
+
+        block content
