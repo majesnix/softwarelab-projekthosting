@@ -5,6 +5,7 @@ router.get('/', function(req, res, next) {
   console.log(require('../user.json'));
   res.render('dashboard', {
     sidebar: true,
+    title: "Test",
     user: require('../user.json')
   });
 });

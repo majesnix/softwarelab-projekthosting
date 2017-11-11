@@ -9,14 +9,14 @@ html(lang="en")
         link(rel="stylesheet", href="css/login.css")
     body
         div(class='container')
-            form(class="form-signin", action="/dashboard")
-                h2(class="form-signin-heading") Pleas sign in
-                label(for="inputEmail", class="sr-only") E-Mail
-                input(type="email", id="inputEmail", class="form-control", placeholder="E-Mail", reqire, autofocus)
-                label(for="inputPassword", class="sr-only") Password
-                input(type="password", id="inputPassword", class="form-control", placeholder="Password", reqire)
-                div(class="checkbox")
+            form.form-signin(action="/dashboard")
+                h2.form-signin-heading Pleas sign in
+                label.sr-only(for="inputEmail") E-Mail
+                input.form-control(type="email", id="inputEmail", placeholder="E-Mail", required, autofocus)
+                label.sr-only(for="inputPassword") Password
+                input.form-control(type="password", id="inputPassword", placeholder="Password", required)
+                .checkbox
                     label: input(type="checkbox", value="remember-me")
-                button(type="submit", class="btn btn-lg btn-primary btn-block") Sign in
+                button.btn.btn-lg.btn-primary.btn-block(type="submit") Sign in
 
     script(src="js/bootstrap.min.js")

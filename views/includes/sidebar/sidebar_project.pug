@@ -1,7 +1,7 @@
 each proj in user.projects
     li.nav-item
         a.nav-link.collapsed(href=`/project?id=${activeID}`, data-toggle="collapse", data-target='#submenu' + proj.id)= proj.name
-        .collapse( id='submenu' + proj.id, aria-expanded="false")
+        .collapse(id='submenu' + proj.id, aria-expanded="false")
             ul.flex-column.pl-2.nav
                 li.nav-item
                     a.nav-link.py-0(href=`/project?id=${proj.id}`)=`${proj.name} Overview`

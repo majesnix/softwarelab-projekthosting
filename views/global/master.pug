@@ -1,14 +1,14 @@
 html
-    include parts/head.pug
+    include head
 
     body
-        include parts/header.pug
+        include ../includes/header
 
         .container-fluid
             .row
                 case sidebar
                     when true
-                        include parts/sidebar/sidebar.pug
+                        include ../includes/sidebar/sidebar
                     when false
                         - break;
 
