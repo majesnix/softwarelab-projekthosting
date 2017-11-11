@@ -1,18 +1,19 @@
-li
-    a.nav-link.collapsed.py-0(href="#dbsub" data-toggle="collapse" data-target="#dbsub")
+li.treeview
+    a(href="#")
         i.fa.fa-fw.fa-database
         span Databases
-            .collapse.small#dbsub(aria-expanded="false")
-                ul.flex-column.nav.pl-4
-                    li
-                        a.nav-link.p-0(href="")
-                            i.fa.fa-fw.fa-database
-                            span DB 01
-                    li
-                        a.nav-link.p-0(href="")
-                            i.fa.fa-fw.fa-database
-                            span DB 01
-                    l
-                        a.nav-pills.btn-sm.btn-secondary.p-0(href="")
-                            i.fa.fa-fw.fa-plus
-                            span Create New&nbsp
+        span.pull-right-container
+            i.fa.fa-angle-left.pull-right
+    ul.treeview-menu
+        li
+            a(href="")
+                i.fa.fa-fw.fa-plus.text-green
+                span Create New
+        li
+            a(href="")
+                i.fa.fa-fw.fa-database
+                span DB 01
+        li
+            a(href="")
+                i.fa.fa-fw.fa-database
+                span DB 01

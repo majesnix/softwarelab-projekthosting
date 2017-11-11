@@ -1,8 +1,24 @@
 header.main-header
     a.logo(href="#")
-        span.logo-mini ABC
-        span.logo-lg Dashboard
+        span.logo-mini SLAB
+        span.logo-lg Softwarelabor
 
     nav.navbar.navbar-static-top
         a.sidebar-toggle(href="#", data-toggle="push-menu" role="button")
             span.sr-only "Toggle Navigation
+        .navbar-custom-menu
+            ul.nav.navbar-nav
+                li.dropdown.user.user-menu
+                    a.dropdown-toggle(href="#", data-toggle="dropdown")
+                        img.user-image(src="vendor/assets/user2-160x160.jpg", alt="User Image")
+                        span.hidden-xs= user.name
+                    ul.dropdown-menu
+                        li.user-header
+                            img.img-circle(src="vendor/assets/user2-160x160.jpg", alt="User Image")
+                            p= user.name
+                        li.user-footer
+                            .pull-left
+                                a.btn.btn-default.btn-flat(href="#") Settings
+                            .pull-right
+                                a.btn.btn-default.btn-flat(href="#") Logout
+

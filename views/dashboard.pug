@@ -1,21 +1,12 @@
 extends global/master
+include includes/box
 
 block content
-    main.col-sm-9.ml-sm-auto.col-md-10.pt-3(role="main")
-        h1= user.name + '\'s Dashboard'
-        .row
-            each proj in user.projects         
-                .col-sm-6.col-lg-3.p-3
-                    .card
-                        .card-body
-                            a.b(href='/project?id=' + proj.id): h4.card-title='Project: ' + proj.name
-                            ul.list-group
-                                a(href="/node?id=1")
-                                    li.list-group-item Node
-                                        span.badge.badge-danger.float-right.w25p 1
-                                a(href="/gitlab?id=1")
-                                    li.list-group-item Gitlab
-                                        span.badge.badge-danger.float-right.w25p &nbsp
-                                a(href="/databases?id=1")
-                                    li.list-group-item Datenbanken 
-                                        span.badge.badge-danger.float-right.w25p 0
+    .row
+        .col-md-12
+            .box.box-info
+                .box-header.with-border
+                    a(href=link)
+                        h3.box-title= user.name + '\'s Dashboard'
+                .box-body
+                    | Willkommen im Projektportal des Softwarelabors

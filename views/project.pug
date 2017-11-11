@@ -2,15 +2,13 @@ extends global/master
 include includes/box
 
 block content
-    main.col-sm-9.ml-sm-auto.col-md-10.pt-3(role="main")
+    .col-md-12
         h1= activeProject.name
         .row
             .col-sm-6.col-lg-3
-                +box("Node", "test Test", "/node?id=" + activeProject.id)
+                +box("NodeJS", "test Test", "/node?id=" + activeProject.id)
             .col-sm-6.col-lg-3
-                +box("Gitlab", "test Test", "/gitlab?id=" + activeProject.id)
-            .col-sm-6.col-lg-3
-                +box("Datenbanken", "test Test", "/databases?id=" + activeProject.id)
+                +box("Databases", "test Test", "/databases?id=" + activeProject.id)
             .col-sm-6.col-lg-3
                 .box.box-default
                     .box-header.with-border
