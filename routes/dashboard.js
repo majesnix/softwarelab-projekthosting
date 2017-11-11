@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
-  console.log(require('../user.json'));
   res.render('dashboard', {
-    sidebar: true,
-    title: "Test",
+    title: "Dashboard",
     user: require('../user.json')
   });
 });

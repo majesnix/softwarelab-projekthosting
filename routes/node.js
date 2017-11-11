@@ -3,7 +3,6 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
   res.render('node', {
-      sidebar: true,
       user: require('../user.json')
   });
 });

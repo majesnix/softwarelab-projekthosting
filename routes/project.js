@@ -2,9 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
+  let user = require('../user.json');
+  let activeProject = user.projects.find(el => el.id === req.query.id);
+
   res.render('project', {
-    sidebar: true,
-    user: require('../user.json'),
+    user: user,
+    activeProject: activeProject,
     activeID: req.query.id
   });
 });

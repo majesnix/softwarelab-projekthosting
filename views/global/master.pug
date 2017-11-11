@@ -1,17 +1,15 @@
 html
     include head
 
-    body
-        include ../includes/header
-
-        .container-fluid
-            .row
-                case sidebar
-                    when true
-                        include ../includes/sidebar/sidebar
-                    when false
-                        - break;
-
-                block content
-
+    body.hold-transition.skin-black
+        .wrapper
+            include ../includes/header
+            if !hideSidebar
+                include ../includes/sidebar/sidebar
+            .content-wrapper
+                if pageheader
+                    section.content-header
+                        h1= headerTitle
+                section.content.container-fluid
+                    block content
         include scripts
