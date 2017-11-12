@@ -3,15 +3,36 @@
     "projects":[
         {
             "id": "1",
-            "name": "Projekt1"
+            "name": "Projekt1",
+            "node": [
+                {
+                    "name": "my first node project",
+                    "port": "3000",
+                    "path": "/irgendwo/server.js"
+                }
+            ]
         },
         {
             "id": "2",
-            "name": "Projekt2"
+            "name": "Projekt2",
+            "node": [
+                {
+                    "name": "my first node project",
+                    "port": "3000",
+                    "path": "/irgendwo/server.js"
+                }
+            ]
         },
         {
             "id": "3",
-            "name": "Webentwicklung mit dem peter und dem hansi und der heidi :)"
+            "name": "Projekt3",
+            "node": [
+                {
+                    "name": "my first node project",
+                    "port": "3000",
+                    "path": "/irgendwo/server.js"
+                }
+            ]
         }
     ]
 }
