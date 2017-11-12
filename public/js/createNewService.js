@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-    $(".selectedServiceType").change(function (){
+    $(".selectedServiceType").on('change', function (){
         var text =$(".selectedServiceType").find(":selected").text();
         $(".nodeJS-sel").hide();
         $(".database-sel").hide();
