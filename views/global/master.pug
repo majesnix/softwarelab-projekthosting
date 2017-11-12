@@ -12,4 +12,20 @@ html
                         h1= headerTitle
                 section.content.container-fluid
                     block content
+
+        .modal.fade.in#createProjectModal
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        button.close(data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true")
+                        h4.modal-title Create Project
+                    form
+                        .modal-body
+                            .form-group
+                                label Project Name
+                                input.form-control(type="text" name="name" placeholder="Project Name...")
+                        .modal-footer
+                            button.btn.btn-default.pull-left(data-dismiss="modal") Cancel
+                            button.btn.btn-primary Create Project
         include scripts
