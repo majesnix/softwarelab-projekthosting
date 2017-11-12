@@ -6,15 +6,14 @@ block content
         h1= activeProject.name
         .row
             .col-sm-6.col-lg-3
-                +box("NodeJS", "test Test", "/node?id=" + activeProject.id)
+                +box("NodeJS", "My first NodeJS-Server", "/node?id=" + activeProject.id)
             .col-sm-6.col-lg-3
-                +box("Databases", "test Test", "/databases?id=" + activeProject.id)
+                +box("Databases", "My first Database", "/databases?id=" + activeProject.id)
             .col-sm-6.col-lg-3
                 .box.box-default
                     .box-header.with-border
                         h3.box-title Add New
                     .box-body.text-center
-                        // TODO Add Create
                         a(href="/newservice")
                             i.fa.fa-plus-circle.text-green
                             span Add New
