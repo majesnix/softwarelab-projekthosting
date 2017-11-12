@@ -9,8 +9,10 @@ const rProject = require('./routes/project');
 const rLogin = require('./routes/login');
 const rDashboard = require('./routes/dashboard');
 const rDatabases = require('./routes/databases');
-const rGitlab = require('./routes/gitlab');
+const rGitlab = require('./routes/newService');
 const rNode = require('./routes/node');
+const rNewService = require('./routes/newService');
+const rSettings = require('./routes/settings');
 
 
 const app = express();
@@ -39,6 +41,8 @@ app.use('/dashboard', rDashboard);
 app.use('/gitlab', rGitlab);
 app.use('/node', rNode);
 app.use('/databases', rDatabases);
+app.use('/newservice', rNewService);
+app.use('/settings', rSettings);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
