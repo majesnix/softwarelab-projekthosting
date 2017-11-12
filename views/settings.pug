@@ -9,6 +9,7 @@ block content
                     a(href=link)
                         h3.box-title= 'Change ftp access'
                     .box-body
+                        p Connect to: localhost
                         p Username: u_23225
                         form.form-horizontal
                             .form-group
@@ -24,4 +25,13 @@ block content
                                 .col-sm-10
                                     input.form-control(type='password' id='inputNewPassword2')
                         .btn.btn-primary Change
+
+    .row
+        .col-md-12
+            .box.box-danger
+                .box-header.with-border
+                    a(href=link)
+                        h3.box-title= 'Delete this Project'
+                    .box-body
+                        .btn.btn-danger Delete
 
