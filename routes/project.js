@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
-  let user = require('../user.json');
-  let activeProject = user.projects.find(el => el.id === req.query.id);
+router.get('/', (req, res, next) => {
+  const user = require('../user.json');
+  const activeProject = user.projects.find(el => el.id === req.query.id);
 
   res.render('project', {
     user: user,

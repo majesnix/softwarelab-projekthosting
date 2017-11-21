@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   res.render('databases', {
-      user: require('../user.json')
+    user: require('../user.json')
   });
 });
 
