@@ -4,6 +4,9 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const setupPassport = require('./app/setupPassport');
+const flash = require('connect-flash');
 
 const rProject = require('./routes/project');
 const rLogin = require('./routes/login');
@@ -14,11 +17,7 @@ const rNode = require('./routes/node');
 const rNewService = require('./routes/newService');
 const rSettings = require('./routes/settings');
 
-
 const app = express();
-
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,9 +30,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use('/css', express.static(path.join(__dirname, 'public/css')));
-//app.use('/fonts',express.static(path.join(__dirname, 'public/fonts')));
-//app.use('/js', express.static(path.join(__dirname, 'public/js')));
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(flash());
+
+setupPassport(app);
 
 app.use('/', rLogin);
 app.use('/project', rProject);
@@ -46,7 +50,7 @@ app.use('/settings', rSettings);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  let err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

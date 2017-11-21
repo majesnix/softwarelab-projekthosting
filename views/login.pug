@@ -6,7 +6,7 @@ html(lang="en")
                 a(href="#") Softwarelab
             .login-box-body
                 p.login-box-msg Sign in
-                form(action="/dashboard")
+                form(action="/", method="post")
                     .form-group.has-feedback
                         input.form-control#inputEmail(type="email", name="email" placeholder="E-Mail", required, autofocus)
                         span.fa.fa-envelope-o.form-control-feedback
