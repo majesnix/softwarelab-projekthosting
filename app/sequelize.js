@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('postgres://webentwicklung:webentwicklung@localhost:5432/webentwicklung',{logging: false, operatorsAliases: Sequelize.Op});
+const sequelize = new Sequelize('postgres://webentwicklung:webentwicklung@localhost:5432/webentwicklung',{/*logging: false,*/ operatorsAliases: Sequelize.Op});
 const UserMeta = require('./model/User.js');
 
 const User = sequelize.define('users', UserMeta.attributes, UserMeta.options);

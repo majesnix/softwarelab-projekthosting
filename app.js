@@ -1,12 +1,11 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
+//const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const setupPassport = require('./app/setupPassport');
-const flash = require('connect-flash');
 
 const rProject = require('./routes/project');
 const rLogin = require('./routes/login');
@@ -16,6 +15,7 @@ const rGitlab = require('./routes/newService');
 const rNode = require('./routes/node');
 const rNewService = require('./routes/newService');
 const rSettings = require('./routes/settings');
+const rSignUp = require('./routes/signup');
 
 const app = express();
 
@@ -35,7 +35,6 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: false
 }));
-app.use(flash());
 
 setupPassport(app);
 
@@ -47,6 +46,7 @@ app.use('/node', rNode);
 app.use('/databases', rDatabases);
 app.use('/newservice', rNewService);
 app.use('/settings', rSettings);
+app.use('/signup', rSignUp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
