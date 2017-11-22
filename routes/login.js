@@ -3,10 +3,15 @@ const router = express.Router();
 const passport = require('passport');
 
 router.get('/', (req, res, next) => {
-  res.render('login');
+  res.locals.errors = req.flash();
+  res.render('login',{message: res.locals.errors.error});
 });
 
-router.post('/', passport.authenticate('local', { failureRedirect: '/' }), (req, res, next) => {
+router.post('/', passport.authenticate('local', {
+    failureRedirect: '/',
+    failureFlash: true,
+    failureFlash: 'Invalid username or password.'
+  }), (req, res, next) => {
   req.session.save((err) => {
     if (err) {
       return next(err);

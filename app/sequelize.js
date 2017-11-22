@@ -6,10 +6,10 @@ const User = sequelize.define('users', UserMeta.attributes, UserMeta.options);
 
 // authenticate with the database
 sequelize.authenticate()
-  .then(function(err) {
+  .then(err => {
     User.sync();
   })
-  .catch(function(err) {
+  .catch(err => {
     console.log('Unable to connect to the database: ', err);
   });
 

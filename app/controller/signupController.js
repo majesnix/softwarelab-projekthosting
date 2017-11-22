@@ -1,11 +1,12 @@
 const bcrypt = require('bcrypt');
-const  Model = require('../model/model.js');
+const Model = require('../model/model.js');
 
-module.exports.show = function (req, res) {
-  res.render('signup');
+module.exports.show = (req, res) => {
+  res.locals.errors = req.flash();
+  res.render('signup', { message: res.locals.errors.error });
 }
 
-module.exports.signup = function (req, res) {
+module.exports.signup = (req, res) => {
   const email = req.body.email;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
@@ -13,23 +14,22 @@ module.exports.signup = function (req, res) {
   const password2 = req.body.password2;
 
   if (!email || !password || !password2) {
+    req.flash('error', 'Please, fill in all the fields.');
     res.redirect('/signup');
   }
 
   if (password !== password2) {
+    req.flash('error', "Please, enter the same password twice.");
     res.redirect('/signup');
   }
 
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
-  //console.log(email);
-  //console.log('SALT'+salt);
-  //console.log('hash'+hashedPassword);
 
-  //console.log('precreate');
-  Model.User.create({email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword}).then(function () {
-    res.redirect('/dashboard');
-  }).catch(function (error) {
+  Model.User.create({email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword}).then(() => {
+    res.redirect('/');
+  }).catch(error => {
+    req.flash('error', "This e-mail already has been registered");
     res.redirect('/signup');
   })
 }
