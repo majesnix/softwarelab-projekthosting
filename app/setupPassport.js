@@ -3,19 +3,19 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const Model = require('./model/model.js');
 
-module.exports = function(app) {
+module.exports = (app) => {
   app.use(passport.initialize());
   app.use(passport.session());
 
   passport.use(new LocalStrategy({
       usernameField: 'email'
     },
-    function(username, password, done) {
+    (username, password, done) => {
       Model.User.findOne({
         where: {
           email: username
         }
-      }).then(function(user) {
+      }).then(user => {
         if (user == null) {
           return done(null, false, { message: 'Incorrect credentials.' });
         }
@@ -31,16 +31,17 @@ module.exports = function(app) {
     }
   ));
 
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
+  passport.serializeUser((user, done) => {
+    done(null, user);
   });
 
-  passport.deserializeUser(function(id, done) {
+  passport.deserializeUser((user, done) => {
     Model.User.findOne({
       where: {
-        id: id
-      }
-    }).then(function(user) {
+        id: user.id
+      },
+      attributes: ['id','email','firstname','lastname']
+    }).then(user => {
       if (user == null) {
         done(new Error('Wrong user id.'));
       }

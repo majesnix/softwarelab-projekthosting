@@ -6,13 +6,15 @@ html(lang="en")
                 a(href="#") Softwarelab Sign Up
             .login-box-body
                 p.login-box-msg Sign up
+                if (message) 
+                    p= message
                 form(action="/signup", method="post")
                     .form-group.has-feedback
                         input.form-control#inputFirstname(type="firstname", name="firstname" placeholder="Firstname", required, autofocus)
-                        span.fa.fa-envelope-o.form-control-feedback
+                        span.fa.fa-user-circle-o.form-control-feedback
                     .form-group.has-feedback
                         input.form-control#inputLastname(type="lastname", name="lastname" placeholder="Lastname", required, autofocus)
-                        span.fa.fa-envelope-o.form-control-feedback
+                        span.fa.fa-user-circle-o.form-control-feedback
                     .form-group.has-feedback
                         input.form-control#inputEmail(type="email", name="email" placeholder="E-Mail", required, autofocus)
                         span.fa.fa-envelope-o.form-control-feedback

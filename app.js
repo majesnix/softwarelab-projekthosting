@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const flash = require('connect-flash');
 const setupPassport = require('./app/setupPassport');
 
 const rProject = require('./routes/project');
@@ -35,6 +36,7 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: false
 }));
+app.use(flash());
 
 setupPassport(app);
 
