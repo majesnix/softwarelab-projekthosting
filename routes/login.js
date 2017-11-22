@@ -8,10 +8,9 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', passport.authenticate('local', {
-    failureRedirect: '/',
-    failureFlash: true,
-    failureFlash: 'Invalid username or password.'
-  }), (req, res, next) => {
+  failureRedirect: '/',
+  failureFlash: 'Invalid username or password.'
+}), (req, res, next) => {
   req.session.save((err) => {
     if (err) {
       return next(err);

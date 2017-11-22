@@ -8,27 +8,27 @@ module.exports = (app) => {
   app.use(passport.session());
 
   passport.use(new LocalStrategy({
-      usernameField: 'email'
-    },
-    (username, password, done) => {
-      Model.User.findOne({
-        where: {
-          email: username
-        }
-      }).then(user => {
-        if (user == null) {
-          return done(null, false, { message: 'Incorrect credentials.' });
-        }
-    
-        const hashedPassword = bcrypt.hashSync(password, user.salt);
-    
-        if (user.password === hashedPassword) {
-          return done(null, user);
-        }
-    
+    usernameField: 'email'
+  },
+  (username, password, done) => {
+    Model.User.findOne({
+      where: {
+        email: username
+      }
+    }).then(user => {
+      if (user == null) {
         return done(null, false, { message: 'Incorrect credentials.' });
-      });
-    }
+      }
+    
+      const hashedPassword = bcrypt.hashSync(password, user.salt);
+    
+      if (user.password === hashedPassword) {
+        return done(null, user);
+      }
+    
+      return done(null, false, { message: 'Incorrect credentials.' });
+    });
+  }
   ));
 
   passport.serializeUser((user, done) => {

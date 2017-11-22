@@ -4,7 +4,7 @@ const Model = require('../model/model.js');
 module.exports.show = (req, res) => {
   res.locals.errors = req.flash();
   res.render('signup', { message: res.locals.errors.error });
-}
+};
 
 module.exports.signup = (req, res) => {
   const email = req.body.email;
@@ -19,7 +19,7 @@ module.exports.signup = (req, res) => {
   }
 
   if (password !== password2) {
-    req.flash('error', "Please, enter the same password twice.");
+    req.flash('error', 'Please, enter the same password twice.');
     res.redirect('/signup');
   }
 
@@ -29,7 +29,7 @@ module.exports.signup = (req, res) => {
   Model.User.create({email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword}).then(() => {
     res.redirect('/');
   }).catch(error => {
-    req.flash('error', "This e-mail already has been registered");
+    req.flash('error', 'This e-mail already has been registered');
     res.redirect('/signup');
-  })
-}
+  });
+};
