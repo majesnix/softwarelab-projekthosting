@@ -6,3 +6,5 @@ node_modules/
 .idea/
 public/vendor/*
 .vscode
+package-lock.json
+yarn.lock

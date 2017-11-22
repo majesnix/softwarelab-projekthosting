@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, next) => {
   const user = require('../user.json');
   const activeProject = user.projects.find(el => el.id === req.query.id);
 

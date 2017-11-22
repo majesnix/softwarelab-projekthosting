@@ -7,11 +7,13 @@ module.exports = function(app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  passport.use(new LocalStrategy(
+  passport.use(new LocalStrategy({
+      usernameField: 'email'
+    },
     function(username, password, done) {
       Model.User.findOne({
         where: {
-          username: username
+          email: username
         }
       }).then(function(user) {
         if (user == null) {
