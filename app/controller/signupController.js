@@ -33,3 +33,39 @@ module.exports.signup = (req, res) => {
     res.redirect('/signup');
   });
 };
+
+module.exports.changePassword = async (req, res) => {
+  const oldPass = req.body.inputoldpassword;
+  const newPass = req.body.inputnewpassword;
+  const newPass2 = req.body.inputnewpassword2;
+
+  if (newPass !== newPass2) {
+    req.flash('error', 'Passwords do not match.');
+    res.redirect('/usersettings');
+  }
+
+  Model.User.findOne({where: { id: req.session.passport.user.id }})
+    .then(data => {
+      const oldHash = bcrypt.hashSync(oldPass, data.salt);
+      const hashedPassword = bcrypt.hashSync(newPass, data.salt);
+
+      if (oldHash !== data.password) {
+        req.flash('error', 'Your old password is not correct');
+        res.redirect('/usersettings');
+      } else
+      if (hashedPassword === data.password) {
+        req.flash('error', 'You cannot change your password to the same password.');
+        res.redirect('/usersettings');
+      } else {
+        data.update({password: hashedPassword}).then(() => {
+          req.flash('info', 'Password successfully changed');
+          res.redirect('/usersettings');
+        }
+        ).catch(err => {
+          req.flash('error', 'Something went wrong');
+          res.redirect('/usersettings');
+        });
+      }
+    });
+  
+};

@@ -16,6 +16,8 @@ const rNode = require('./routes/node');
 const rNewService = require('./routes/newService');
 const rSettings = require('./routes/settings');
 const rSignUp = require('./routes/signup');
+const rUserSettings = require('./routes/usersettings');
+const rLogout = require('./routes/logout');
 
 const app = express();
 
@@ -48,6 +50,8 @@ app.use('/databases', rDatabases);
 app.use('/newservice', rNewService);
 app.use('/settings', rSettings);
 app.use('/signup', rSignUp);
+app.use('/usersettings', rUserSettings);
+app.use('/logout', rLogout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
