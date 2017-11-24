@@ -1,0 +1,12 @@
+extends global/master
+include includes/box
+
+block content
+    .row
+        .col-md-12
+            .box.box-info
+                .box-header.with-border
+                    a(href=link)
+                        h3.box-title= user.name + '\'s Dashboard'
+                .box-body
+                    | Willkommen im Projektportal des Softwarelabors

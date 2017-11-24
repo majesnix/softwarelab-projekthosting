@@ -1,0 +1,37 @@
+extends global/master
+
+block content
+    h1 Settings
+    .row
+        .col-md-12
+            .box.box-info
+                .box-header.with-border
+                    a(href=link)
+                        h3.box-title= 'Change ftp access'
+                    .box-body
+                        p Connect to: localhost
+                        p Username: u_23225
+                        form.form-horizontal
+                            .form-group
+                                label.control-label.col-sm-2(for='inputOldPassword') Old password
+                                .col-sm-10
+                                    input.form-control(type='password' id='inputOldPassword')
+                            .form-group
+                                label.control-label.col-sm-2(for='inputNewPassword') New password
+                                .col-sm-10
+                                    input.form-control(type='password' id='inputNewPassword')
+                            .form-group
+                                label.control-label.col-sm-2(for='inputNewPassword2') Repeat new password
+                                .col-sm-10
+                                    input.form-control(type='password' id='inputNewPassword2')
+                        .btn.btn-primary Change
+
+    .row
+        .col-md-12
+            .box.box-danger
+                .box-header.with-border
+                    a(href=link)
+                        h3.box-title= 'Delete this Project'
+                    .box-body
+                        .btn.btn-danger Delete
+

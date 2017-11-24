@@ -1,0 +1,7 @@
+
+\.DS_Store
+
+sonstiges/~\$vorlage_protokoll\.xlsx
+node_modules/
+.idea/
+public/vendor/*

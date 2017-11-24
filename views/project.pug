@@ -1,0 +1,19 @@
+extends global/master
+include includes/box
+
+block content
+    .col-md-12
+        h1= activeProject.name
+        .row
+            .col-sm-6.col-lg-3
+                +box("NodeJS", "My first NodeJS-Server", "/node?id=" + activeProject.id)
+            .col-sm-6.col-lg-3
+                +box("Databases", "My first Database", "/databases?id=" + activeProject.id)
+            .col-sm-6.col-lg-3
+                .box.box-default
+                    .box-header.with-border
+                        h3.box-title Add New
+                    .box-body.text-center
+                        a(href="/newservice")
+                            i.fa.fa-plus-circle.text-green
+                            span Add New
