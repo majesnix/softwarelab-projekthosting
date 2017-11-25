@@ -1,5 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const LdapStrategy = require('passport-ldapauth').Strategy;
+
 const bcrypt = require('bcrypt');
 const Model = require('./model/model.js');
 
@@ -30,6 +32,18 @@ module.exports = (app) => {
     });
   }
   ));
+
+  const OPTS = {
+    server: {
+      url: 'ldap://s1.classennetwork.com:389',
+      bindDn: 'Administrator',
+      bindCredentials: 'nAja6UpyBuster2007',
+      searchFilter: '(sAMAccountName={{username}})'
+    },
+    usernameField: 'email',
+  };
+
+  passport.use(new LdapStrategy(OPTS));
 
   passport.serializeUser((user, done) => {
     done(null, user);
