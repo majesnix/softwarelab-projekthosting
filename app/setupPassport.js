@@ -67,14 +67,19 @@ module.exports = (app) => {
 
   // Defines which data whil be kept in Session
   passport.serializeUser((user, done) => {
-    done(null, user.matrnr || user.sAMAccountName);
+    const data = {
+      'matrnr': user.matrnr,
+      'name': user.firstname
+    };
+    console.log(data);
+    done(null, data);
   });
 
   // Gets all data from the stored User
   passport.deserializeUser((user, done) => {
     Model.User.findOne({
       where: {
-        matrnr: user
+        matrnr: user.matrnr
       },
       attributes: ['matrnr','email','firstname','lastname']
     }).then(userdata => {

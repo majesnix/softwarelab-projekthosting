@@ -11,3 +11,5 @@ const config = {
     //Search based on this input
     'searchFilter': '(userPrincipalName={{username}})',
 }
+
+module.exports = config;
