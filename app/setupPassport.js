@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const LdapStrategy = require('passport-ldapauth').Strategy;
+const config = require('./config');
 
 const bcrypt = require('bcrypt');
 const Model = require('./model/model.js');
@@ -38,16 +39,16 @@ module.exports = (app) => {
     usernameField: 'email',
     server: {
       //Can be ldaps (636)
-      url: 'ldap://s1.classennetwork.com:389',
+      url: config.url,
       //CN => Administrator USER, OU => Organization Unit, DC => Domain controller
-      bindDn: 'cn=Administrator,ou=Administratoren,dc=classennetwork,dc=com',
+      bindDn: config.bindDn,
       //PASSWORD
-      bindCredentials: 'secret',
+      bindCredentials: config.bindCredentials,
       //In which Organization Unit shall we search?
       // TODO: Better understanding of the searchBase
-      searchBase: 'ou=Administratoren,dc=classennetwork,dc=com',
+      searchBase: config.searchBase,
       //Search based on this input
-      searchFilter: '(userPrincipalName={{username}})',
+      searchFilter: config.searchFilter,
     }
   },
   (user, done) => {
