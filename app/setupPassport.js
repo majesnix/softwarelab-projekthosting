@@ -17,7 +17,8 @@ module.exports = (app) => {
       where: {
         email: username
       }
-    }).then(user => {
+    })
+    .then(user => {
       if (user == null) {
         return done(null, false, { message: 'Incorrect credentials.' });
       }
@@ -33,31 +34,48 @@ module.exports = (app) => {
   }
   ));
 
-  const OPTS = {
-    server: {
-      url: 'ldap://s1.classennetwork.com:389',
-      bindDn: 'Administrator',
-      bindCredentials: 'nAja6UpyBuster2007',
-      searchFilter: '(sAMAccountName={{username}})'
-    },
+  passport.use(new LdapStrategy({
     usernameField: 'email',
-  };
-
-  passport.use(new LdapStrategy(OPTS));
+    server: {
+      //Can be ldaps (636)
+      url: 'ldap://s1.classennetwork.com:389',
+      //CN => Administrator USER, OU => Organization Unit, DC => Domain controller
+      bindDn: 'cn=Administrator,ou=Administratoren,dc=classennetwork,dc=com',
+      //PASSWORD
+      bindCredentials: 'SECRET',
+      //In which Organization Unit shall we search?
+      // TODO: Better understanding of the searchBase
+      searchBase: 'ou=Administratoren,dc=classennetwork,dc=com',
+      //Search based on this input
+      searchFilter: '(userPrincipalName={{username}})',
+    }
+  },
+  (user, done) => {
+    return done(null, user);
+  }));
 
   passport.serializeUser((user, done) => {
     done(null, user);
   });
 
   passport.deserializeUser((user, done) => {
+    //console.log('deserelize');
     Model.User.findOne({
       where: {
-        id: user.id
+        matrnr: user.matrnr || user.sAMAccountName
       },
-      attributes: ['id','email','firstname','lastname']
-    }).then(user => {
-      if (user == null) {
-        done(new Error('Wrong user id.'));
+      attributes: ['matrnr','email','firstname','lastname']
+    }).then(userdata => {
+      //console.log(userdata);
+      if (userdata == null) {
+        Model.User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn, salt: '', password: '', ldap: true })
+        .then(() => {
+          
+        })
+        .catch(error => {
+          //req.flash('error', 'This e-mail already has been registered');
+          //res.redirect('/signup');
+        });
       }
   
       done(null, user);

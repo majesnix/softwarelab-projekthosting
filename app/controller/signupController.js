@@ -26,7 +26,7 @@ module.exports.signup = (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  Model.User.create({email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword}).then(() => {
+  Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false}).then(() => {
     res.redirect('/');
   }).catch(error => {
     req.flash('error', 'This e-mail already has been registered');
@@ -44,7 +44,7 @@ module.exports.changePassword = async (req, res) => {
     res.redirect('/usersettings');
   }
 
-  Model.User.findOne({where: { id: req.session.passport.user.id }})
+  Model.User.findOne({where: { email: req.session.passport.user.email }})
     .then(data => {
       const oldHash = bcrypt.hashSync(oldPass, data.salt);
       const hashedPassword = bcrypt.hashSync(newPass, data.salt);

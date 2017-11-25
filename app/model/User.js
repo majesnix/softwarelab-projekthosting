@@ -1,6 +1,11 @@
 const Sequelize = require('sequelize');
 
 const attributes = {
+  matrnr: {
+    type: Sequelize.STRING,
+    unique: true,
+    primaryKey: true,
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -19,6 +24,10 @@ const attributes = {
   },
   salt: {
     type: Sequelize.STRING
+  },
+  ldap: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true,
   }
 };
 

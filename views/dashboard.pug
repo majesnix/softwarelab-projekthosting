@@ -7,6 +7,6 @@ block content
             .box.box-info
                 .box-header.with-border
                     a(href=link)
-                        h3.box-title= user2.firstname + '\'s Dashboard'
+                        h3.box-title= user2.firstname || user2.givenName + '\'s Dashboard'
                 .box-body
                     | Willkommen im Projektportal des Softwarelabors
