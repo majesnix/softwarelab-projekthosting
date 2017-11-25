@@ -44,7 +44,7 @@ module.exports.changePassword = async (req, res) => {
     res.redirect('/usersettings');
   }
 
-  Model.User.findOne({where: { email: req.session.passport.user.email }})
+  Model.User.findOne({where: { matrnr: req.session.passport.user }})
     .then(data => {
       const oldHash = bcrypt.hashSync(oldPass, data.salt);
       const hashedPassword = bcrypt.hashSync(newPass, data.salt);

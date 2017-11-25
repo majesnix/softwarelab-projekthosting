@@ -42,7 +42,7 @@ module.exports = (app) => {
       //CN => Administrator USER, OU => Organization Unit, DC => Domain controller
       bindDn: 'cn=Administrator,ou=Administratoren,dc=classennetwork,dc=com',
       //PASSWORD
-      bindCredentials: 'SECRET',
+      bindCredentials: 'nAja6UpyBuster2007',
       //In which Organization Unit shall we search?
       // TODO: Better understanding of the searchBase
       searchBase: 'ou=Administratoren,dc=classennetwork,dc=com',
@@ -51,34 +51,34 @@ module.exports = (app) => {
     }
   },
   (user, done) => {
-    return done(null, user);
+    Model.User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn, salt: '', password: '', ldap: true })
+      .then(() => {
+        Model.User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
+          return done(null, user);
+        });
+      })
+      .catch(error => {
+        Model.User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
+          return done(null, user.dataValues);
+        });
+      });
   }));
 
+  // Defines which data whil be kept in Session
   passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.matrnr || user.sAMAccountName);
   });
 
+  // Gets all data from the stored User
   passport.deserializeUser((user, done) => {
-    //console.log('deserelize');
     Model.User.findOne({
       where: {
-        matrnr: user.matrnr || user.sAMAccountName
+        matrnr: user
       },
       attributes: ['matrnr','email','firstname','lastname']
     }).then(userdata => {
-      //console.log(userdata);
-      if (userdata == null) {
-        Model.User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn, salt: '', password: '', ldap: true })
-        .then(() => {
-          
-        })
-        .catch(error => {
-          //req.flash('error', 'This e-mail already has been registered');
-          //res.redirect('/signup');
-        });
-      }
-  
-      done(null, user);
+      user = userdata;
+      return done(null, user);
     });
   });
 };
