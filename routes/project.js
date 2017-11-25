@@ -7,7 +7,7 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
 
   res.render('project', {
     user: user,
-    user2: req.session.passport.user,
+    user2: req.session.passport.user.name,
     activeProject: activeProject,
     activeID: req.query.id
   });

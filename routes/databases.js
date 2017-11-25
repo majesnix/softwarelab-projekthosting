@@ -4,7 +4,7 @@ const router = express.Router();
 router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, next) => {
   res.render('databases', {
     user: require('../user.json'),
-    user2: req.session.passport.user
+    user2: req.session.passport.user.name
   });
 });
 
