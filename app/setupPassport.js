@@ -42,7 +42,7 @@ module.exports = (app) => {
       //CN => Administrator USER, OU => Organization Unit, DC => Domain controller
       bindDn: 'cn=Administrator,ou=Administratoren,dc=classennetwork,dc=com',
       //PASSWORD
-      bindCredentials: 'nAja6UpyBuster2007',
+      bindCredentials: 'secret',
       //In which Organization Unit shall we search?
       // TODO: Better understanding of the searchBase
       searchBase: 'ou=Administratoren,dc=classennetwork,dc=com',
