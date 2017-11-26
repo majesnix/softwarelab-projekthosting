@@ -5,7 +5,7 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
   res.render('users', {
     sidebar: true,
     user: require('../user.json'),
-    user2: req.session.passport.user.name
+    user2: req.session.passport.user
   });
 });
 

@@ -79,7 +79,8 @@ module.exports = (app) => {
   passport.serializeUser((user, done) => {
     const data = {
       'matrnr': user.matrnr,
-      'name': user.firstname
+      'name': user.firstname,
+      'ldap': user.ldap,
     };
     done(null, data);
   });
