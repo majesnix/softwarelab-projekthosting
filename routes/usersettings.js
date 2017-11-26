@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const signupController = require('../app/controller/signupController');
+const userController = require('../app/controller/userController');
 
 router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, next) => {
   res.locals.errors = req.flash();
@@ -12,6 +12,6 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
   });
 });
 
-router.post('/', signupController.changePassword);
+router.post('/', userController.changePassword);
 
 module.exports = router;
