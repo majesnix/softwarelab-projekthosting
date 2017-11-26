@@ -7,7 +7,7 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
   res.render('usersettings', {
     sidebar: true,
     user: require('../user.json'),
-    user2: req.session.passport.user.name,
+    user2: req.session.passport.user,
     message: res.locals.errors.error || res.locals.errors.info
   });
 });
