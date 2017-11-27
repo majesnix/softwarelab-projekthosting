@@ -12,12 +12,7 @@ module.exports.create = (req, res) => {
   const lastname = req.body.lastname;
   const password = req.body.password;
   const password2 = req.body.password2;
-  let admin;
-  if (req.body.admin === 'on') {
-    admin = true;
-  } else {
-    admin = false;
-  }
+  const admin = (req.body.admin === 'on') ? true : false;
 
   if (!email || !firstname || !lastname || !password || !password2) {
     req.flash('error', 'Please, fill in all the fields.');
@@ -33,14 +28,14 @@ module.exports.create = (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, salt);
 
   Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin}).then(() => {
-    if (req.session.passport.user) {
+    if (req.session.passport) {
       req.flash('info', 'User successfully created');
       res.redirect('/adminsettings');
     } else {
       res.redirect('/');
     }
   }).catch(() => {
-    if (req.session.passport.user) {
+    if (req.session.passport) {
       req.flash('error', 'This e-mail already has been registered');
       res.redirect('/adminsettings');
     } else {
