@@ -10,10 +10,10 @@ html(lang="en")
                     p= message
                 form(action="/signup", method="post")
                     .form-group.has-feedback
-                        input.form-control#inputFirstname(type="firstname", name="firstname" placeholder="Firstname", required, autofocus)
+                        input.form-control#inputFirstname(type="text", name="firstname" placeholder="Firstname", required, autofocus)
                         span.fa.fa-user-circle-o.form-control-feedback
                     .form-group.has-feedback
-                        input.form-control#inputLastname(type="lastname", name="lastname" placeholder="Lastname", required)
+                        input.form-control#inputLastname(type="text", name="lastname" placeholder="Lastname", required)
                         span.fa.fa-user-circle-o.form-control-feedback
                     .form-group.has-feedback
                         input.form-control#inputEmail(type="email", name="email" placeholder="E-Mail", required)

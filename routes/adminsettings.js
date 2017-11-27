@@ -11,6 +11,7 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
   });
 });
 
-router.post('/', userController.create);
+router.post('/delete', userController.delete);
+router.post('/create', userController.create);
 
 module.exports = router;

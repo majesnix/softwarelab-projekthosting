@@ -6,7 +6,7 @@ module.exports.show = (req, res) => {
   res.render('signup', { message: res.locals.errors.error });
 };
 
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
   const email = req.body.email;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
@@ -27,22 +27,39 @@ module.exports.create = (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin}).then(() => {
-    if (req.session.passport) {
-      req.flash('info', 'User successfully created');
+  Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin})
+    .then(() => {
+      if (req.session.passport) {
+        req.flash('info', 'User successfully created');
+        res.redirect('/adminsettings');
+      } else {
+        res.redirect('/');
+      }
+    }).catch(() => {
+      if (req.session.passport) {
+        req.flash('error', 'This e-mail has already been registered');
+        res.redirect('/adminsettings');
+      } else {
+        req.flash('error', 'This e-mail has already been registered');
+        res.redirect('/signup');
+      }
+    });
+};
+
+module.exports.delete = async (req, res) => {
+  const id = req.body.matrnr;
+
+  Model.User.findOne({where: { matrnr: id}})
+    .then(user => {
+      user.destroy();
+      req.flash('info', 'User deleted');
       res.redirect('/adminsettings');
-    } else {
-      res.redirect('/');
-    }
-  }).catch(() => {
-    if (req.session.passport) {
-      req.flash('error', 'This e-mail already has been registered');
+    })
+    .catch(err => {
+      console.log(err);
+      req.flash('error', 'Something went wrong');
       res.redirect('/adminsettings');
-    } else {
-      req.flash('error', 'This e-mail already has been registered');
-      res.redirect('/signup');
-    }
-  });
+    });
 };
 
 module.exports.changePassword = async (req, res) => {
@@ -73,10 +90,10 @@ module.exports.changePassword = async (req, res) => {
           res.redirect('/usersettings');
         }
         ).catch(err => {
+          console.log(err);
           req.flash('error', 'Something went wrong');
           res.redirect('/usersettings');
         });
       }
     });
-  
 };

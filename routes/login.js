@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
   res.render('login',{message: res.locals.errors.error});
 });
 
-router.post('/', passport.authenticate(['ldapauth', 'local'], {
+router.post('/', passport.authenticate(/*['ldapauth', */'local'/*]*/, {
   failureRedirect: '/',
   failureFlash: 'Invalid username or password.'
 }), (req, res, next) => {
