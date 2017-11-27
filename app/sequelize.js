@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { dbURL } = require('../config'); 
 const sequelize = new Sequelize(dbURL,{logging: false, operatorsAliases: Sequelize.Op});
-const UserMeta = require('./model/User.js');
+const UserMeta = require('./models/User.js');
 
 const User = sequelize.define('users', UserMeta.attributes, UserMeta.options);
 

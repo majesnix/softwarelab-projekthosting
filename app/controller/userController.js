@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
-const Model = require('../model/model.js');
+const Model = require('../models/model.js');
 
-module.exports.show = (req, res) => {
+module.exports.show = async (req, res) => {
   res.locals = req.flash();
   res.render('signup', { message: res.locals.error });
 };
