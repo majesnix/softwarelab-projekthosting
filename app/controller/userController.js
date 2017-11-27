@@ -64,6 +64,7 @@ module.exports.delete = async (req, res) => {
 };
 
 module.exports.changePassword = async (req, res) => {
+  const id = req.session.passport.user.matrnr;
   const oldPass = req.body.inputoldpassword;
   const newPass = req.body.inputnewpassword;
   const newPass2 = req.body.inputnewpassword2;
@@ -73,7 +74,7 @@ module.exports.changePassword = async (req, res) => {
     res.redirect('/usersettings');
   }
 
-  Model.User.findOne({where: { matrnr: req.session.passport.user.matrnr }})
+  Model.User.findOne({where: { matrnr: id }})
     .then(data => {
       const oldHash = bcrypt.hashSync(oldPass, data.salt);
       const hashedPassword = bcrypt.hashSync(newPass, data.salt);
@@ -100,13 +101,14 @@ module.exports.changePassword = async (req, res) => {
 };
 
 module.exports.changeAvatar = async (req, res) => {
+  const id = req.session.passport.user.matrnr;
   // Search for the user
-  Model.User.findOne({where: { matrnr: req.session.passport.user.matrnr}})
+  Model.User.findOne({where: { matrnr: id}})
     .then(user => {
       if (user.avatar.split('.')[0] !== user.matrnr) {
         // Update user entry with correct file name and ending
-        user.update({avatar: `${req.session.passport.user.matrnr}${path.extname(req.file.originalname).toLowerCase()}`});
-        req.session.passport.user.avatar = `${req.session.passport.user.matrnr}${path.extname(req.file.originalname).toLowerCase()}`;
+        user.update({avatar: `${id}${path.extname(req.file.originalname).toLowerCase()}`});
+        req.session.passport.user.avatar = `${id}${path.extname(req.file.originalname).toLowerCase()}`;
       }
       req.flash('info', 'Avatar changed');
       res.redirect('/usersettings');
