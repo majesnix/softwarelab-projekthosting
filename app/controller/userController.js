@@ -6,14 +6,20 @@ module.exports.show = (req, res) => {
   res.render('signup', { message: res.locals.errors.error });
 };
 
-module.exports.signup = (req, res) => {
+module.exports.create = (req, res) => {
   const email = req.body.email;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
   const password = req.body.password;
   const password2 = req.body.password2;
+  let admin;
+  if (req.body.admin === 'on') {
+    admin = true;
+  } else {
+    admin = false;
+  }
 
-  if (!email || !password || !password2) {
+  if (!email || !firstname || !lastname || !password || !password2) {
     req.flash('error', 'Please, fill in all the fields.');
     res.redirect('/signup');
   }
@@ -26,11 +32,21 @@ module.exports.signup = (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false}).then(() => {
-    res.redirect('/');
-  }).catch(error => {
-    req.flash('error', 'This e-mail already has been registered');
-    res.redirect('/signup');
+  Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin}).then(() => {
+    if (req.session.passport.user) {
+      req.flash('info', 'User successfully created');
+      res.redirect('/adminsettings');
+    } else {
+      res.redirect('/');
+    }
+  }).catch(() => {
+    if (req.session.passport.user) {
+      req.flash('error', 'This e-mail already has been registered');
+      res.redirect('/adminsettings');
+    } else {
+      req.flash('error', 'This e-mail already has been registered');
+      res.redirect('/signup');
+    }
   });
 };
 

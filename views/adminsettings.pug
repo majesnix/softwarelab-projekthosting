@@ -1,0 +1,47 @@
+extends global/master
+
+block content
+    h1 Administration
+    .row
+        .col-md-12
+            .box.box-info
+                .box-header.with-border
+                    a(href=link)
+                        h3.box-title= 'Create User'
+                    if (message)
+                        p= message
+                    .box-body
+                        form.form-horizontal(action="/adminsettings", method="post")
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Firstname
+                                .col-sm-10
+                                    input.form-control#inputFirstName(type="firstname", name="firstname" placeholder="Firstname", required, autofocus)
+                                    span.fa.fa-user-circle-o.form-control-feedback
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Lastname
+                                .col-sm-10
+                                    input.form-control#inputLastName(type="lastname", name="lastname" placeholder="Lastname", required)
+                                    span.fa.fa-user-circle-o.form-control-feedback
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Email
+                                .col-sm-10
+                                    input.form-control#inputEmail(type="email", name="email" placeholder="E-Mail", required)
+                                    span.fa.fa-envelope-o.form-control-feedback
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Password
+                                .col-sm-10
+                                    input.form-control#inputPassword(type="password", name="password" placeholder="Password", required)
+                                    span.fa.fa-lock.form-control-feedback
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Repeat Password
+                                .col-sm-10
+                                    input.form-control#inputRepeatPassword(type="password", name="password2" placeholder="Repeat Password", required)
+                                    span.fa.fa-lock.form-control-feedback
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Administrator
+                                .col-sm-10
+                                    input#inputAdmin(type="checkbox", name="admin")
+                            .row
+                                .col-xs-4
+                                    button.btn.btn-primary.btn-blockbtn-flat(type="submit") Create
+

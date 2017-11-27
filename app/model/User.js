@@ -28,6 +28,14 @@ const attributes = {
   ldap: {
     type: Sequelize.BOOLEAN,
     defaultValue: true,
+  },
+  isadmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  avatar: {
+    type: Sequelize.STRING,
+    defaultValue: 'default.png',
   }
 };
 

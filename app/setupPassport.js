@@ -20,22 +20,22 @@ module.exports = (app) => {
         email: username
       }
     })
-    .then(user => {
+      .then(user => {
       // if no user was found, return error
-      if (!user ||user.ldap) {
-        return done(null, false, { message: 'Incorrect credentials.' });
-      }
+        if (!user || user.ldap) {
+          return done(null, false, { message: 'Incorrect credentials.' });
+        }
     
-      const hashedPassword = bcrypt.hashSync(password, user.salt);
+        const hashedPassword = bcrypt.hashSync(password, user.salt);
     
-      // when passwords match, return user
-      if (user.password === hashedPassword) {
-        return done(null, user);
-      }
+        // when passwords match, return user
+        if (user.password === hashedPassword) {
+          return done(null, user);
+        }
       
-      // return false when passwords dont match
-      return done(null, false, { message: 'Incorrect credentials.' });
-    });
+        // return false when passwords dont match
+        return done(null, false, { message: 'Incorrect credentials.' });
+      });
   }
   ));
 
@@ -43,20 +43,15 @@ module.exports = (app) => {
     usernameField: 'email',
     server: {
       url: config.url,
-      //CN => Administrator USER, OU => Organization Unit, DC => Domain controller
       bindDn: config.bindDn,
-      //PASSWORD
       bindCredentials: config.bindCredentials,
-      //In which Organization Unit shall we search?
-      // TODO: Better understanding of the searchBase
       searchBase: config.searchBase,
-      //Search based on this input
       searchFilter: config.searchFilter,
     }
   },
   (user, done) => {
     // Try to create a DB Entry
-    Model.User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn, salt: '', password: '', ldap: true })
+    Model.User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn, salt: '', password: '' })
       .then(() => {
         // afterwards retriev this entry.
         Model.User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
@@ -80,7 +75,9 @@ module.exports = (app) => {
     const data = {
       'matrnr': user.matrnr,
       'name': user.firstname,
+      'avatar': user.avatar,
       'ldap': user.ldap,
+      'isAdmin': user.isadmin
     };
     done(null, data);
   });
@@ -95,6 +92,6 @@ module.exports = (app) => {
     }).then(userdata => {
       return done(null, userdata);
     })
-    .catch(err => console.error(err));
+      .catch(err => console.error(err));
   });
 };
