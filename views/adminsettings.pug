@@ -11,16 +11,16 @@ block content
                     if (message)
                         p= message
                     .box-body
-                        form.form-horizontal(action="/adminsettings", method="post")
+                        form.form-horizontal(action="/adminsettings/create", method="post")
                             .form-group.has-feedback
                                 label.control-label.col-sm-2 Firstname
                                 .col-sm-10
-                                    input.form-control#inputFirstName(type="firstname", name="firstname" placeholder="Firstname", required, autofocus)
+                                    input.form-control#inputFirstName(type="text", name="firstname" placeholder="Firstname", required, autofocus)
                                     span.fa.fa-user-circle-o.form-control-feedback
                             .form-group.has-feedback
                                 label.control-label.col-sm-2 Lastname
                                 .col-sm-10
-                                    input.form-control#inputLastName(type="lastname", name="lastname" placeholder="Lastname", required)
+                                    input.form-control#inputLastName(type="text", name="lastname" placeholder="Lastname", required)
                                     span.fa.fa-user-circle-o.form-control-feedback
                             .form-group.has-feedback
                                 label.control-label.col-sm-2 Email
@@ -44,4 +44,21 @@ block content
                             .row
                                 .col-xs-4
                                     button.btn.btn-primary.btn-blockbtn-flat(type="submit") Create
+        .col-md-12
+            .box.box-info
+                .box-header.with-border
+                    a(href=link)
+                        h3.box-title= 'Delete User'
+                    if (message)
+                        p= message
+                    .box-body
+                        form.form-horizontal(action="/adminsettings/delete", method="post")
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Matrikelnummer
+                                .col-sm-10
+                                    input.form-control#inputFirstName(type="text", name="matrnr" placeholder="", required, autofocus)
+                                    span.fa.fa-id-card-o.form-control-feedback
+                            .row
+                                .col-xs-4
+                                    button.btn.btn-primary.btn-blockbtn-flat(type="submit") Delete User
 

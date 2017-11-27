@@ -35,7 +35,8 @@ module.exports = (app) => {
       
         // return false when passwords dont match
         return done(null, false, { message: 'Incorrect credentials.' });
-      });
+      })
+      .catch(err => console.log(err));
   }
   ));
 
