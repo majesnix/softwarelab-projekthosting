@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const attributes = {
   matrnr: {
     type: Sequelize.STRING,
+    field: 'matr_nr',
     unique: true,
     primaryKey: true,
   },
@@ -15,9 +16,11 @@ const attributes = {
   },
   firstname: {
     type: Sequelize.STRING,
+    field: 'first_name',
   },
   lastname: {
     type: Sequelize.STRING,
+    field: 'last_name',
   },
   password: {
     type: Sequelize.STRING,
@@ -31,6 +34,7 @@ const attributes = {
   },
   isadmin: {
     type: Sequelize.BOOLEAN,
+    field: 'is_admin',
     defaultValue: false,
   },
   avatar: {

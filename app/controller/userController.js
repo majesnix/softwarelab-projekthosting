@@ -1,9 +1,10 @@
 const bcrypt = require('bcrypt');
 const Model = require('../models/model.js');
+const path = require('path');
 
 module.exports.show = async (req, res) => {
-  res.locals = req.flash();
-  res.render('signup', { message: res.locals.error });
+  res.locals.message = req.flash();
+  res.render('signup', { message: res.locals.message.error });
 };
 
 module.exports.create = async (req, res) => {
@@ -72,7 +73,7 @@ module.exports.changePassword = async (req, res) => {
     res.redirect('/usersettings');
   }
 
-  Model.User.findOne({where: { matrnr: req.session.passport.user }})
+  Model.User.findOne({where: { matrnr: req.session.passport.user.matrnr }})
     .then(data => {
       const oldHash = bcrypt.hashSync(oldPass, data.salt);
       const hashedPassword = bcrypt.hashSync(newPass, data.salt);
@@ -96,4 +97,19 @@ module.exports.changePassword = async (req, res) => {
         });
       }
     });
+};
+
+module.exports.changeAvatar = async (req, res) => {
+  // Search for the user
+  Model.User.findOne({where: { matrnr: req.session.passport.user.matrnr}})
+    .then(user => {
+      if (user.avatar.split('.')[0] !== user.matrnr) {
+        // Update user entry with correct file name and ending
+        user.update({avatar: `${req.session.passport.user.matrnr}${path.extname(req.file.originalname).toLowerCase()}`});
+        req.session.passport.user.avatar = `${req.session.passport.user.matrnr}${path.extname(req.file.originalname).toLowerCase()}`;
+      }
+      req.flash('info', 'Avatar changed');
+      res.redirect('/usersettings');
+    });
+  
 };
