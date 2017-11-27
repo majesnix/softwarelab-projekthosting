@@ -21,7 +21,7 @@ module.exports = (app) => {
       }
     })
       .then(user => {
-      // if no user was found, return error
+        // if no user was found, return error
         if (!user || user.ldap) {
           return done(null, false, { message: 'Incorrect credentials.' });
         }
@@ -37,8 +37,7 @@ module.exports = (app) => {
         return done(null, false, { message: 'Incorrect credentials.' });
       })
       .catch(err => console.log(err));
-  }
-  ));
+  }));
 
   passport.use(new LdapStrategy({
     usernameField: 'email',

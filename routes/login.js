@@ -3,8 +3,8 @@ const router = express.Router();
 const passport = require('passport');
 
 router.get('/', (req, res, next) => {
-  res.locals.errors = req.flash();
-  res.render('login',{message: res.locals.errors.error});
+  res.locals = req.flash();
+  res.render('login',{message: res.locals.error});
 });
 
 router.post('/', passport.authenticate(/*['ldapauth', */'local'/*]*/, {
