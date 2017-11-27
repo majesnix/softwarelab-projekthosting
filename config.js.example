@@ -16,6 +16,6 @@ const config = {
 
     // URL for postgres login (for sequelize)
     'dbURL' : 'postgres://webentwicklung:webentwicklung@localhost:5432/webentwicklung',
-}
+};
 
 module.exports = config;

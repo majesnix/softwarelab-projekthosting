@@ -1,5 +1,5 @@
 header.main-header
-    a.logo(href="#")
+    a.logo(href="/dashboard")
         span.logo-mini SLAB
         span.logo-lg Softwarelabor
 
@@ -9,19 +9,23 @@ header.main-header
         ul.nav.navbar-nav
             li.pull-left
                 a(href="#", data-toggle="modal" data-target="#createProjectModal") Create Project
+            if (user2.isAdmin)
+                li.pull-left
+                    a(href='/adminsettings') Administration
         .navbar-custom-menu
             ul.nav.navbar-nav
                 li.dropdown.user.user-menu
                     a.dropdown-toggle(href="#", data-toggle="dropdown")
-                        img.user-image(src="vendor/assets/user2-160x160.jpg", alt="User Image")
+                        img.user-image(src=`vendor/assets/${user2.avatar}`, alt="User Image")
                         span.hidden-xs= user2.name
                     ul.dropdown-menu
                         li.user-header
-                            img.img-circle(src="vendor/assets/user2-160x160.jpg", alt="User Image")
+                            img.img-circle(src=`vendor/assets/${user2.avatar}`, alt="User Image")
                             p= user2.name
                         li.user-footer
                             .pull-left
                                 a.btn.btn-default.btn-flat(href="/usersettings") Settings
                             .pull-right
                                 a.btn.btn-default.btn-flat(href="/logout") Logout
+                
 
