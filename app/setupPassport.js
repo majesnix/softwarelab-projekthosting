@@ -4,7 +4,7 @@ const LdapStrategy = require('passport-ldapauth').Strategy;
 const config = require('../config');
 
 const bcrypt = require('bcrypt');
-const Model = require('./model/model.js');
+const Model = require('./models/model.js');
 
 module.exports = (app) => {
   app.use(passport.initialize());
