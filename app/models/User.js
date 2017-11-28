@@ -24,9 +24,11 @@ const attributes = {
   },
   password: {
     type: Sequelize.STRING,
+    defaultValue: '',
   },
   salt: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: '',
   },
   ldap: {
     type: Sequelize.BOOLEAN,

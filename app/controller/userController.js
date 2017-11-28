@@ -28,6 +28,7 @@ module.exports.create = async (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
+  // create the user in the database
   Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin})
     .then(() => {
       if (req.session.passport) {
@@ -52,6 +53,7 @@ module.exports.delete = async (req, res) => {
 
   Model.User.findOne({where: { matrnr: id}})
     .then(user => {
+      // deletes the database entry
       user.destroy();
       req.flash('info', 'User deleted');
       res.redirect('/adminsettings');
@@ -107,8 +109,9 @@ module.exports.changeAvatar = async (req, res) => {
     .then(user => {
       if (user.avatar.split('.')[0] !== user.matrnr) {
         // Update user entry with correct file name and ending
-        user.update({avatar: `${id}${path.extname(req.file.originalname).toLowerCase()}`});
-        req.session.passport.user.avatar = `${id}${path.extname(req.file.originalname).toLowerCase()}`;
+        const newAvatar = `${id}${path.extname(req.file.originalname).toLowerCase()}`;
+        user.update({avatar: newAvatar});
+        req.session.passport.user.avatar = newAvatar;
       }
       req.flash('info', 'Avatar changed');
       res.redirect('/usersettings');

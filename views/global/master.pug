@@ -20,7 +20,7 @@ html
                         button.close(data-dismiss="modal" aria-label="Close")
                             span(aria-hidden="true")
                         h4.modal-title Create Project
-                    form
+                    form(action="/api/createproject", method="post")
                         .modal-body
                             .form-group
                                 label Project Name
