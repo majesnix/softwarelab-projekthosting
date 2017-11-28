@@ -21,6 +21,13 @@ module.exports.createProject = async (req, res) => {
 module.exports.deleteProject = async (req, res) => {
   //delete folders of the project
   //delete DB entry
+  const id = req.body.id;
+  Model.Project.destroy({ where: { id: id }})
+    .then(() => res.redirect('/dashboard'))
+    .catch(err => {
+      console.error(err);
+      res.redirect('/dashboard');
+    });
 };
 
 module.exports.createApplication = async (req, res) => {
