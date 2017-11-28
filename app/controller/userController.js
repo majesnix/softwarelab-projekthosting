@@ -31,14 +31,14 @@ module.exports.create = async (req, res) => {
   // create the user in the database
   Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin})
     .then(() => {
-      if (req.session.passport) {
+      if (req.user.user.isadmin) {
         req.flash('info', 'User successfully created');
         res.redirect('/adminsettings');
       } else {
         res.redirect('/');
       }
     }).catch(() => {
-      if (req.session.passport) {
+      if (req.user.user.isadmin) {
         req.flash('error', 'This e-mail has already been registered');
         res.redirect('/adminsettings');
       } else {
@@ -66,7 +66,7 @@ module.exports.delete = async (req, res) => {
 };
 
 module.exports.changePassword = async (req, res) => {
-  const id = req.session.passport.user.matrnr;
+  const id = req.user.matrnr;
   const oldPass = req.body.inputoldpassword;
   const newPass = req.body.inputnewpassword;
   const newPass2 = req.body.inputnewpassword2;
@@ -103,7 +103,7 @@ module.exports.changePassword = async (req, res) => {
 };
 
 module.exports.changeAvatar = async (req, res) => {
-  const id = req.session.passport.user.matrnr;
+  const id = req.user.user.matrnr;
   // Search for the user
   Model.User.findOne({where: { matrnr: id}})
     .then(user => {
@@ -111,7 +111,7 @@ module.exports.changeAvatar = async (req, res) => {
         // Update user entry with correct file name and ending
         const newAvatar = `${id}${path.extname(req.file.originalname).toLowerCase()}`;
         user.update({avatar: newAvatar});
-        req.session.passport.user.avatar = newAvatar;
+        req.user.user.avatar = newAvatar;
       }
       req.flash('info', 'Avatar changed');
       res.redirect('/usersettings');
