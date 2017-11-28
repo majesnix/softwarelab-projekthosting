@@ -40,5 +40,6 @@ router.post('/changeavatar', upload.single('avatar'), userController.changeAvata
 router.post('/deleteuser', userController.delete);
 router.post('/createuser', userController.create);
 router.post('/createproject', projectController.createProject);
+router.post('/deleteproject', projectController.deleteProject);
 
 module.exports = router;
