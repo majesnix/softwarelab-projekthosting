@@ -4,7 +4,7 @@ const passport = require('passport');
 
 router.get('/', (req, res, next) => {
   res.locals.message = req.flash();
-  res.render('login',{message: res.locals.message.error});
+  res.render('login', {message: res.locals.message.error});
 });
 
 router.post('/', passport.authenticate(['ldapauth', 'local'], {
@@ -15,7 +15,9 @@ router.post('/', passport.authenticate(['ldapauth', 'local'], {
     if (err) {
       return next(err);
     }
-    res.redirect('/dashboard');
+    res.render('dashboard', {
+      user: req.session.passport.user
+    });
   });
 });
 

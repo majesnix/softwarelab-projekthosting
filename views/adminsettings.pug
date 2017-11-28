@@ -11,7 +11,7 @@ block content
                     if (message)
                         p= message
                     .box-body
-                        form.form-horizontal(action="/adminsettings/create", method="post")
+                        form.form-horizontal(action="/api/createuser", method="post")
                             .form-group.has-feedback
                                 label.control-label.col-sm-2 Firstname
                                 .col-sm-10
@@ -52,7 +52,7 @@ block content
                     if (message)
                         p= message
                     .box-body
-                        form.form-horizontal(action="/adminsettings/delete", method="post")
+                        form.form-horizontal(action="/api/deleteuser", method="post")
                             .form-group.has-feedback
                                 label.control-label.col-sm-2 Matrikelnummer
                                 .col-sm-10

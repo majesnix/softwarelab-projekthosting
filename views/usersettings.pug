@@ -11,7 +11,7 @@ block content
                     if (message)
                         p= message
                     .box-body
-                        form.form-horizontal(action="/usersettings/changeavatar", enctype="multipart/form-data" ,method="post")
+                        form.form-horizontal(action="/api/changeavatar", enctype="multipart/form-data" ,method="post")
                             .form-group.has-feedback
                                 label.control-label.col-sm-2(for='avatar') 
                                 .col-sm-10
@@ -19,7 +19,7 @@ block content
                             .row
                                 .col-xs-4
                                     button.btn.btn-primary.btn-blockbtn-flat(type="submit") Submit
-    if (!user2.ldap)
+    if (!user.ldap)
         .box.box-info
             .box-header.with-border
                 a(href=link)
@@ -27,7 +27,7 @@ block content
                 if (message)
                     p= message
                 .box-body
-                    form.form-horizontal(action="/usersettings/changepassword", method="post")
+                    form.form-horizontal(action="/api/changepassword", method="post")
                         .form-group.has-feedback
                             label.control-label.col-sm-2(for='inputoldpassword') Old password
                             .col-sm-10

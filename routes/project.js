@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, next) => {
-  const user = require('../user.json');
-  const activeProject = user.projects.find(el => el.id === req.query.id);
+  const projects = req.session.passport.user.projects;
+  const activeProject = projects.find(el => el.id == req.query.id);
 
   res.render('project', {
-    user: user,
-    user2: req.session.passport.user,
+    user: req.session.passport.user,
     activeProject: activeProject,
     activeID: req.query.id
   });

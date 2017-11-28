@@ -1,19 +1,25 @@
 const Sequelize = require('sequelize');
 
 const attributes = {
-  student: {
+  applicationid: {
     type: Sequelize.STRING,
+    field: 'application_id',
+    unique: true,
+    primaryKey: true,
+  },
+  projectid: {
+    type: Sequelize.STRING,
+    field: 'project_id',
     references: { 
-      model: 'users',
-      key: 'matr_nr',
+      model: 'projects',
+      key: 'project_id',
     }
   },
   name: {
     type: Sequelize.STRING,
   },
   participants: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
-    defaultValue: [],
+    type: Sequelize.STRING,
   }
 };
 
