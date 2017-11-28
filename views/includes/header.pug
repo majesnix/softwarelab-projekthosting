@@ -17,11 +17,11 @@ header.main-header
                 li.dropdown.user.user-menu
                     a.dropdown-toggle(href="#", data-toggle="dropdown")
                         img.user-image(src=`vendor/assets/${user.avatar}`, alt="User Image")
-                        span.hidden-xs= user.name
+                        span.hidden-xs= user.firstname
                     ul.dropdown-menu
                         li.user-header
                             img.img-circle(src=`vendor/assets/${user.avatar}`, alt="User Image")
-                            p= user.name
+                            p= user.firstname
                         li.user-footer
                             .pull-left
                                 a.btn.btn-default.btn-flat(href="/usersettings") Settings

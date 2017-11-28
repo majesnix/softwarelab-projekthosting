@@ -91,12 +91,7 @@ module.exports = (app) => {
   passport.serializeUser((userinfo, done) => {
 
     const data = {
-      matrnr: userinfo.user.matrnr,
-      name: userinfo.user.firstname,
-      avatar: userinfo.user.avatar,
-      ldap: userinfo.user.ldap,
-      isAdmin: userinfo.user.isadmin,
-      projects: userinfo.projects
+      matrnr: userinfo.user.matrnr
     };
     done(null, data);
   });

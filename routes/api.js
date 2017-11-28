@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // ENHANCEMENT: do not hardcode filextension, but adjust accordingly
-    cb(null, `${req.session.passport.user.matrnr}.png`/*${path.extname(file.originalname).toLowerCase()}`*/);
+    cb(null, `${req.user.user.matrnr}.png`/*${path.extname(file.originalname).toLowerCase()}`*/);
   }
 });
 

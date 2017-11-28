@@ -1,19 +1,15 @@
 const fs = require('fs');
 const Model = require('../models/model.js');
 
-module.exports.createProject = async (req, res, done) => {
+module.exports.createProject = async (req, res) => {
   //create DB entry in projectdatabase (FK -> Matrikelnummer)
-  //create folders for project
+  //create folders for 
+  // TODO: check project quota
   const name = req.body.name;
-  const id = req.session.passport.user.matrnr;
+  const id = req.user.user.matrnr;
 
   Model.Project.create({ student: id, name:name })
     .then(() => {
-      Model.Project.findAll({ where: {student: id }})
-        .then(projects => {
-          req.session.passport.user.projects = projects;
-          req.session.save();
-        });
       res.redirect('/dashboard');
     })
     .catch(err => {

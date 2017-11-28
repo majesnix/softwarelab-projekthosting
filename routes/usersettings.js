@@ -5,7 +5,8 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
   res.locals.message = req.flash();
   res.render('usersettings', {
     sidebar: true,
-    user: req.session.passport.user,
+    user: req.user.user,
+    projects: req.user.projects,
     message: res.locals.message.error || res.locals.message.info
   });
 });
