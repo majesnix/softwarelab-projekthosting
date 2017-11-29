@@ -10,9 +10,12 @@ const Project = sequelize.define('projects', ProjectMeta.attributes, ProjectMeta
 // authenticate with the database
 sequelize.authenticate()
   .then(() => {
+    // check if db exists, otherwise create
     User.sync();
     Project.sync();
-    User.hasMany(Project, {foreignKey: 'student'});
+
+    // relation
+    User.hasMany(Project, { foreignKey: 'student' });
   })
   .catch(err => {
     console.log('Unable to connect to the database: ', err);
