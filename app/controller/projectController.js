@@ -24,7 +24,7 @@ module.exports.deleteProject = async (req, res) => {
   const id = req.body.id;
   Project.destroy({ where: { id: id }})
     .then(() => {
-      res.redirect('/dashboard')
+      res.redirect('/dashboard');
     })
     .catch(err => {
       console.error(err);
