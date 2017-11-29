@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Model = require('../models/model.js');
+const { Project } = require('../models/model.js');
 
 module.exports.createProject = async (req, res) => {
   //create DB entry in projectdatabase (FK -> Matrikelnummer)
@@ -8,7 +8,7 @@ module.exports.createProject = async (req, res) => {
   const name = req.body.name;
   const id = req.user.user.matrnr;
 
-  Model.Project.create({ student: id, name:name })
+  Project.create({ student: id, name:name })
     .then(() => {
       res.redirect('/dashboard');
     })
@@ -22,7 +22,7 @@ module.exports.deleteProject = async (req, res) => {
   //delete folders of the project
   //delete DB entry
   const id = req.body.id;
-  Model.Project.destroy({ where: { id: id }})
+  Project.destroy({ where: { id: id }})
     .then(() => res.redirect('/dashboard'))
     .catch(err => {
       console.error(err);

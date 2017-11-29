@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const Model = require('../models/model.js');
+const { User } = require('../models/model.js');
 const path = require('path');
 
 module.exports.show = async (req, res) => {
@@ -29,7 +29,7 @@ module.exports.create = async (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, salt);
 
   // create the user in the database
-  Model.User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin})
+  User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin})
     .then(() => {
       if (req.user.user.isadmin) {
         req.flash('info', 'User successfully created');
@@ -51,7 +51,7 @@ module.exports.create = async (req, res) => {
 module.exports.delete = async (req, res) => {
   const id = req.body.matrnr;
 
-  Model.User.findOne({where: { matrnr: id}})
+  User.findOne({where: { matrnr: id}})
     .then(user => {
       // deletes the database entry
       user.destroy();
@@ -76,7 +76,7 @@ module.exports.changePassword = async (req, res) => {
     res.redirect('/usersettings');
   }
 
-  Model.User.findOne({where: { matrnr: id }})
+  User.findOne({where: { matrnr: id }})
     .then(data => {
       const oldHash = bcrypt.hashSync(oldPass, data.salt);
       const hashedPassword = bcrypt.hashSync(newPass, data.salt);
@@ -105,7 +105,7 @@ module.exports.changePassword = async (req, res) => {
 module.exports.changeAvatar = async (req, res) => {
   const id = req.user.user.matrnr;
   // Search for the user
-  Model.User.findOne({where: { matrnr: id}})
+  User.findOne({where: { matrnr: id}})
     .then(user => {
       if (user.avatar.split('.')[0] !== user.matrnr) {
         // Update user entry with correct file name and ending
