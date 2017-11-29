@@ -16,13 +16,23 @@ module.exports.createUser = async (req, res) => {
   const admin = (req.body.admin === 'on') ? true : false;
 
   if (!email || !firstname || !lastname || !password || !password2) {
-    req.flash('error', 'Please, fill in all the fields.');
-    res.redirect('/signup');
-  }
+    if (req.user.user.isadmin) {
+      req.flash('error', 'Please, fill in all the fields.');
+      return res.redirect('/adminsettings');
+    } else {
+      req.flash('error', 'Please, fill in all the fields.');
+      return res.redirect('/signup');
+    }
+  } else
 
   if (password !== password2) {
-    req.flash('error', 'Please, enter the same password twice.');
-    res.redirect('/signup');
+    if (req.user.user.isadmin) {
+      req.flash('error', 'Please, enter the same password twice.');
+      return res.redirect('/adminsettings');
+    } else {
+      req.flash('error', 'Please, enter the same password twice.');
+      return res.redirect('/signup');
+    }
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -59,7 +69,7 @@ module.exports.deleteUser = async (req, res) => {
       res.redirect('/adminsettings');
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       req.flash('error', 'Something went wrong');
       res.redirect('/adminsettings');
     });
@@ -94,7 +104,7 @@ module.exports.changePassword = async (req, res) => {
           res.redirect('/usersettings');
         }
         ).catch(err => {
-          console.log(err);
+          console.error(err);
           req.flash('error', 'Something went wrong');
           res.redirect('/usersettings');
         });
