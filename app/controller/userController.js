@@ -7,7 +7,7 @@ module.exports.show = async (req, res) => {
   res.render('signup', { message: res.locals.message.error });
 };
 
-module.exports.create = async (req, res) => {
+module.exports.createUser = async (req, res) => {
   const email = req.body.email;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
@@ -48,7 +48,7 @@ module.exports.create = async (req, res) => {
     });
 };
 
-module.exports.delete = async (req, res) => {
+module.exports.deleteUser = async (req, res) => {
   const id = req.body.matrnr;
 
   User.findOne({where: { matrnr: id}})
