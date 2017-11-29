@@ -44,7 +44,7 @@ module.exports = (app) => {
             //return done(null, user);
           });
         } else {
-          console.log(err);
+          console.error(err);
         }
       });
   }));
@@ -84,7 +84,7 @@ module.exports = (app) => {
         }
       
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }));
 
   // Defines which data will be kept in the session

@@ -18,7 +18,7 @@ sequelize.authenticate()
     User.hasMany(Project, { foreignKey: 'student' });
   })
   .catch(err => {
-    console.log('Unable to connect to the database: ', err);
+    console.error('Unable to connect to the database: ', err);
   });
 
 module.exports = sequelize;
