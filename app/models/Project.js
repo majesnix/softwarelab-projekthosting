@@ -12,6 +12,7 @@ const attributes = {
     type: Sequelize.STRING,
   },
   participants: {
+    // TODO: think about something else, because arrays cant handle FK
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: [],
   }

@@ -4,7 +4,7 @@ const LdapStrategy = require('passport-ldapauth').Strategy;
 const { url, bindDn, bindCredentials, searchBase, searchFilter } = require('../config');
 
 const bcrypt = require('bcrypt');
-const Model = require('./models/model.js');
+const { User, Project } = require('./models/model.js');
 
 module.exports = (app) => {
   app.use(passport.initialize());
@@ -22,18 +22,18 @@ module.exports = (app) => {
   },
   (user, done) => {
     // Try to create a DB Entry
-    Model.User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn})
+    User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn})
       .then(() => {
         // afterwards retriev this entry.
-        Model.User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
+        User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
           return done(null, user);
         });
       })
       .catch(err => {
         // If entry already exists, get that entry
         if (err.name === 'SequelizeUniqueConstraintError') {
-          Model.User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
-            Model.Project.findAll({ where: {student: user.matrnr }})
+          User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
+            Project.findAll({ where: {student: user.matrnr }})
               .then(projects => {
                 const userinfo = {
                   user: user,
@@ -54,7 +54,7 @@ module.exports = (app) => {
   },
   (username, password, done) => {
     // try to find the user
-    Model.User.findOne({
+    User.findOne({
       where: {
         email: username
       }
@@ -70,7 +70,7 @@ module.exports = (app) => {
         // when passwords match, return user
         if (user.password === hashedPassword) {
           //search projects
-          Model.Project.findAll({ where: {student: user.matrnr }})
+          Project.findAll({ where: {student: user.matrnr }})
             .then(projects => {
               const userinfo = {
                 user: user,
@@ -98,12 +98,12 @@ module.exports = (app) => {
 
   // Gets all data from the stored User
   passport.deserializeUser((user, done) => {
-    Model.User.findOne({
+    User.findOne({
       where: {
         matrnr: user.matrnr
       }
     }).then(userdata => {
-      Model.Project.findAll({ where: {student: userdata.matrnr }})
+      Project.findAll({ where: {student: userdata.matrnr }})
         .then(projects => {
           const userinfo = {
             user: userdata,
