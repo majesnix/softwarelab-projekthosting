@@ -17,14 +17,3 @@ block content
                         a(href="/newservice")
                             i.fa.fa-plus-circle.text-green
                             span Add New
-        .row
-            .col-md-12
-                .box.box-info
-                    .box-header.with-border
-                        if (message)
-                            p= message
-                        .box-body
-                            form.form-horizontal(action="/api/deleteproject", method="post")
-                                .row
-                                    .col-xs-4
-                                        button.btn.btn-danger.btn-blockbtn-flat(type="submit" name="id" value=`${activeProject.id}`) Delete

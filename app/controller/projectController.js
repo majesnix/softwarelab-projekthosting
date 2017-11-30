@@ -8,7 +8,7 @@ module.exports.createProject = async (req, res) => {
   const name = req.body.name;
   const id = req.user.user.matrnr;
 
-  Project.create({ student: id, name:name })
+  Project.create({ user: id, name: name })
     .then(() => {
       res.redirect('/dashboard');
     })
@@ -22,6 +22,7 @@ module.exports.deleteProject = async (req, res) => {
   //delete folders of the project
   //delete DB entry
   const id = req.body.id;
+
   Project.destroy({ where: { id: id }})
     .then(() => {
       res.redirect('/dashboard');
@@ -29,6 +30,20 @@ module.exports.deleteProject = async (req, res) => {
     .catch(err => {
       console.error(err);
       res.redirect('/dashboard');
+    });
+};
+
+module.exports.changeProjectName = async (req, res) => {
+  const name = req.body.newname;
+  const projid = req.body.id;
+
+  Project.update({ name: name },{ where: { id : projid } })
+    .then(() => {
+      res.redirect(`/settings?id=${projid}`);
+    })
+    .catch(err => {
+      console.error(err);
+      res.redirect(`/settings?id=${projid}`);
     });
 };
 

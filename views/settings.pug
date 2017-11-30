@@ -25,13 +25,32 @@ block content
                                 .col-sm-10
                                     input.form-control(type='password' id='inputNewPassword2')
                         .btn.btn-primary Change
-
     .row
         .col-md-12
-            .box.box-danger
+            .box.box-info
                 .box-header.with-border
-                    a(href=link)
-                        h3.box-title= 'Delete this Project'
+                    if (message)
+                        p= message
+                    h3.box-title= 'Change this projects name'
                     .box-body
-                        .btn.btn-danger Delete
+                        form.form-horizontal(action="/api/changeprojectname", method="post")
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Name
+                                .col-sm-10
+                                    input.form-control#inputFirstName(type="text", name="newname" placeholder=`${activeProject.name}`, required, autofocus)
+                                    span.fa.fa-id-card-o.form-control-feedback
+                            .row
+                                .col-xs-4
+                                    button.btn.btn-primary.btn-blockbtn-flat(type="submit" name="id" value=`${activeProject.id}`) Change Name
+    .row
+        .col-md-12
+            .box.box-info
+                .box-header.with-border
+                    if (message)
+                        p= message
+                    .box-body
+                        form.form-horizontal(action="/api/deleteproject", method="post")
+                            .row
+                                .col-xs-4
+                                    button.btn.btn-danger.btn-blockbtn-flat(type="submit" name="id" value=`${activeProject.id}`) Delete
 

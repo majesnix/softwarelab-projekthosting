@@ -2,15 +2,18 @@ const Sequelize = require('sequelize');
 
 module.exports.attributes = {
   projectid: {
-    type: Sequelize.STRING,
-    field: 'project_id',
+    type: Sequelize.INTEGER,
     references: { 
       model: 'projects',
       key: 'id',
     }
   },
-  name: {
+  user: {
     type: Sequelize.STRING,
+    references: {
+      model: 'users',
+      key: 'matr_nr',
+    }
   }
 };
 
