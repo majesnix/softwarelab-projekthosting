@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const attributes = {
+module.exports.attributes = {
   matrnr: {
     type: Sequelize.STRING,
     field: 'matr_nr',
@@ -45,9 +45,6 @@ const attributes = {
   }
 };
 
-const options = {
+module.exports.options = {
   freezeTableName: true
 };
-
-module.exports.attributes = attributes;
-module.exports.options = options;

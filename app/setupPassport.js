@@ -33,7 +33,7 @@ module.exports = (app) => {
         // If entry already exists, get that entry
         if (err.name === 'SequelizeUniqueConstraintError') {
           User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
-            Project.findAll({ where: {student: user.matrnr }})
+            Project.findAll({ where: { user: user.matrnr }})
               .then(projects => {
                 const userinfo = {
                   user: user,
@@ -41,7 +41,6 @@ module.exports = (app) => {
                 };
                 return done(null, userinfo);
               });
-            //return done(null, user);
           });
         } else {
           console.error(err);
@@ -70,7 +69,7 @@ module.exports = (app) => {
         // when passwords match, return user
         if (user.password === hashedPassword) {
           //search projects
-          Project.findAll({ where: {student: user.matrnr }})
+          Project.findAll({ where: { user: user.matrnr }})
             .then(projects => {
               const userinfo = {
                 user: user,
@@ -103,7 +102,7 @@ module.exports = (app) => {
         matrnr: user.matrnr
       }
     }).then(userdata => {
-      Project.findAll({ where: {student: userdata.matrnr }})
+      Project.findAll({ where: { user: user.matrnr }})
         .then(projects => {
           const userinfo = {
             user: userdata,

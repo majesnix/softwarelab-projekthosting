@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
-const attributes = {
-  student: {
+module.exports.attributes = {
+  user: {
     type: Sequelize.STRING,
     references: { 
       model: 'users',
@@ -11,16 +11,18 @@ const attributes = {
   name: {
     type: Sequelize.STRING,
   },
-  participants: {
-    // TODO: think about something else, because arrays cant handle FK
-    type: Sequelize.ARRAY(Sequelize.STRING),
-    defaultValue: [],
+  appquota: {
+    type: Sequelize.INTEGER,
+    field: 'app_quota',
+    defaultValue: 0,
+  },
+  dbquota: {
+    type: Sequelize.INTEGER,
+    field: 'db_quota',
+    defaultValue: 0,
   }
 };
 
-const options = {
+module.exports.options = {
   freezeTableName: true
 };
-
-module.exports.attributes = attributes;
-module.exports.options = options;
