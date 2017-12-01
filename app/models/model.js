@@ -7,4 +7,4 @@ module.exports.User = connection.define('users', UserMeta.attributes, UserMeta.o
 
 module.exports.Project = connection.define('projects', ProjectMeta.attributes, ProjectMeta.options);
 
-module.exports.ProjectParticipants = connection.define('projectparticipants', ProjectParticipantsMeta.attributes, ProjectParticipantsMeta.options);
+module.exports.ProjectParticipant = connection.define('projectparticipants', ProjectParticipantsMeta.attributes, ProjectParticipantsMeta.options);

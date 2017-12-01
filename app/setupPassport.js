@@ -2,6 +2,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const LdapStrategy = require('passport-ldapauth').Strategy;
 const { url, bindDn, bindCredentials, searchBase, searchFilter } = require('../config');
+const Sequelize = require('sequelize');
+const { dbURL } = require('../config'); 
+const sequelize = new Sequelize(dbURL,{logging: false, operatorsAliases: Sequelize.Op});
 
 const bcrypt = require('bcrypt');
 const { User, Project } = require('./models/model.js');
@@ -33,13 +36,27 @@ module.exports = (app) => {
         // If entry already exists, get that entry
         if (err.name === 'SequelizeUniqueConstraintError') {
           User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } }).then(user => {
-            Project.findAll({ where: { user: user.matrnr }})
+            Project.findAll({ where: { userid: user.matrnr }})
               .then(projects => {
-                const userinfo = {
-                  user: user,
-                  projects: projects
-                };
-                return done(null, userinfo);
+                sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
+                FROM projectparticipants \
+                INNER JOIN projects ON projects.id=projectparticipants.projectid \
+                WHERE projectparticipants.userid = ( SELECT matr_nr FROM users WHERE users."matr_nr" = '${user.matrnr}')`)
+                  .then(participations => {
+                    const userinfo = {
+                      user: user,
+                      projects: projects,
+                      participations: participations[0]
+                    };
+                    return done(null, userinfo);
+                  }).catch(() => {
+                    const userinfo = {
+                      user: user,
+                      projects: projects,
+                      participations: []
+                    };
+                    return done(null, userinfo);
+                  });
               });
           });
         } else {
@@ -69,13 +86,29 @@ module.exports = (app) => {
         // when passwords match, return user
         if (user.password === hashedPassword) {
           //search projects
-          Project.findAll({ where: { user: user.matrnr }})
+          Project.findAll({ where: { userid: user.matrnr }})
             .then(projects => {
-              const userinfo = {
-                user: user,
-                projects: projects
-              };
-              return done(null, userinfo);
+              sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
+              FROM projectparticipants \
+              INNER JOIN projects ON projects.id=projectparticipants.projectid \
+              WHERE projectparticipants.userid = ( SELECT matr_nr FROM users WHERE users."matr_nr" = '${user.matrnr}')`)
+                .then(participations => {
+                  console.log(participations);
+                  const userinfo = {
+                    user: user,
+                    projects: projects,
+                    participations: participations[0]
+                  };
+                  return done(null, userinfo);
+                }).catch(err => {
+                  console.log(err);
+                  const userinfo = {
+                    user: user,
+                    projects: projects,
+                    participations: []
+                  };
+                  return done(null, userinfo);
+                });
             });
         } else {
           // return false when passwords dont match
@@ -101,14 +134,28 @@ module.exports = (app) => {
       where: {
         matrnr: user.matrnr
       }
-    }).then(userdata => {
-      Project.findAll({ where: { user: user.matrnr }})
+    }).then(user => {
+      Project.findAll({ where: { userid: user.matrnr }})
         .then(projects => {
-          const userinfo = {
-            user: userdata,
-            projects: projects
-          };
-          return done(null, userinfo);
+          sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
+          FROM projectparticipants \
+          INNER JOIN projects ON projects.id=projectparticipants.projectid \
+          WHERE projectparticipants.userid = ( SELECT matr_nr FROM users WHERE users."matr_nr" = '${user.matrnr}')`)
+            .then(participations => {
+              const userinfo = {
+                user: user,
+                projects: projects,
+                participations: participations[0]
+              };
+              return done(null, userinfo);
+            }).catch(() => {
+              const userinfo = {
+                user: user,
+                projects: projects,
+                participations: []
+              };
+              return done(null, userinfo);
+            });
         });
     })
       .catch(err => console.error(err));

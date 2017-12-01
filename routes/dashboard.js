@@ -6,6 +6,7 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
     title: 'Dashboard',
     user: req.user.user,
     projects: req.user.projects,
+    participations: req.user.participations,
   });
 });
 
