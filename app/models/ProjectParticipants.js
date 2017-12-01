@@ -8,7 +8,7 @@ module.exports.attributes = {
       key: 'id',
     }
   },
-  user: {
+  userid: {
     type: Sequelize.STRING,
     references: {
       model: 'users',

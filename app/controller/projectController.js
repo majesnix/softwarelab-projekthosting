@@ -1,14 +1,14 @@
 const fs = require('fs');
-const { Project } = require('../models/model.js');
+const { Project, ProjectParticipant } = require('../models/model.js');
 
 module.exports.createProject = async (req, res) => {
   //create DB entry in projectdatabase (FK -> Matrikelnummer)
   //create folders for 
   // TODO: check project quota
   const name = req.body.name;
-  const id = req.user.user.matrnr;
+  const matrnr = req.user.user.matrnr;
 
-  Project.create({ user: id, name: name })
+  Project.create({ userid: matrnr, name: name })
     .then(() => {
       res.redirect('/dashboard');
     })
@@ -35,15 +35,27 @@ module.exports.deleteProject = async (req, res) => {
 
 module.exports.changeProjectName = async (req, res) => {
   const name = req.body.newname;
-  const projid = req.body.id;
+  const project = req.body.id;
 
-  Project.update({ name: name },{ where: { id : projid } })
+  Project.update({ name: name },{ where: { id : project } })
     .then(() => {
-      res.redirect(`/settings?id=${projid}`);
+      req.flash('info', 'Successfully change the project name');
+      res.redirect(`/settings?id=${project}`);
     })
     .catch(err => {
+      req.flash('error', 'Something went wrong');
       console.error(err);
-      res.redirect(`/settings?id=${projid}`);
+      res.redirect(`/settings?id=${project}`);
+    });
+};
+
+module.exports.addParticipant = async (req, res) => {
+  const matrnr = req.body.matrnr;
+  const project = req.body.id;
+
+  ProjectParticipant.create({ userid: matrnr, projectid: project })
+    .then(() => {
+      res.redirect(`/settings?id=${project}`);
     });
 };
 
@@ -60,6 +72,7 @@ module.exports.deleteApplication = async (req, res) => {
 module.exports.createDatabase = async (req, res) => {
   //identify by database owner? save db owner in user->databases table
   //create new database (FK -> Projectid)
+  //query to create database/user/pw -> grant privileges for new created user
 };
 
 module.exports.deleteDatabase = async (req, res) => {

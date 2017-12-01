@@ -6,6 +6,7 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
   res.render('adminsettings', {
     user: req.user.user,
     projects: req.user.projects,
+    participations: req.user.participations,
     message: res.locals.message.error || res.locals.message.info
   });
 });

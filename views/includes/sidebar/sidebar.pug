@@ -7,5 +7,9 @@ aside.main-sidebar
                 a.nav-link.active(href="https://127.0.0.1:4330" target="_blank") Gitlab-Login
             li
                 a.nav-link.active(href="https://127.0.0.1:4330" target="_blank") phpMyAdmin-Login
-            li.header Projects
-            include sidebar_projects
+            if (projects)
+                li.header Projects
+                include sidebar_projects
+            if (participations)
+                li.header Participations
+                include sidebar_participations

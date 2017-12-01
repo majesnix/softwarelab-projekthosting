@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const { changePassword, changeAvatar, deleteUser, createUser } = require('../app/controller/userController');
-const { createProject, deleteProject, changeProjectName } = require('../app/controller/projectController');
+const { createProject, deleteProject, changeProjectName, addParticipant } = require('../app/controller/projectController');
 
 // File upload handler
 const multer = require('multer');
@@ -42,5 +42,6 @@ router.post('/createuser', createUser);
 router.post('/createproject', createProject);
 router.post('/deleteproject', deleteProject);
 router.post('/changeprojectname', changeProjectName);
+router.post('/addparticipant', addParticipant);
 
 module.exports = router;

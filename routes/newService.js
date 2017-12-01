@@ -5,6 +5,7 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
   res.render('newService', {
     user: req.user.user,
     projects: req.user.projects,
+    participations: req.user.participations,
   });
 });
 

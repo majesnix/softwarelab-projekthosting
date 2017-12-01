@@ -13,15 +13,17 @@ const ProjectParticipants = sequelize.define('projectparticipants', ProjectParti
 // authenticate with the database
 sequelize.authenticate()
   .then(() => {
-    // check if db exists, otherwise create
+    // check if db exists, otherwise create it
     User.sync();
     Project.sync();
     ProjectParticipants.sync();
 
-    // relation
-    User.hasMany(Project, { foreignKey: 'users' });
+    // relations
+    User.hasMany(Project, { foreignKey: 'userid' });
+    Project.belongsTo(User);
     User.hasMany(ProjectParticipants, { foreignKey: 'users' });
     Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
+
   })
   .catch(err => {
     console.error('Unable to connect to the database: ', err);
