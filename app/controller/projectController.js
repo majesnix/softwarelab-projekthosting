@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Project, ProjectParticipant } = require('../models/model.js');
+const { Project, ProjectParticipant, Application, Database } = require('../models/model.js');
 
 module.exports.createProject = async (req, res) => {
   //create DB entry in projectdatabase (FK -> Matrikelnummer)
@@ -62,19 +62,63 @@ module.exports.addParticipant = async (req, res) => {
 module.exports.createApplication = async (req, res) => {
   //create new entry in application db (FK -> Projectid)
   //create folder for application
+  const name = req.body.name;
+  const project = req.body.id;
+  const type = req.body.type;
+
+  Application.create({ projectid: project, name: name, type: type})
+    .then(() => {
+      res.redirect('/dashboard');
+    })
+    .catch(err => {
+      console.error(err);
+      res.redirect('/dashboard');
+    });
 };
 
 module.exports.deleteApplication = async (req, res) => {
   //delete folder of application
   //delete DB entry
+  const id = req.body.id;
+
+  Application.destroy({ where: { id: id } })
+    .then(() => {
+      res.redirect('/dashboard');
+    })
+    .catch(err => {
+      console.error(err);
+      res.redirect('/dashboard');
+    });
 };
 
 module.exports.createDatabase = async (req, res) => {
   //identify by database owner? save db owner in user->databases table
   //create new database (FK -> Projectid)
   //query to create database/user/pw -> grant privileges for new created user
+  const name = req.body.name;
+  const project = req.body.id;
+  const type = req.body.type;
+
+  Database.create({ projectid: project, name: name, type: type })
+    .then(() => {
+      res.redirect('/dashboard');
+    })
+    .catch(err => {
+      console.error(err);
+      res.redirect('/dashboard');
+    });
 };
 
 module.exports.deleteDatabase = async (req, res) => {
   //delete database
+  const id = req.body.id;
+
+  Database.destroy({ where: { id: id } })
+    .then(() => {
+      res.redirect('/dashboard');
+    })
+    .catch(err => {
+      console.error(err);
+      res.redirect('/dashboard');
+    });
 };

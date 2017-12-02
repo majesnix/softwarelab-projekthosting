@@ -4,7 +4,7 @@ const LdapStrategy = require('passport-ldapauth').Strategy;
 const { url, bindDn, bindCredentials, searchBase, searchFilter } = require('../config');
 const Sequelize = require('sequelize');
 const { dbURL } = require('../config'); 
-const sequelize = new Sequelize(dbURL,{logging: false, operatorsAliases: Sequelize.Op});
+const sequelize = new Sequelize(dbURL, { logging: false, operatorsAliases: Sequelize.Op } );
 
 const bcrypt = require('bcrypt');
 const { User, Project } = require('./models/model.js');

@@ -4,11 +4,15 @@ const sequelize = new Sequelize(dbURL,{logging: false, operatorsAliases: Sequeli
 const UserMeta = require('./models/User');
 const ProjectMeta = require('./models/Project');
 const ProjectParticipantsMeta = require('./models/ProjectParticipants');
+const ApplicationMeta = require('./models/Application');
+const DatabaseMeta = require('./models/Database');
 
 
 const User = sequelize.define('users', UserMeta.attributes, UserMeta.options);
 const Project = sequelize.define('projects', ProjectMeta.attributes, ProjectMeta.options);
 const ProjectParticipants = sequelize.define('projectparticipants', ProjectParticipantsMeta.attributes, ProjectParticipantsMeta.options);
+const Applications = sequelize.define('applications', ApplicationMeta.attributes, ApplicationMeta.options);
+const Databases = sequelize.define('databases', DatabaseMeta.attributes, DatabaseMeta.options);
 
 // authenticate with the database
 sequelize.authenticate()
@@ -17,16 +21,18 @@ sequelize.authenticate()
     User.sync()
     .then(() => Project.sync()
     .then(() => ProjectParticipants.sync()
+    .then(() => Applications.sync()
+    .then(() => Databases.sync()
     .then(() => {
-    //Project.sync();
-    //ProjectParticipants.sync();
 
       // relations
       User.hasMany(Project, { foreignKey: 'userid' });
       Project.belongsTo(User);
       User.hasMany(ProjectParticipants, { foreignKey: 'users' });
-      Project.hasMany(ProjectParticipants, { foreignKey: 'projects' })
-    })));
+      Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
+      Applications.belongsTo(Project);
+      Databases.belongsTo(Project);
+    })))));
 
   })
   .catch(err => {
