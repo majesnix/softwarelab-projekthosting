@@ -14,15 +14,19 @@ const ProjectParticipants = sequelize.define('projectparticipants', ProjectParti
 sequelize.authenticate()
   .then(() => {
     // check if db exists, otherwise create it
-    User.sync();
-    Project.sync();
-    ProjectParticipants.sync();
+    User.sync()
+    .then(() => Project.sync()
+    .then(() => ProjectParticipants.sync()
+    .then(() => {
+    //Project.sync();
+    //ProjectParticipants.sync();
 
-    // relations
-    User.hasMany(Project, { foreignKey: 'userid' });
-    Project.belongsTo(User);
-    User.hasMany(ProjectParticipants, { foreignKey: 'users' });
-    Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
+      // relations
+      User.hasMany(Project, { foreignKey: 'userid' });
+      Project.belongsTo(User);
+      User.hasMany(ProjectParticipants, { foreignKey: 'users' });
+      Project.hasMany(ProjectParticipants, { foreignKey: 'projects' })
+    })));
 
   })
   .catch(err => {

@@ -16,7 +16,7 @@ module.exports.createUser = async (req, res) => {
   const admin = (req.body.admin === 'on') ? true : false;
 
   if (!email || !firstname || !lastname || !password || !password2) {
-    if (req.user.user.isadmin) {
+    if (req.user && req.user.user.isadmin) {
       req.flash('error', 'Please, fill in all the fields.');
       return res.redirect('/adminsettings');
     } else {
@@ -26,7 +26,7 @@ module.exports.createUser = async (req, res) => {
   } else
 
   if (password !== password2) {
-    if (req.user.user.isadmin) {
+    if (req.user && req.user.user.isadmin) {
       req.flash('error', 'Please, enter the same password twice.');
       return res.redirect('/adminsettings');
     } else {
@@ -41,14 +41,14 @@ module.exports.createUser = async (req, res) => {
   // create the user in the database
   User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin})
     .then(() => {
-      if (req.user.user.isadmin) {
+      if (req.user && req.user.user.isadmin) {
         req.flash('info', 'User successfully created');
         res.redirect('/adminsettings');
       } else {
         res.redirect('/');
       }
     }).catch(() => {
-      if (req.user.user.isadmin) {
+      if (req.user && req.user.user.isadmin) {
         req.flash('error', 'This e-mail has already been registered');
         res.redirect('/adminsettings');
       } else {
