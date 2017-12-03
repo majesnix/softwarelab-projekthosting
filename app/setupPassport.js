@@ -14,6 +14,7 @@ module.exports = (app) => {
   app.use(passport.session());
 
   passport.use(new LdapStrategy({
+    handleErrorsAsFailures: true,
     usernameField: 'email',
     server: {
       url: url,
