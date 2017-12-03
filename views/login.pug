@@ -6,8 +6,9 @@ html(lang="en")
                 a(href="#") Softwarelab
             .login-box-body
                 p.login-box-msg Sign in
-                if (message) 
-                    p= message
+                if (message.error)
+                    .alert.alert-danger
+                        p= message.error
                 form(action="/", method="post")
                     .form-group.has-feedback
                         input.form-control#inputEmail(type="email", name="email" placeholder="E-Mail", required, autofocus)

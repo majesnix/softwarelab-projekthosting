@@ -15,7 +15,11 @@ const config = {
     'searchFilter': '(userPrincipalName={{username}})',
 
     // URL for postgres login (for sequelize)
-    'dbURL' : 'postgres://webentwicklung:webentwicklung@localhost:5432/webentwicklung',
+    'dbURL': 'postgres://webentwicklung:webentwicklung@localhost:5432/webentwicklung',
+
+    // Quotas (NOT IMPLEMENTED)
+    'dbQuota': 5,
+    'appQuota': 5,
 };
 
 module.exports = config;

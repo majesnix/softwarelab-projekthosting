@@ -76,7 +76,7 @@ module.exports.deleteUser = async (req, res) => {
 };
 
 module.exports.changePassword = async (req, res) => {
-  const id = req.user.matrnr;
+  const id = req.user.user.matrnr;
   const oldPass = req.body.inputoldpassword;
   const newPass = req.body.inputnewpassword;
   const newPass2 = req.body.inputnewpassword2;

@@ -4,7 +4,7 @@ const passport = require('passport');
 
 router.get('/', (req, res, next) => {
   res.locals.message = req.flash();
-  res.render('login', {message: res.locals.message.error});
+  res.render('login', {message: res.locals.message});
 });
 
 router.post('/', passport.authenticate(/*['ldapauth', */'local'/*]*/, {

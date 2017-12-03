@@ -4,6 +4,12 @@ block content
     h1 Settings
     .row
         .col-md-12
+            if (message.error)
+                .alert.alert-danger
+                    p= message.error
+            if (message.info)
+                .alert.alert-success
+                    p= message.info
             .box.box-info
                 .box-header.with-border
                     a(href=link)
@@ -29,8 +35,6 @@ block content
         .col-md-12
             .box.box-info
                 .box-header.with-border
-                    if (message)
-                        p= message
                     h3.box-title= 'Add Participant'
                     .box-body
                         form.form-horizontal(action="/api/addparticipant", method="post")
@@ -46,8 +50,6 @@ block content
         .col-md-12
             .box.box-info
                 .box-header.with-border
-                    if (message)
-                        p= message
                     h3.box-title= 'Change this projects name'
                     .box-body
                         form.form-horizontal(action="/api/changeprojectname", method="post")
@@ -63,8 +65,6 @@ block content
         .col-md-12
             .box.box-info
                 .box-header.with-border
-                    if (message)
-                        p= message
                     .box-body
                         form.form-horizontal(action="/api/deleteproject", method="post")
                             .row
