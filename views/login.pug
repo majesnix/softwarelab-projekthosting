@@ -6,7 +6,7 @@ html(lang="en")
                 a(href="#") Softwarelab
             .login-box-body
                 p.login-box-msg Sign in
-                if (message.error)
+                if (message && message.error)
                     .alert.alert-danger
                         p= message.error
                 form(action="/", method="post")
