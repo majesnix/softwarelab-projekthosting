@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../models/model.js');
+const { User } = require('../models/db');
 const path = require('path');
 
 module.exports.show = async (req, res) => {

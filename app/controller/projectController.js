@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Project, ProjectParticipant, Application, Database } = require('../models/model.js');
+const { Project, ProjectParticipant, Application, Database } = require('../models/db');
 
 module.exports.createProject = async (req, res) => {
   //create DB entry in projectdatabase (FK -> Matrikelnummer)
@@ -59,20 +59,30 @@ module.exports.addParticipant = async (req, res) => {
     });
 };
 
+module.exports.removeParticipant = async (req, res) => {
+  const matrnr = req.body.matrnr;
+  const project = req.body.id;
+
+  ProjectParticipant.destroy({ where: { userid: matrnr, projectid: project } })
+    .then(() => {
+      res.redirect(`/settings?id=${project}`);
+    });
+};
+
 module.exports.createApplication = async (req, res) => {
   //create new entry in application db (FK -> Projectid)
   //create folder for application
   const name = req.body.name;
-  const project = req.body.id;
+  const project = req.body.project;
   const type = req.body.type;
 
   Application.create({ projectid: project, name: name, type: type})
     .then(() => {
-      res.redirect('/dashboard');
+      res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
       console.error(err);
-      res.redirect('/dashboard');
+      res.redirect(`/project?id=${project}`);
     });
 };
 
@@ -80,14 +90,15 @@ module.exports.deleteApplication = async (req, res) => {
   //delete folder of application
   //delete DB entry
   const id = req.body.id;
+  const project = req.body.project;
 
   Application.destroy({ where: { id: id } })
     .then(() => {
-      res.redirect('/dashboard');
+      res.redirect(`/project?id=${id}`);
     })
     .catch(err => {
       console.error(err);
-      res.redirect('/dashboard');
+      res.redirect(`/project?id=${project}`);
     });
 };
 

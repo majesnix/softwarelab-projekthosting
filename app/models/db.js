@@ -1,5 +1,3 @@
-import { connect } from 'http2';
-
 const UserMeta = require('./User');
 const ProjectMeta = require('./Project');
 const ProjectParticipantsMeta = require('./ProjectParticipants');
@@ -13,6 +11,6 @@ module.exports.Project = connection.define('projects', ProjectMeta.attributes, P
 
 module.exports.ProjectParticipant = connection.define('projectparticipants', ProjectParticipantsMeta.attributes, ProjectParticipantsMeta.options);
 
-module.exports.Application = connect.define('applications', ApplicationMeta.attributes, ApplicationMeta.options);
+module.exports.Application = connection.define('applications', ApplicationMeta.attributes, ApplicationMeta.options);
 
-module.exports.Database = connect.define('databases', DatabaseMeta.attributes, DatabaseMeta.options);
+module.exports.Database = connection.define('databases', DatabaseMeta.attributes, DatabaseMeta.options);

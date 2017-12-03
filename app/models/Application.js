@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 module.exports.attributes = {
   projectid: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     field: 'project_id',
     references: { 
       model: 'projects',

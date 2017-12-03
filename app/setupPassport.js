@@ -7,7 +7,7 @@ const { dbURL } = require('../config');
 const sequelize = new Sequelize(dbURL, { logging: false, operatorsAliases: Sequelize.Op } );
 
 const bcrypt = require('bcrypt');
-const { User, Project } = require('./models/model.js');
+const { User, Project } = require('./models/db');
 
 module.exports = (app) => {
   app.use(passport.initialize());

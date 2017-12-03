@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const { dbURL } = require('../config'); 
-const sequelize = new Sequelize(dbURL,{logging: false, operatorsAliases: Sequelize.Op});
+const sequelize = new Sequelize(dbURL, { logging: false, operatorsAliases: Sequelize.Op });
 const UserMeta = require('./models/User');
 const ProjectMeta = require('./models/Project');
 const ProjectParticipantsMeta = require('./models/ProjectParticipants');
@@ -19,21 +19,24 @@ sequelize.authenticate()
   .then(() => {
     // check if db exists, otherwise create it
     User.sync()
-    .then(() => Project.sync()
-    .then(() => ProjectParticipants.sync()
-    .then(() => Applications.sync()
-    .then(() => Databases.sync()
-    .then(() => {
+      .then(() => Project.sync()
+        .then(() => ProjectParticipants.sync()
+          .then(() => Applications.sync()
+            .then(() => Databases.sync()
+              .then(() => {
 
-      // relations
-      User.hasMany(Project, { foreignKey: 'userid' });
-      Project.belongsTo(User);
-      User.hasMany(ProjectParticipants, { foreignKey: 'users' });
-      Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
-      Applications.belongsTo(Project);
-      Databases.belongsTo(Project);
-    })))));
-
+                // relations
+                User.hasMany(Project, { foreignKey: 'userid' });
+                Project.belongsTo(User);
+                User.hasMany(ProjectParticipants, { foreignKey: 'users' });
+                Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
+                Applications.belongsTo(Project);
+                Databases.belongsTo(Project);
+              })
+            )
+          )
+        )
+      );
   })
   .catch(err => {
     console.error('Unable to connect to the database: ', err);
