@@ -35,17 +35,17 @@ const upload = multer({
   } 
 });
 
-router.post('/changepassword', changePassword);
-router.post('/changeavatar', upload.single('avatar'), changeAvatar);
-router.post('/deleteuser', deleteUser);
-router.post('/createuser', createUser);
-router.post('/createproject', createProject);
-router.post('/deleteproject', deleteProject);
-router.post('/changeprojectname', changeProjectName);
-router.post('/addparticipant', addParticipant);
-router.post('/createapplication', createApplication);
-router.post('/deleteapplication', deleteApplication);
-router.post('/createdatabase', createDatabase);
-router.post('/deletedatabase', deleteDatabase);
+router.post('/changepassword', require('connect-ensure-login').ensureLoggedIn('/'), changePassword);
+router.post('/changeavatar', require('connect-ensure-login').ensureLoggedIn('/'), upload.single('avatar'), changeAvatar);
+router.post('/deleteuser', require('connect-ensure-login').ensureLoggedIn('/'), deleteUser);
+router.post('/createuser', require('connect-ensure-login').ensureLoggedIn('/'), createUser);
+router.post('/createproject', require('connect-ensure-login').ensureLoggedIn('/'), createProject);
+router.post('/deleteproject', require('connect-ensure-login').ensureLoggedIn('/'), deleteProject);
+router.post('/changeprojectname', require('connect-ensure-login').ensureLoggedIn('/'), changeProjectName);
+router.post('/addparticipant', require('connect-ensure-login').ensureLoggedIn('/'), addParticipant);
+router.post('/createapplication', require('connect-ensure-login').ensureLoggedIn('/'), createApplication);
+router.post('/deleteapplication', require('connect-ensure-login').ensureLoggedIn('/'), deleteApplication);
+router.post('/createdatabase', require('connect-ensure-login').ensureLoggedIn('/'), createDatabase);
+router.post('/deletedatabase', require('connect-ensure-login').ensureLoggedIn('/'), deleteDatabase);
 
 module.exports = router;

@@ -27,9 +27,11 @@ module.exports = (app) => {
     // Try to create a DB Entry
     User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn})
       .then(() => {
+
         // afterwards retriev this entry.
         User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } })
           .then(user => {
+
             return done(null, user);
           });
       })
@@ -38,8 +40,10 @@ module.exports = (app) => {
         if (err.name === 'SequelizeUniqueConstraintError') {
           User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } })
             .then(user => {
+
               Project.findAll({ where: { userid: user.matrnr }})
                 .then(projects => {
+                  
                   sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
                   FROM projectparticipants \
                   INNER JOIN projects ON projects.id=projectparticipants.projectid \
@@ -91,16 +95,19 @@ module.exports = (app) => {
           //search projects
           Project.findAll({ where: { userid: user.matrnr }})
             .then(projects => {
+
               sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
               FROM projectparticipants \
               INNER JOIN projects ON projects.id=projectparticipants.projectid \
               WHERE projectparticipants.userid = '${user.matrnr}'`)
                 .then(participations => {
+                  
                   const userinfo = {
                     user: user,
                     projects: projects,
                     participations: participations[0]
                   };
+
                   return done(null, userinfo);
                 }).catch(err => {
                   console.error(err);
@@ -137,23 +144,25 @@ module.exports = (app) => {
         matrnr: user.matrnr
       }
     }).then(user => {
+      
       Project.findAll({ where: { userid: user.matrnr }})
         .then(projects => {
+          
           sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
           FROM projectparticipants \
           INNER JOIN projects ON projects.id=projectparticipants.projectid \
           WHERE projectparticipants.userid = '${user.matrnr}'`)
             .then(participations => {
-              Database.findAll().then(databases => {
-                //databases.filter(d => d.projectid === )
-                const userinfo = {
-                  user: user,
-                  projects: projects,
-                  participations: participations[0]
-                };
-                return done(null, userinfo);
-              });
-            }).catch(() => {
+              
+              const userinfo = {
+                user: user,
+                projects: projects,
+                participations: participations[0]
+              };
+              
+              return done(null, userinfo);
+            })
+            .catch(() => {
               const userinfo = {
                 user: user,
                 projects: projects,
