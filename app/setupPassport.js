@@ -7,7 +7,7 @@ const { dbURL } = require('../config');
 const sequelize = new Sequelize(dbURL, { logging: false, operatorsAliases: Sequelize.Op } );
 
 const bcrypt = require('bcrypt');
-const { User, Project } = require('./models/db');
+const { User, Project, Application, Database } = require('./models/db');
 
 module.exports = (app) => {
   app.use(passport.initialize());
@@ -43,7 +43,7 @@ module.exports = (app) => {
                   sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
                   FROM projectparticipants \
                   INNER JOIN projects ON projects.id=projectparticipants.projectid \
-                  WHERE projectparticipants.userid = ( SELECT matr_nr FROM users WHERE users."matr_nr" = '${user.matrnr}')`)
+                  WHERE projectparticipants.userid = '${user.matrnr}'`)
                     .then(participations => {
                       const userinfo = {
                         user: user,
@@ -94,7 +94,7 @@ module.exports = (app) => {
               sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
               FROM projectparticipants \
               INNER JOIN projects ON projects.id=projectparticipants.projectid \
-              WHERE projectparticipants.userid = ( SELECT matr_nr FROM users WHERE users."matr_nr" = '${user.matrnr}')`)
+              WHERE projectparticipants.userid = '${user.matrnr}'`)
                 .then(participations => {
                   const userinfo = {
                     user: user,
@@ -142,14 +142,17 @@ module.exports = (app) => {
           sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
           FROM projectparticipants \
           INNER JOIN projects ON projects.id=projectparticipants.projectid \
-          WHERE projectparticipants.userid = ( SELECT matr_nr FROM users WHERE users."matr_nr" = '${user.matrnr}')`)
+          WHERE projectparticipants.userid = '${user.matrnr}'`)
             .then(participations => {
-              const userinfo = {
-                user: user,
-                projects: projects,
-                participations: participations[0]
-              };
-              return done(null, userinfo);
+              Database.findAll().then(databases => {
+                //databases.filter(d => d.projectid === )
+                const userinfo = {
+                  user: user,
+                  projects: projects,
+                  participations: participations[0]
+                };
+                return done(null, userinfo);
+              });
             }).catch(() => {
               const userinfo = {
                 user: user,

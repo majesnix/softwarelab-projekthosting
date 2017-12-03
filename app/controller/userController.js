@@ -17,20 +17,20 @@ module.exports.createUser = async (req, res) => {
 
   if (!email || !firstname || !lastname || !password || !password2) {
     if (req.user && req.user.user.isadmin) {
-      req.flash('error', 'Please, fill in all the fields.');
+      req.flash('error', 'Please, fill in all the fields');
       return res.redirect('/adminsettings');
     } else {
-      req.flash('error', 'Please, fill in all the fields.');
+      req.flash('error', 'Please, fill in all the fields');
       return res.redirect('/signup');
     }
   } else
 
   if (password !== password2) {
     if (req.user && req.user.user.isadmin) {
-      req.flash('error', 'Please, enter the same password twice.');
+      req.flash('error', 'Please, enter the same password twice');
       return res.redirect('/adminsettings');
     } else {
-      req.flash('error', 'Please, enter the same password twice.');
+      req.flash('error', 'Please, enter the same password twice');
       return res.redirect('/signup');
     }
   }
@@ -82,7 +82,7 @@ module.exports.changePassword = async (req, res) => {
   const newPass2 = req.body.inputnewpassword2;
 
   if (newPass !== newPass2) {
-    req.flash('error', 'Passwords do not match.');
+    req.flash('error', 'Passwords do not match');
     res.redirect('/usersettings');
   }
 
@@ -96,7 +96,7 @@ module.exports.changePassword = async (req, res) => {
         res.redirect('/usersettings');
       } else
       if (hashedPassword === data.password) {
-        req.flash('error', 'You cannot change your password to the same password.');
+        req.flash('error', 'You cannot change your password to the same password');
         res.redirect('/usersettings');
       } else {
         data.update({password: hashedPassword}).then(() => {

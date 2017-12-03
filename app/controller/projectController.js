@@ -1,4 +1,6 @@
 const fs = require('fs');
+const passwordgen = require('password-generator');
+const bcrypt = require('bcrypt');
 const { Project, ProjectParticipant, Application, Database } = require('../models/db');
 
 module.exports.createProject = async (req, res) => {
@@ -55,6 +57,12 @@ module.exports.addParticipant = async (req, res) => {
 
   ProjectParticipant.create({ userid: matrnr, projectid: project })
     .then(() => {
+      req.flash('info', 'Participant added');
+      res.redirect(`/settings?id=${project}`);
+    })
+    .catch(err => {
+      req.flash('error', 'Something went wrong');
+      console.error(err);
       res.redirect(`/settings?id=${project}`);
     });
 };
@@ -73,14 +81,17 @@ module.exports.createApplication = async (req, res) => {
   //create new entry in application db (FK -> Projectid)
   //create folder for application
   const name = req.body.name;
-  const project = req.body.project;
+  const project = req.body.id;
   const type = req.body.type;
+  const port = req.body.port;
 
-  Application.create({ projectid: project, name: name, type: type})
+  Application.create({ projectid: project, name: name, type: type, port: port, path: '/not/an/actual/path'})
     .then(() => {
+      req.flash('info', 'Application created');
       res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
+      req.flash('error', 'Something went wrong');
       console.error(err);
       res.redirect(`/project?id=${project}`);
     });
@@ -94,9 +105,11 @@ module.exports.deleteApplication = async (req, res) => {
 
   Application.destroy({ where: { id: id } })
     .then(() => {
+      req.flash('info', 'Application deleted');
       res.redirect(`/project?id=${id}`);
     })
     .catch(err => {
+      req.flash('error', 'Something went wrong');
       console.error(err);
       res.redirect(`/project?id=${project}`);
     });
@@ -110,26 +123,42 @@ module.exports.createDatabase = async (req, res) => {
   const project = req.body.id;
   const type = req.body.type;
 
-  Database.create({ projectid: project, name: name, type: type })
+  const pw = passwordgen(8, false);
+  console.log(pw);
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(pw, salt);
+
+  Database.create({ projectid: project, name: name, username: 'username', password: hashedPassword, salt: salt })
     .then(() => {
-      res.redirect('/dashboard');
+
+      // TODO: create actual database
+
+      req.flash('info', 'Database created');
+      res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
+      req.flash('error', 'Something went wrong');
       console.error(err);
-      res.redirect('/dashboard');
+      res.redirect(`/project?id=${project}`);
     });
 };
 
 module.exports.deleteDatabase = async (req, res) => {
   //delete database
   const id = req.body.id;
+  const project = req.body.project;
 
   Database.destroy({ where: { id: id } })
     .then(() => {
-      res.redirect('/dashboard');
+
+      //TODO: delete actual database
+
+      req.flash('info', 'Database deleted');
+      res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
+      req.flash('error', ' Something went wrong');
       console.error(err);
-      res.redirect('/dashboard');
+      res.redirect(`/project?id=${project}`);
     });
 };

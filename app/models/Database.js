@@ -20,6 +20,10 @@ module.exports.attributes = {
   password: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  salt: {
+    type: Sequelize.STRING,
+    allowNull: false,
   }
 };
 

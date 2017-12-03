@@ -43,9 +43,9 @@ router.post('/createproject', createProject);
 router.post('/deleteproject', deleteProject);
 router.post('/changeprojectname', changeProjectName);
 router.post('/addparticipant', addParticipant);
-router.post('./createapplication', createApplication);
-router.post('./deleteapplication', deleteApplication);
-router.post('./createdatabase', createDatabase);
-router.post('./deletedatabase', deleteDatabase);
+router.post('/createapplication', createApplication);
+router.post('/deleteapplication', deleteApplication);
+router.post('/createdatabase', createDatabase);
+router.post('/deletedatabase', deleteDatabase);
 
 module.exports = router;
