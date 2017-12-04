@@ -11,6 +11,9 @@ router.post('/', passport.authenticate(['ldapauth', 'local'], {
   failureRedirect: '/',
   failureFlash: 'Invalid username or password.'
 }), (req, res, next) => {
+  if (!req.user.user.active) {
+    return res.redirect('/');
+  }
   req.session.save((err) => {
     if (err) {
       return next(err);

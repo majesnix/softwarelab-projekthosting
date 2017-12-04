@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const { changePassword, changeAvatar, deleteUser, createUser } = require('../app/controller/userController');
+const { changePassword, changeAvatar, deactivateUser, createUser } = require('../app/controller/userController');
 const { createProject, deleteProject, changeProjectName, addParticipant, createApplication, deleteApplication, createDatabase, deleteDatabase } = require('../app/controller/projectController');
 
 // File upload handler
@@ -37,7 +37,7 @@ const upload = multer({
 
 router.post('/changepassword', require('connect-ensure-login').ensureLoggedIn('/'), changePassword);
 router.post('/changeavatar', require('connect-ensure-login').ensureLoggedIn('/'), upload.single('avatar'), changeAvatar);
-router.post('/deleteuser', require('connect-ensure-login').ensureLoggedIn('/'), deleteUser);
+router.post('/deactivateuser', require('connect-ensure-login').ensureLoggedIn('/'), deactivateUser);
 router.post('/createuser', require('connect-ensure-login').ensureLoggedIn('/'), createUser);
 router.post('/createproject', require('connect-ensure-login').ensureLoggedIn('/'), createProject);
 router.post('/deleteproject', require('connect-ensure-login').ensureLoggedIn('/'), deleteProject);

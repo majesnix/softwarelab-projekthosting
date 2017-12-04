@@ -30,6 +30,10 @@ module.exports.attributes = {
     type: Sequelize.STRING,
     defaultValue: '',
   },
+  active: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true,
+  },
   ldap: {
     type: Sequelize.BOOLEAN,
     defaultValue: true,

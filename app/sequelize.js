@@ -27,7 +27,7 @@ sequelize.authenticate()
 
                 // relations
                 User.hasMany(Project, { foreignKey: 'userid' });
-                Project.belongsTo(User);
+                //Project.belongsTo(User);
                 User.hasMany(ProjectParticipants, { foreignKey: 'users' });
                 Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
                 Applications.belongsTo(Project);

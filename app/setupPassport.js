@@ -66,7 +66,7 @@ module.exports = (app) => {
                       return done(null, userinfo);
                     });
                 });
-          });
+            });
         } else {
           console.error(err);
         }

@@ -52,9 +52,9 @@ block content
             .box.box-info
                 .box-header.with-border
                     a(href=link)
-                        h3.box-title= 'Delete User'
+                        h3.box-title= 'Change user activation status'
                     .box-body
-                        form.form-horizontal(action="/api/deleteuser", method="post")
+                        form.form-horizontal(action="/api/deactivateuser", method="post")
                             .form-group.has-feedback
                                 label.control-label.col-sm-2 Matrikelnummer
                                 .col-sm-10
@@ -62,5 +62,5 @@ block content
                                     span.fa.fa-id-card-o.form-control-feedback
                             .row
                                 .col-xs-4
-                                    button.btn.btn-primary.btn-blockbtn-flat(type="submit") Delete User
+                                    button.btn.btn-primary.btn-blockbtn-flat(type="submit") Change Userstatus
 

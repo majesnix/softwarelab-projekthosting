@@ -58,15 +58,39 @@ module.exports.createUser = async (req, res) => {
     });
 };
 
-module.exports.deleteUser = async (req, res) => {
+module.exports.deactivateUser = async (req, res) => {
   const id = req.body.matrnr;
 
   User.findOne({where: { matrnr: id}})
     .then(user => {
       // deletes the database entry
-      user.destroy();
-      req.flash('info', 'User deleted');
-      res.redirect('/adminsettings');
+      if (!user) {
+        req.flash('error', 'User not found');
+        res.redirect('/adminsettings');
+      } 
+      if (user.active === true) {
+        user.update( {active: false} )
+          .then(() => {
+            req.flash('info', 'User deactivated');
+            res.redirect('/adminsettings');
+          })
+          .catch(err => {
+            console.error(err);
+            req.flash('error', 'Something went wrong');
+            res.redirect('/adminsettings');
+          });
+      } else {
+        user.update( {active: true} )
+          .then(() => {
+            req.flash('info', 'User activated');
+            res.redirect('/adminsettings');
+          })
+          .catch(err => {
+            console.error(err);
+            req.flash('error', 'Something went wrong');
+            res.redirect('/adminsettings');
+          });
+      }
     })
     .catch(err => {
       console.error(err);
