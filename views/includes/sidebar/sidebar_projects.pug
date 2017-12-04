@@ -5,7 +5,9 @@ each proj in projects
                 i.fa.fa-angle-left.pull-right
         ul.treeview-menu
             li
-                a(href=`/project?id=${proj.id}`) Overview
+                a(href=`/project?id=${proj.id}`)
+                    i.fa.fa-fw.fa-home
+                    span Overview
             include sidebar_node
             include sidebar_db
             include sidebar_settings
