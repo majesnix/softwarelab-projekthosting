@@ -32,8 +32,13 @@ module.exports = (app) => {
         // afterwards retriev this entry.
         User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } })
           .then(user => {
+            const userinfo = {
+              user: user,
+              projects: [],
+              participations: []
+            };
 
-            return done(null, user);
+            return done(null, userinfo);
           });
       })
       .catch(err => {
