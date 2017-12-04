@@ -66,8 +66,5 @@ block content
             .box.box-info
                 .box-header.with-border
                     .box-body
-                        form.form-horizontal(action="/api/deleteproject", method="post")
-                            .row
-                                .col-xs-4
-                                    button.btn.btn-danger.btn-blockbtn-flat(type="submit" name="id" value=`${activeProject.id}`) Delete
+                        button.btn.btn-danger.btn-blockbtn-flat(type="submit" class="deleteproject" data-id=`${activeProject.id}`) Delete
 
