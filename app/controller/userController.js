@@ -39,64 +39,50 @@ module.exports.createUser = async (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, salt);
 
   // create the user in the database
-  User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin})
-    .then(() => {
-      if (req.user && req.user.user.isadmin) {
-        req.flash('info', 'User successfully created');
-        res.redirect('/adminsettings');
-      } else {
-        res.redirect('/');
-      }
-    }).catch(() => {
-      if (req.user && req.user.user.isadmin) {
-        req.flash('error', 'This e-mail has already been registered');
-        res.redirect('/adminsettings');
-      } else {
-        req.flash('error', 'This e-mail has already been registered');
-        res.redirect('/signup');
-      }
-    });
+  try {
+    await User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin});
+    
+    if (req.user && req.user.user.isadmin) {
+      req.flash('info', 'User successfully created');
+      res.redirect('/adminsettings');
+    } else {
+      res.redirect('/');
+    }
+  } catch (err) {
+    if (req.user && req.user.user.isadmin) {
+      req.flash('error', 'This e-mail has already been registered');
+      res.redirect('/adminsettings');
+    } else {
+      req.flash('error', 'This e-mail has already been registered');
+      res.redirect('/signup');
+    }
+  }
 };
 
 module.exports.deactivateUser = async (req, res) => {
   const id = req.body.matrnr;
 
-  User.findOne({where: { matrnr: id}})
-    .then(user => {
-      // deletes the database entry
-      if (!user) {
-        req.flash('error', 'User not found');
-        res.redirect('/adminsettings');
-      } 
-      if (user.active === true) {
-        user.update( {active: false} )
-          .then(() => {
-            req.flash('info', 'User deactivated');
-            res.redirect('/adminsettings');
-          })
-          .catch(err => {
-            console.error(err);
-            req.flash('error', 'Something went wrong');
-            res.redirect('/adminsettings');
-          });
-      } else {
-        user.update( {active: true} )
-          .then(() => {
-            req.flash('info', 'User activated');
-            res.redirect('/adminsettings');
-          })
-          .catch(err => {
-            console.error(err);
-            req.flash('error', 'Something went wrong');
-            res.redirect('/adminsettings');
-          });
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      req.flash('error', 'Something went wrong');
+  try {
+    const user = await User.findOne({ where: { matrnr: id} });
+
+    if (!user) {
+      req.flash('error', 'User not found');
       res.redirect('/adminsettings');
-    });
+    } 
+    if (user.active === true) {
+      await user.update( {active: false} );
+      req.flash('info', 'User deactivated');
+      res.redirect('/adminsettings');
+    } else {
+      await user.update( {active: true} );
+      req.flash('info', 'User activated');
+      res.redirect('/adminsettings');
+    }
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Something went wrong');
+    res.redirect('/adminsettings');
+  }
 };
 
 module.exports.changePassword = async (req, res) => {
@@ -110,45 +96,47 @@ module.exports.changePassword = async (req, res) => {
     res.redirect('/usersettings');
   }
 
-  User.findOne({where: { matrnr: id }})
-    .then(data => {
-      const oldHash = bcrypt.hashSync(oldPass, data.salt);
-      const hashedPassword = bcrypt.hashSync(newPass, data.salt);
+  try {
+    const user = await User.findOne({ where: { matrnr: id} });
+    const oldHash = bcrypt.hashSync(oldPass, user.salt);
+    const hashedPassword = bcrypt.hashSync(newPass, user.salt);
 
-      if (oldHash !== data.password) {
-        req.flash('error', 'Your old password is not correct');
-        res.redirect('/usersettings');
-      } else
-      if (hashedPassword === data.password) {
-        req.flash('error', 'You cannot change your password to the same password');
-        res.redirect('/usersettings');
-      } else {
-        data.update({password: hashedPassword}).then(() => {
-          req.flash('info', 'Password successfully changed');
-          res.redirect('/usersettings');
-        }
-        ).catch(err => {
-          console.error(err);
-          req.flash('error', 'Something went wrong');
-          res.redirect('/usersettings');
-        });
-      }
-    });
+    if (oldHash !== user.password) {
+      req.flash('error', 'Your old password is not correct');
+      res.redirect('/usersettings');
+    } else
+    if (hashedPassword === user.password) {
+      req.flash('error', 'You cannot change your password to the same password');
+      res.redirect('/usersettings');
+    } else {
+      await user.update({password: hashedPassword});
+        
+      req.flash('info', 'Password successfully changed');
+      res.redirect('/usersettings');
+    }
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Something went wrong');
+    res.redirect('/usersettings');
+  }
 };
 
 module.exports.changeAvatar = async (req, res) => {
   const id = req.user.user.matrnr;
-  // Search for the user
-  User.findOne({where: { matrnr: id}})
-    .then(user => {
-      if (user.avatar.split('.')[0] !== user.matrnr) {
-        // Update user entry with correct file name and ending
-        const newAvatar = `${id}${path.extname(req.file.originalname).toLowerCase()}`;
-        user.update({avatar: newAvatar});
-        req.user.user.avatar = newAvatar;
-      }
-      req.flash('info', 'Avatar changed');
-      res.redirect('/usersettings');
-    });
+
+  try {
+    const user = await User.findOne({where: { matrnr: id}});
   
+    if (user.avatar.split('.')[0] !== user.matrnr) {
+      // Update user entry with correct file name and ending
+      const newAvatar = `${id}${path.extname(req.file.originalname).toLowerCase()}`;
+    
+      await user.update({avatar: newAvatar}); 
+      req.user.user.avatar = newAvatar;
+    }
+    req.flash('info', 'Avatar changed');
+    res.redirect('/usersettings'); 
+  } catch (err) {
+    console.error(err);
+  }
 };

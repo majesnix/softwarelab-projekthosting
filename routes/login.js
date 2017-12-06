@@ -24,6 +24,7 @@ router.post('/', passport.authenticate(['ldapauth', 'local'], {
       user: req.user.user,
       projects: req.user.projects,
       participations: req.user.participations,
+      message: ''
     });
   });
 });

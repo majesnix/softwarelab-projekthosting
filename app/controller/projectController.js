@@ -10,14 +10,15 @@ module.exports.createProject = async (req, res) => {
   const name = req.body.name;
   const matrnr = req.user.user.matrnr;
 
-  Project.create({ userid: matrnr, name: name })
-    .then(() => {
-      res.redirect('/dashboard');
-    })
-    .catch(err => {
-      console.error(err);
-      res.redirect('/dashboard');
-    });
+  try {
+    await Project.create({ userid: matrnr, name: name });
+    req.flash('info', 'Project created');
+    res.redirect('/dashboard');
+  } catch (err) {
+    req.flash('error', 'Project could not be created');
+    console.error(err);
+    res.redirect('/dashboard');
+  }
 };
 
 module.exports.deleteProject = async (req, res) => {
@@ -25,61 +26,59 @@ module.exports.deleteProject = async (req, res) => {
   //delete DB entry
   const id = req.body.id;
 
-  Project.destroy({ where: { id: id }})
-    .then(() => {
-      res.redirect('/dashboard');
-    })
-    .catch(err => {
-      console.error(err);
-      res.redirect('/dashboard');
-    });
+  try {
+    Project.destroy({ where: { id: id }});
+    req.flash('info', 'Project deleted');
+    res.redirect('/dashboard');
+  } catch (err) {
+    req.flash('error', 'Project could not be deleted');
+    console.error(err);
+    res.redirect('/dashboard');
+  }
 };
 
 module.exports.changeProjectName = async (req, res) => {
   const name = req.body.newname;
   const project = req.body.id;
 
-  Project.update({ name: name },{ where: { id : project } })
-    .then(() => {
-      req.flash('info', 'Successfully change the project name');
-      res.redirect(`/settings?id=${project}`);
-    })
-    .catch(err => {
-      req.flash('error', 'Projectname could not be changed');
-      console.error(err);
-      res.redirect(`/settings?id=${project}`);
-    });
+  try {
+    Project.update({ name: name },{ where: { id : project } });
+    req.flash('info', 'Successfully change the project name');
+    res.redirect(`/settings?id=${project}`);
+  } catch (err) {
+    req.flash('error', 'Projectname could not be changed');
+    console.error(err);
+    res.redirect(`/settings?id=${project}`);
+  }
 };
 
 module.exports.addParticipant = async (req, res) => {
   const matrnr = req.body.matrnr;
   const project = req.body.id;
 
-  ProjectParticipant.create({ userid: matrnr, projectid: project })
-    .then(() => {
-      req.flash('info', 'Participant added');
-      res.redirect(`/settings?id=${project}`);
-    })
-    .catch(err => {
-      req.flash('error', 'Participant could not be added');
-      console.error(err);
-      res.redirect(`/settings?id=${project}`);
-    });
+  try {
+    ProjectParticipant.create({ userid: matrnr, projectid: project });
+    req.flash('info', 'Participant added');
+    res.redirect(`/settings?id=${project}`);
+  } catch (err) {
+    req.flash('error', 'Participant could not be added');
+    console.error(err);
+    res.redirect(`/settings?id=${project}`);
+  }
 };
 
 module.exports.removeParticipant = async (req, res) => {
   const matrnr = req.body.matrnr;
   const project = req.body.id;
 
-  ProjectParticipant.destroy({ where: { userid: matrnr, projectid: project } })
-    .then(() => {
-      res.redirect(`/settings?id=${project}`);
-    })
-    .catch(err => {
-      req.flash('error', 'Participant could not be deleted');
-      console.error(err);
-      res.redirect(`/settings?id=${project}`);
-    });
+  try {
+    await ProjectParticipant.destroy({ where: { userid: matrnr, projectid: project } });
+    res.redirect(`/settings?id=${project}`);
+  } catch (err) {
+    req.flash('error', 'Participant could not be deleted');
+    console.error(err);
+    res.redirect(`/settings?id=${project}`);
+  }
 };
 
 module.exports.createApplication = async (req, res) => {
@@ -90,16 +89,15 @@ module.exports.createApplication = async (req, res) => {
   const type = req.body.type;
   const port = req.body.port;
 
-  Application.create({ projectid: project, name: name, type: type, port: port, path: '/not/an/actual/path'})
-    .then(() => {
-      req.flash('info', 'Application created');
-      res.redirect(`/project?id=${project}`);
-    })
-    .catch(err => {
-      req.flash('error', 'Application could not be created');
-      console.error(err);
-      res.redirect(`/project?id=${project}`);
-    });
+  try {
+    await Application.create({ projectid: project, name: name, type: type, port: port, path: '/not/an/actual/path'});
+    req.flash('info', 'Application created');
+    res.redirect(`/project?id=${project}`);
+  } catch (err) {
+    req.flash('error', 'Application could not be created');
+    console.error(err);
+    res.redirect(`/project?id=${project}`);
+  }
 };
 
 module.exports.deleteApplication = async (req, res) => {
@@ -108,16 +106,15 @@ module.exports.deleteApplication = async (req, res) => {
   const id = req.body.appid;
   const project = req.body.project;
 
-  Application.destroy({ where: { id: id } })
-    .then(() => {
-      req.flash('info', 'Application deleted');
-      res.redirect(`/project?id=${project}`);
-    })
-    .catch(err => {
-      req.flash('error', 'Application could not be deleted');
-      console.error(err);
-      res.redirect(`/project?id=${project}`);
-    });
+  try {
+    await Application.destroy({ where: { id: id } });
+    req.flash('info', 'Application deleted');
+    res.redirect(`/project?id=${project}`);
+  } catch (err) {
+    req.flash('error', 'Application could not be deleted');
+    console.error(err);
+    res.redirect(`/project?id=${project}`);
+  }
 };
 
 module.exports.createDatabase = async (req, res) => {
@@ -132,19 +129,16 @@ module.exports.createDatabase = async (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(pw, salt);
 
-  Database.create({ projectid: project, name: name, username: 'username', password: hashedPassword, salt: salt })
-    .then(() => {
-
-      // TODO: create actual database
-
-      req.flash('info', 'Database created');
-      res.redirect(`/project?id=${project}`);
-    })
-    .catch(err => {
-      req.flash('error', 'Database could not be created');
-      console.error(err);
-      res.redirect(`/project?id=${project}`);
-    });
+  try {
+    await Database.create({ projectid: project, name: name, username: 'username', password: hashedPassword, salt: salt });
+    // TODO: create actual database
+    req.flash('info', 'Database created');
+    res.redirect(`/project?id=${project}`);
+  } catch (err) {
+    req.flash('error', 'Database could not be created');
+    console.error(err);
+    res.redirect(`/project?id=${project}`);
+  }
 };
 
 module.exports.deleteDatabase = async (req, res) => {
@@ -152,17 +146,14 @@ module.exports.deleteDatabase = async (req, res) => {
   const id = req.body.dbid;
   const project = req.body.project;
 
-  Database.destroy({ where: { id: id } })
-    .then(() => {
-
-      //TODO: delete actual database
-
-      req.flash('info', 'Database deleted');
-      res.redirect(`/project?id=${project}`);
-    })
-    .catch(err => {
-      req.flash('error', 'Database could not be deleted');
-      console.error(err);
-      res.redirect(`/project?id=${project}`);
-    });
+  try {
+    await Database.destroy({ where: { id: id } });
+    //TODO: delete actual database
+    req.flash('info', 'Database deleted');
+    res.redirect(`/project?id=${project}`);
+  } catch (err) {
+    req.flash('error', 'Database could not be deleted');
+    console.error(err);
+    res.redirect(`/project?id=${project}`);
+  }
 };

@@ -18,6 +18,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "express-async-handler": "^0.0.2",
     "express-session": "^1.15.6",
     "icheck": "^1.0.2",
     "jquery": "^3.2.1",

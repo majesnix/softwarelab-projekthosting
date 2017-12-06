@@ -24,202 +24,156 @@ module.exports = (app) => {
       searchFilter: searchFilter,
     }
   },
-  (user, done) => {
+  async (user, done) => {
     // Try to create a DB Entry
-    User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn})
-      .then(() => {
+    try {
+      await User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn});
+      // afterwards retriev this entry.
+      const newUser = await User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } });
+      
+      const userinfo = {
+        user: newUser,
+        projects: [],
+        participations: []
+      };
+              
+      userinfo.projects.dbs = [];
+      userinfo.projects.apps = [];
+      userinfo.participations.dbs = [];
+      userinfo.participations.apps = [];
 
-        // afterwards retriev this entry.
-        User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } })
-          .then(user => {
-            const userinfo = {
-              user: user,
-              projects: [],
-              participations: []
-            };
-            
-            userinfo.projects.dbs = [];
-            userinfo.projects.apps = [];
-            userinfo.participations.dbs = [];
-            userinfo.participations.apps = [];
+      return done(null, userinfo);
+    } catch (err) {
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        const user = await User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } });
+        const projects = await Project.findAll({ where: { userid: user.matrnr }});
+        const participations = await sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
+        FROM projectparticipants \
+        INNER JOIN projects ON projects.id=projectparticipants.projectid \
+        WHERE projectparticipants.userid = '${user.matrnr}'`);
+        const apps = await Application.findAll();
+        const dbs = await Database.findAll();
 
-            return done(null, userinfo);
-          });
-      })
-      .catch(err => {
-        // If entry already exists, get that entry
-        if (err.name === 'SequelizeUniqueConstraintError') {
-          User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } })
-            .then(user => {
+        const userinfo = {
+          user: user,
+          projects: projects,
+          participations: participations[0]
+        };
 
-              Project.findAll({ where: { userid: user.matrnr }})
-                .then(projects => {
-                  
-                  sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
-                  FROM projectparticipants \
-                  INNER JOIN projects ON projects.id=projectparticipants.projectid \
-                  WHERE projectparticipants.userid = '${user.matrnr}'`)
-                    .then(participations => {
+        userinfo.projects.map(p => p.dbs = []);
+        userinfo.projects.map(p => p.apps = []);
+        userinfo.participations.map(p => p.dbs = []);
+        userinfo.participations.map(p => p.apps = []);
+      
+        projects.map(p => {
+          const projIndex = projects.indexOf(p);
+          const app = apps.filter(app => p.id === app.projectid);
+          const db = dbs.filter(db => p.id === db.projectid);
+          if (app.length !== 0) {
+            app.map(a => userinfo.projects[projIndex].apps.push(a));
+          }
+          if (db.length !== 0) {
+            db.map(d => userinfo.projects[projIndex].dbs.push(d));
+          }
+        });
 
-                      Application.findAll()
-                        .then(apps => {
+        participations.map(p => {
+          const projIndex = participations.indexOf(p);
+          if (p[0]) {
+            const app = apps.filter(app => p[0].projectid === app.projectid);
+            const db = dbs.filter(db => p[0].projectid === db.projectid);
+            if (app.length !== 0) {
+              app.map(a => userinfo.participations[projIndex].apps.push(a));
+            }
+            if (db.length !== 0) {
+              db.map(d => userinfo.participations[projIndex].dbs.push(d));
+            }
+          }
+        });
+
+        return done(null, userinfo);
+      } else {
+        console.error(err);
+      }
+    }
+  }
+  ));
   
-                          Database.findAll()
-                            .then(dbs => {
-                              const userinfo = {
-                                user: user,
-                                projects: projects,
-                                participations: participations[0]
-                              };
-  
-                              userinfo.projects.map(p => p.dbs = []);
-                              userinfo.projects.map(p => p.apps = []);
-                              userinfo.participations.map(p => p.dbs = []);
-                              userinfo.participations.map(p => p.apps = []);
-                            
-                              projects.map(p => {
-                                const projIndex = projects.indexOf(p);
-                                const app = apps.filter(app => p.id === app.projectid);
-                                const db = dbs.filter(db => p.id === db.projectid);
-                                if (app.length !== 0) {
-                                  app.map(a => userinfo.projects[projIndex].apps.push(a));
-                                }
-                                if (db.length !== 0) {
-                                  db.map(d => userinfo.projects[projIndex].dbs.push(d));
-                                }
-                              });
-  
-                              participations.map(p => {
-                                const projIndex = participations.indexOf(p);
-                                if (p[0]) {
-                                  const app = apps.filter(app => p[0].projectid === app.projectid);
-                                  const db = dbs.filter(db => p[0].projectid === db.projectid);
-                                  if (app.length !== 0) {
-                                    app.map(a => userinfo.participations[projIndex].apps.push(a));
-                                  }
-                                  if (db.length !== 0) {
-                                    db.map(d => userinfo.participations[projIndex].dbs.push(d));
-                                  }
-                                }
-                              });
-        
-                              return done(null, userinfo);
-                            });
-                        });
-                    })
-                    .catch(() => {
-                      const userinfo = {
-                        user: user,
-                        projects: projects,
-                        participations: []
-                      };
-                      return done(null, userinfo);
-                    });
-                });
-            });
-        } else {
-          console.error(err);
-        }
-      });
-  }));
-
   passport.use(new LocalStrategy({
     usernameField: 'email'
   },
-  (username, password, done) => {
+  async (username, password, done) => {
     // try to find the user
-    User.findOne({
-      where: {
-        email: username
+    try {
+      const user = await User.findOne({ where: { email: username } });
+      
+      // if no user was found, return error
+      if (!user || user.ldap) {
+        return done(null, false, { message: 'Incorrect credentials.' });
       }
-    })
-      .then(user => {
-        // if no user was found, return error
-        if (!user || user.ldap) {
-          return done(null, false, { message: 'Incorrect credentials.' });
-        }
     
-        const hashedPassword = bcrypt.hashSync(password, user.salt);
+      const hashedPassword = bcrypt.hashSync(password, user.salt);
     
-        // when passwords match, return user
-        if (user.password === hashedPassword) {
-          //search projects
-          Project.findAll({ where: { userid: user.matrnr }})
-            .then(projects => {
+      // when passwords match, return user
+      if (user.password === hashedPassword) {
+        //search projects
+        const projects = await Project.findAll({ where: { userid: user.matrnr }});
+        const participations = await sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
+                FROM projectparticipants \
+                INNER JOIN projects ON projects.id=projectparticipants.projectid \
+                WHERE projectparticipants.userid = '${user.matrnr}'`);
+        const apps = await Application.findAll();
+        const dbs = await Database.findAll();
+                            
+        const userinfo = {
+          user: user,
+          projects: projects,
+          participations: participations[0]
+        };
 
-              sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
-              FROM projectparticipants \
-              INNER JOIN projects ON projects.id=projectparticipants.projectid \
-              WHERE projectparticipants.userid = '${user.matrnr}'`)
-                .then(participations => {
-                  
-                  Application.findAll()
-                    .then(apps => {
-                      Database.findAll()
-                        .then(dbs => {
-                          
-                          const userinfo = {
-                            user: user,
-                            projects: projects,
-                            participations: participations[0]
-                          };
-
-                          userinfo.projects.map(p => p.dbs = []);
-                          userinfo.projects.map(p => p.apps = []);
-                          userinfo.participations.map(p => p.dbs = []);
-                          userinfo.participations.map(p => p.apps = []);
-                          
-                          projects.map(p => {
-                            const projIndex = projects.indexOf(p);
-                            const app = apps.filter(app => p.id === app.projectid);
-                            const db = dbs.filter(db => p.id === db.projectid);
-                            if (app.length !== 0) {
-                              app.map(a => userinfo.projects[projIndex].apps.push(a));
-                            }
-                            if (db.length !== 0) {
-                              db.map(d => userinfo.projects[projIndex].dbs.push(d));
-                            }
-                          });
-
-                          participations.map(p => {
-                            const projIndex = participations.indexOf(p);
-                            if (p[0]) {
-                              const app = apps.filter(app => p[0].projectid === app.projectid);
-                              const db = dbs.filter(db => p[0].projectid === db.projectid);
-                              if (app.length !== 0) {
-                                app.map(a => userinfo.participations[projIndex].apps.push(a));
-                              }
-                              if (db.length !== 0) {
-                                db.map(d => userinfo.participations[projIndex].dbs.push(d));
-                              }
-                            }
-                          });
+        userinfo.projects.map(p => p.dbs = []);
+        userinfo.projects.map(p => p.apps = []);
+        userinfo.participations.map(p => p.dbs = []);
+        userinfo.participations.map(p => p.apps = []);
       
-                          return done(null, userinfo);
-                        });
-                    });
-                }).catch(err => {
-                  console.error(err);
-                  const userinfo = {
-                    user: user,
-                    projects: projects,
-                    participations: []
-                  };
-                  return done(null, userinfo);
-                });
-            });
-        } else {
-          // return false when passwords dont match
-          return done(null, false, { message: 'Incorrect credentials.' });
-        }
-      
-      })
-      .catch(err => console.error(err));
+        projects.map(p => {
+          const projIndex = projects.indexOf(p);
+          const app = apps.filter(app => p.id === app.projectid);
+          const db = dbs.filter(db => p.id === db.projectid);
+          if (app.length !== 0) {
+            app.map(a => userinfo.projects[projIndex].apps.push(a));
+          }
+          if (db.length !== 0) {
+            db.map(d => userinfo.projects[projIndex].dbs.push(d));
+          }
+        });
+
+        participations.map(p => {
+          const projIndex = participations.indexOf(p);
+          if (p[0]) {
+            const app = apps.filter(app => p[0].projectid === app.projectid);
+            const db = dbs.filter(db => p[0].projectid === db.projectid);
+            if (app.length !== 0) {
+              app.map(a => userinfo.participations[projIndex].apps.push(a));
+            }
+            if (db.length !== 0) {
+              db.map(d => userinfo.participations[projIndex].dbs.push(d));
+            }
+          }
+        });
+
+        return done(null, userinfo);
+      } else {
+      // return false when passwords dont match
+        return done(null, false, { message: 'Incorrect credentials.' });
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }));
 
   // Defines which data will be kept in the session
   passport.serializeUser((userinfo, done) => {
-
     const data = {
       matrnr: userinfo.user.matrnr
     };
@@ -227,81 +181,59 @@ module.exports = (app) => {
   });
 
   // Gets all data from the stored User
-  passport.deserializeUser((user, done) => {
-    User.findOne({
-      where: {
-        matrnr: user.matrnr
-      }
-    }).then(user => {
-      
-      Project.findAll({ where: { userid: user.matrnr }})
-        .then(projects => {
-          
-          sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
-          FROM projectparticipants \
-          INNER JOIN projects ON projects.id=projectparticipants.projectid \
-          WHERE projectparticipants.userid = '${user.matrnr}'`)
-            .then(participations => {
-              
-              Application.findAll()
-                .then(apps => {
+  passport.deserializeUser(async (user, done) => {
+    try {
+      const userData = await User.findOne({ where: { matrnr: user.matrnr } });
+      const projects = await Project.findAll({ where: { userid: user.matrnr }});
+      const participations = await sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
+            FROM projectparticipants \
+            INNER JOIN projects ON projects.id=projectparticipants.projectid \
+            WHERE projectparticipants.userid = '${user.matrnr}'`);
+      const apps = await Application.findAll();          
+      const dbs = await Database.findAll();
+      const userinfo = {
+        user: userData,
+        projects: projects,
+        participations: participations[0]
+      };
 
-                  Database.findAll()
-                    .then(dbs => {
-                      const userinfo = {
-                        user: user,
-                        projects: projects,
-                        participations: participations[0]
-                      };
+      userinfo.projects.map(p => p.dbs = []);
+      userinfo.projects.map(p => p.apps = []);
+      userinfo.participations.map(p => p.dbs = []);
+      userinfo.participations.map(p => p.apps = []);
+    
+      projects.map(p => {
+        const projIndex = projects.indexOf(p);
+        const app = apps.filter(app => p.id === app.projectid);
+        const db = dbs.filter(db => p.id === db.projectid);
+        if (app.length !== 0) {
+          app.map(a => {
+            userinfo.projects[projIndex].apps.push(a);
+          });
+        }
+        if (db.length !== 0) {
+          db.map(d => {
+            userinfo.projects[projIndex].dbs.push(d);
+          });
+        }
+      });
 
-                      userinfo.projects.map(p => p.dbs = []);
-                      userinfo.projects.map(p => p.apps = []);
-                      userinfo.participations.map(p => p.dbs = []);
-                      userinfo.participations.map(p => p.apps = []);
-                    
-                      projects.map(p => {
-                        const projIndex = projects.indexOf(p);
-                        const app = apps.filter(app => p.id === app.projectid);
-                        const db = dbs.filter(db => p.id === db.projectid);
-                        if (app.length !== 0) {
-                          app.map(a => {
-                            userinfo.projects[projIndex].apps.push(a);
-                          });
-                        }
-                        if (db.length !== 0) {
-                          db.map(d => {
-                            userinfo.projects[projIndex].dbs.push(d);
-                          });
-                        }
-                      });
-
-                      participations.map(p => {
-                        const projIndex = participations.indexOf(p);
-                        if (p[0]) {
-                          const app = apps.filter(app => p[0].projectid === app.projectid);
-                          const db = dbs.filter(db => p[0].projectid === db.projectid);
-                          if (app.length !== 0) {
-                            app.map(a => userinfo.participations[projIndex].apps.push(a));
-                          }
-                          if (db.length !== 0) {
-                            db.map(d => userinfo.participations[projIndex].dbs.push(d));
-                          }
-                        }
-                      });
-                      return done(null, userinfo);
-                    });
-                });
-            })
-            .catch(() => {
-              const userinfo = {
-                user: user,
-                projects: projects,
-                participations: []
-              };
-              return done(null, userinfo);
-            });
-        });
-    })
-      .catch(err => console.error(err));
+      participations.map(p => {
+        const projIndex = participations.indexOf(p);
+        if (p[0]) {
+          const app = apps.filter(app => p[0].projectid === app.projectid);
+          const db = dbs.filter(db => p[0].projectid === db.projectid);
+          if (app.length !== 0) {
+            app.map(a => userinfo.participations[projIndex].apps.push(a));
+          }
+          if (db.length !== 0) {
+            db.map(d => userinfo.participations[projIndex].dbs.push(d));
+          }
+        }
+      });
+      return done(null, userinfo);
+    } catch (err) {
+      console.error(err);
+    }
   });
 };
