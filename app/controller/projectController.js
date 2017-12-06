@@ -45,7 +45,7 @@ module.exports.changeProjectName = async (req, res) => {
       res.redirect(`/settings?id=${project}`);
     })
     .catch(err => {
-      req.flash('error', 'Something went wrong');
+      req.flash('error', 'Projectname could not be changed');
       console.error(err);
       res.redirect(`/settings?id=${project}`);
     });
@@ -61,7 +61,7 @@ module.exports.addParticipant = async (req, res) => {
       res.redirect(`/settings?id=${project}`);
     })
     .catch(err => {
-      req.flash('error', 'Something went wrong');
+      req.flash('error', 'Participant could not be added');
       console.error(err);
       res.redirect(`/settings?id=${project}`);
     });
@@ -73,6 +73,11 @@ module.exports.removeParticipant = async (req, res) => {
 
   ProjectParticipant.destroy({ where: { userid: matrnr, projectid: project } })
     .then(() => {
+      res.redirect(`/settings?id=${project}`);
+    })
+    .catch(err => {
+      req.flash('error', 'Participant could not be deleted');
+      console.error(err);
       res.redirect(`/settings?id=${project}`);
     });
 };
@@ -91,7 +96,7 @@ module.exports.createApplication = async (req, res) => {
       res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
-      req.flash('error', 'Something went wrong');
+      req.flash('error', 'Application could not be created');
       console.error(err);
       res.redirect(`/project?id=${project}`);
     });
@@ -100,16 +105,16 @@ module.exports.createApplication = async (req, res) => {
 module.exports.deleteApplication = async (req, res) => {
   //delete folder of application
   //delete DB entry
-  const id = req.body.id;
+  const id = req.body.appid;
   const project = req.body.project;
 
   Application.destroy({ where: { id: id } })
     .then(() => {
       req.flash('info', 'Application deleted');
-      res.redirect(`/project?id=${id}`);
+      res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
-      req.flash('error', 'Something went wrong');
+      req.flash('error', 'Application could not be deleted');
       console.error(err);
       res.redirect(`/project?id=${project}`);
     });
@@ -136,7 +141,7 @@ module.exports.createDatabase = async (req, res) => {
       res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
-      req.flash('error', 'Something went wrong');
+      req.flash('error', 'Database could not be created');
       console.error(err);
       res.redirect(`/project?id=${project}`);
     });
@@ -144,7 +149,7 @@ module.exports.createDatabase = async (req, res) => {
 
 module.exports.deleteDatabase = async (req, res) => {
   //delete database
-  const id = req.body.id;
+  const id = req.body.dbid;
   const project = req.body.project;
 
   Database.destroy({ where: { id: id } })
@@ -156,7 +161,7 @@ module.exports.deleteDatabase = async (req, res) => {
       res.redirect(`/project?id=${project}`);
     })
     .catch(err => {
-      req.flash('error', ' Something went wrong');
+      req.flash('error', 'Database could not be deleted');
       console.error(err);
       res.redirect(`/project?id=${project}`);
     });

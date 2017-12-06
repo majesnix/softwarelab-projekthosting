@@ -25,5 +25,7 @@ block content
                 .box-header.with-border
                     a(href=link)
                         h3.box-title= 'Delete this Database'
-                    .box-body
-                        .btn.btn-danger Delete
+                    form(action="/api/deletedatabase", method="POST")
+                        .box-body
+                            input(type="hidden" name="project" value=`${activeProject}`)
+                            button.btn.btn-danger(type="submit" name="dbid" value=`${activeDB}`) Delete

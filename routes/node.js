@@ -6,6 +6,8 @@ router.get('/', require('connect-ensure-login').ensureLoggedIn('/'), (req, res, 
     user: req.user.user,
     projects: req.user.projects,
     participations: req.user.participations,
+    activeProject: req.query.project,
+    activeApp: req.query.id
   });
 });
 

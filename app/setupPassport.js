@@ -91,13 +91,15 @@ module.exports = (app) => {
   
                               participations.map(p => {
                                 const projIndex = participations.indexOf(p);
-                                const app = apps.filter(app => p.projectid === app.projectid);
-                                const db = dbs.filter(db => p.projectid === db.projectid);
-                                if (app.length !== 0) {
-                                  app.map(a => userinfo.participations[projIndex].apps.push(a));
-                                }
-                                if (db.length !== 0) {
-                                  db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                                if (p[0]) {
+                                  const app = apps.filter(app => p[0].projectid === app.projectid);
+                                  const db = dbs.filter(db => p[0].projectid === db.projectid);
+                                  if (app.length !== 0) {
+                                    app.map(a => userinfo.participations[projIndex].apps.push(a));
+                                  }
+                                  if (db.length !== 0) {
+                                    db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                                  }
                                 }
                               });
         
@@ -181,13 +183,15 @@ module.exports = (app) => {
 
                           participations.map(p => {
                             const projIndex = participations.indexOf(p);
-                            const app = apps.filter(app => p.projectid === app.id);
-                            const db = dbs.filter(db => p.projectid === db.id);
-                            if (app.length !== 0) {
-                              app.map(a => userinfo.participations[projIndex].apps.push(a));
-                            }
-                            if (db.length !== 0) {
-                              db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                            if (p[0]) {
+                              const app = apps.filter(app => p[0].projectid === app.projectid);
+                              const db = dbs.filter(db => p[0].projectid === db.projectid);
+                              if (app.length !== 0) {
+                                app.map(a => userinfo.participations[projIndex].apps.push(a));
+                              }
+                              if (db.length !== 0) {
+                                db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                              }
                             }
                           });
       
@@ -272,20 +276,16 @@ module.exports = (app) => {
                       });
 
                       participations.map(p => {
-                        try {
-                          const projIndex = participations.indexOf(p);
-                          if (p[0]) {
-                            const app = apps.filter(app => p[0].projectid === app.projectid);
-                            const db = dbs.filter(db => p[0].projectid === db.projectid);
-                            if (app.length !== 0) {
-                              app.map(a => userinfo.participations[projIndex].apps.push(a));
-                            }
-                            if (db.length !== 0) {
-                              db.map(d => userinfo.participations[projIndex].dbs.push(d));
-                            }
+                        const projIndex = participations.indexOf(p);
+                        if (p[0]) {
+                          const app = apps.filter(app => p[0].projectid === app.projectid);
+                          const db = dbs.filter(db => p[0].projectid === db.projectid);
+                          if (app.length !== 0) {
+                            app.map(a => userinfo.participations[projIndex].apps.push(a));
                           }
-                        } catch (err) {
-                          console.log(err);
+                          if (db.length !== 0) {
+                            db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                          }
                         }
                       });
                       return done(null, userinfo);

@@ -24,5 +24,7 @@ block content
                 .box-header.with-border
                     a(href=link)
                         h3.box-title= 'Delete this NodeJS-Webserver'
-                    .box-body
-                        .btn.btn-danger Delete
+                    form(action="/api/deleteapplication", method="POST")
+                        .box-body
+                            input(type="hidden" name="project" value=`${activeProject}`)
+                            button.btn.btn-danger(type="submit" name="appid" value=`${activeApp}`) Delete

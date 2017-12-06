@@ -16,7 +16,7 @@ block content
                 if (apps)
                     each app in apps 
                         .col-sm-6.col-lg-3
-                            +box("NodeJS", `${app.name}`, `/node?id=${app.id}`)
+                            +box("NodeJS", `${app.name}`, `/node?project=${app.projectid}&id=${app.id}`)
                 .col-sm-6.col-lg-3
                     .box.box-default
                         .box-header.with-border
@@ -29,7 +29,7 @@ block content
                 if (dbs)
                     each db in dbs
                         .col-sm-6.col-lg-3
-                            +box("Databases", `${db.name}`, `/databases?id=${db.id}`)
+                            +box("Databases", `${db.name}`, `/databases?project=${db.projectid}&id=${db.id}`)
                 .col-sm-6.col-lg-3
                     .box.box-default
                         .box-header.with-border
