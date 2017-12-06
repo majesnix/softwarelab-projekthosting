@@ -80,7 +80,7 @@ module.exports.deactivateUser = async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    req.flash('error', 'Something went wrong');
+    req.flash('error', 'Status of user could not be changed');
     res.redirect('/adminsettings');
   }
 };
@@ -116,7 +116,7 @@ module.exports.changePassword = async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    req.flash('error', 'Something went wrong');
+    req.flash('error', 'Password could not be changed');
     res.redirect('/usersettings');
   }
 };

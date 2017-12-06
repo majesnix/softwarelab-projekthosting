@@ -6,14 +6,6 @@ if [[ $EUID -ne 0 ]];
    		exit 1
 fi
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-
 sudo apt install -y \
 	curl \
 	wget \
@@ -22,8 +14,19 @@ sudo apt install -y \
     linux-image-extra-virtual \
     apt-transport-https \
     ca-certificates \
-    software-properties-commo
+    software-properties-common
 
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt install docker-ce nodejs
+
+sudo apt install -y postgresql \
+    docker-ce \
+    nodejs
+
+sudo npm install pm2 -g

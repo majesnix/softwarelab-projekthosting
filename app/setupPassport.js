@@ -1,9 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const LdapStrategy = require('passport-ldapauth').Strategy;
-const { url, bindDn, bindCredentials, searchBase, searchFilter } = require('../config');
+const { url, bindDn, bindCredentials, searchBase, searchFilter, dbURL } = require('../config');
 const Sequelize = require('sequelize');
-const { dbURL } = require('../config'); 
 const sequelize = new Sequelize(dbURL, { logging: false, operatorsAliases: Sequelize.Op } );
 
 const bcrypt = require('bcrypt');

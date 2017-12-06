@@ -32,7 +32,8 @@
     "pg-hstore": "^2.3.2",
     "pug": "2.0.0-beta11",
     "sequelize": "^4.22.8",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "snekfetch": "^3.6.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
