@@ -37,6 +37,11 @@ module.exports = (app) => {
               projects: [],
               participations: []
             };
+            
+            userinfo.projects.dbs = [];
+            userinfo.projects.apps = [];
+            userinfo.participations.dbs = [];
+            userinfo.participations.apps = [];
 
             return done(null, userinfo);
           });
@@ -50,17 +55,55 @@ module.exports = (app) => {
               Project.findAll({ where: { userid: user.matrnr }})
                 .then(projects => {
                   
-                  sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
+                  sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
                   FROM projectparticipants \
                   INNER JOIN projects ON projects.id=projectparticipants.projectid \
                   WHERE projectparticipants.userid = '${user.matrnr}'`)
                     .then(participations => {
-                      const userinfo = {
-                        user: user,
-                        projects: projects,
-                        participations: participations[0]
-                      };
-                      return done(null, userinfo);
+
+                      Application.findAll()
+                        .then(apps => {
+  
+                          Database.findAll()
+                            .then(dbs => {
+                              const userinfo = {
+                                user: user,
+                                projects: projects,
+                                participations: participations[0]
+                              };
+  
+                              userinfo.projects.map(p => p.dbs = []);
+                              userinfo.projects.map(p => p.apps = []);
+                              userinfo.participations.map(p => p.dbs = []);
+                              userinfo.participations.map(p => p.apps = []);
+                            
+                              projects.map(p => {
+                                const projIndex = projects.indexOf(p);
+                                const app = apps.filter(app => p.id === app.projectid);
+                                const db = dbs.filter(db => p.id === db.projectid);
+                                if (app.length !== 0) {
+                                  app.map(a => userinfo.projects[projIndex].apps.push(a));
+                                }
+                                if (db.length !== 0) {
+                                  db.map(d => userinfo.projects[projIndex].dbs.push(d));
+                                }
+                              });
+  
+                              participations.map(p => {
+                                const projIndex = participations.indexOf(p);
+                                const app = apps.filter(app => p.projectid === app.projectid);
+                                const db = dbs.filter(db => p.projectid === db.projectid);
+                                if (app.length !== 0) {
+                                  app.map(a => userinfo.participations[projIndex].apps.push(a));
+                                }
+                                if (db.length !== 0) {
+                                  db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                                }
+                              });
+        
+                              return done(null, userinfo);
+                            });
+                        });
                     })
                     .catch(() => {
                       const userinfo = {
@@ -102,19 +145,55 @@ module.exports = (app) => {
           Project.findAll({ where: { userid: user.matrnr }})
             .then(projects => {
 
-              sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
+              sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
               FROM projectparticipants \
               INNER JOIN projects ON projects.id=projectparticipants.projectid \
               WHERE projectparticipants.userid = '${user.matrnr}'`)
                 .then(participations => {
                   
-                  const userinfo = {
-                    user: user,
-                    projects: projects,
-                    participations: participations[0]
-                  };
+                  Application.findAll()
+                    .then(apps => {
+                      Database.findAll()
+                        .then(dbs => {
+                          
+                          const userinfo = {
+                            user: user,
+                            projects: projects,
+                            participations: participations[0]
+                          };
 
-                  return done(null, userinfo);
+                          userinfo.projects.map(p => p.dbs = []);
+                          userinfo.projects.map(p => p.apps = []);
+                          userinfo.participations.map(p => p.dbs = []);
+                          userinfo.participations.map(p => p.apps = []);
+                          
+                          projects.map(p => {
+                            const projIndex = projects.indexOf(p);
+                            const app = apps.filter(app => p.id === app.projectid);
+                            const db = dbs.filter(db => p.id === db.projectid);
+                            if (app.length !== 0) {
+                              app.map(a => userinfo.projects[projIndex].apps.push(a));
+                            }
+                            if (db.length !== 0) {
+                              db.map(d => userinfo.projects[projIndex].dbs.push(d));
+                            }
+                          });
+
+                          participations.map(p => {
+                            const projIndex = participations.indexOf(p);
+                            const app = apps.filter(app => p.projectid === app.id);
+                            const db = dbs.filter(db => p.projectid === db.id);
+                            if (app.length !== 0) {
+                              app.map(a => userinfo.participations[projIndex].apps.push(a));
+                            }
+                            if (db.length !== 0) {
+                              db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                            }
+                          });
+      
+                          return done(null, userinfo);
+                        });
+                    });
                 }).catch(err => {
                   console.error(err);
                   const userinfo = {
@@ -154,19 +233,64 @@ module.exports = (app) => {
       Project.findAll({ where: { userid: user.matrnr }})
         .then(projects => {
           
-          sequelize.query(`SELECT projectparticipants.id, projectparticipants.userid, projects.name \
+          sequelize.query(`SELECT projectparticipants.projectid, projectparticipants.userid, projects.name \
           FROM projectparticipants \
           INNER JOIN projects ON projects.id=projectparticipants.projectid \
           WHERE projectparticipants.userid = '${user.matrnr}'`)
             .then(participations => {
               
-              const userinfo = {
-                user: user,
-                projects: projects,
-                participations: participations[0]
-              };
-              
-              return done(null, userinfo);
+              Application.findAll()
+                .then(apps => {
+
+                  Database.findAll()
+                    .then(dbs => {
+                      const userinfo = {
+                        user: user,
+                        projects: projects,
+                        participations: participations[0]
+                      };
+
+                      userinfo.projects.map(p => p.dbs = []);
+                      userinfo.projects.map(p => p.apps = []);
+                      userinfo.participations.map(p => p.dbs = []);
+                      userinfo.participations.map(p => p.apps = []);
+                    
+                      projects.map(p => {
+                        const projIndex = projects.indexOf(p);
+                        const app = apps.filter(app => p.id === app.projectid);
+                        const db = dbs.filter(db => p.id === db.projectid);
+                        if (app.length !== 0) {
+                          app.map(a => {
+                            userinfo.projects[projIndex].apps.push(a);
+                          });
+                        }
+                        if (db.length !== 0) {
+                          db.map(d => {
+                            userinfo.projects[projIndex].dbs.push(d);
+                          });
+                        }
+                      });
+
+                      participations.map(p => {
+                        try {
+                          const projIndex = participations.indexOf(p);
+                          if (p[0]) {
+                            const app = apps.filter(app => p[0].projectid === app.projectid);
+                            const db = dbs.filter(db => p[0].projectid === db.projectid);
+                            if (app.length !== 0) {
+                              app.map(a => userinfo.participations[projIndex].apps.push(a));
+                            }
+                            if (db.length !== 0) {
+                              db.map(d => userinfo.participations[projIndex].dbs.push(d));
+                            }
+                          }
+                        } catch (err) {
+                          console.log(err);
+                        }
+                      });
+                      return done(null, userinfo);
+                    });
+                });
             })
             .catch(() => {
               const userinfo = {

@@ -124,7 +124,6 @@ module.exports.createDatabase = async (req, res) => {
   const type = req.body.type;
 
   const pw = passwordgen(8, false);
-  console.log(pw);
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(pw, salt);
 

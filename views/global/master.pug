@@ -51,7 +51,7 @@ html
                                     input.form-control(type="text" name="port" placeholder="Application Port...")
                             .modal-footer
                                 button.btn.btn-default.pull-left(data-dismiss="modal") Cancel
-                                button.btn.btn-primary(name="id" value=`${activeProject.id}`) Create Application
+                                button.btn.btn-primary(name="id" value=`${activeProject.id || activeProject.projectid}`) Create Application
         if(activeProject)
             .modal.fade.in#createDatabaseModal
                 .modal-dialog
@@ -72,5 +72,5 @@ html
                                         option MongoDB
                             .modal-footer
                                 button.btn.btn-default.pull-left(data-dismiss="modal") Cancel
-                                button.btn.btn-primary(name="id" value=`${activeProject.id}`) Create Database
+                                button.btn.btn-primary(name="id" value=`${activeProject.id || activeProject.projectid}`) Create Database
         include scripts
