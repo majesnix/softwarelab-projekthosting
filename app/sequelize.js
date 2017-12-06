@@ -16,27 +16,20 @@ const Databases = sequelize.define('databases', DatabaseMeta.attributes, Databas
 
 // authenticate with the database
 sequelize.authenticate()
-  .then(() => {
+  .then(async () => {
     // check if db exists, otherwise create it
-    User.sync()
-      .then(() => Project.sync()
-        .then(() => ProjectParticipants.sync()
-          .then(() => Applications.sync()
-            .then(() => Databases.sync()
-              .then(() => {
-
-                // relations
-                User.hasMany(Project, { foreignKey: 'userid' });
-                //Project.belongsTo(User);
-                User.hasMany(ProjectParticipants, { foreignKey: 'users' });
-                Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
-                Applications.belongsTo(Project);
-                Databases.belongsTo(Project);
-              })
-            )
-          )
-        )
-      );
+    await User.sync();
+    await Project.sync();
+    await ProjectParticipants.sync();
+    await Applications.sync();
+    await Databases.sync();
+    // relations
+    User.hasMany(Project, { foreignKey: 'userid' });
+    //Project.belongsTo(User);
+    User.hasMany(ProjectParticipants, { foreignKey: 'users' });
+    Project.hasMany(ProjectParticipants, { foreignKey: 'projects' });
+    Applications.belongsTo(Project);
+    Databases.belongsTo(Project);
   })
   .catch(err => {
     console.error('Unable to connect to the database: ', err);
