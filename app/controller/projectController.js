@@ -1,7 +1,9 @@
 const fs = require('fs');
 const passwordgen = require('password-generator');
 const bcrypt = require('bcrypt');
-const { Project, ProjectParticipant, Application, Database } = require('../models/db');
+const { Project, ProjectParticipant, Application, Database, User } = require('../models/db');
+const snek = require('snekfetch');
+const { gitlabURL, gitlabAdmin, gitlabToken } = require('../../config');
 
 module.exports.createProject = async (req, res) => {
   //create DB entry in projectdatabase (FK -> Matrikelnummer)
@@ -12,6 +14,12 @@ module.exports.createProject = async (req, res) => {
 
   try {
     await Project.create({ userid: matrnr, name: name });
+    const dbUser = await User.findOne({ where: { matrnr: matrnr } });
+    //const {text} = await snek.get(`${gitlabURL}/api/v4/users/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}`);
+    //const parsedRes = JSON.parse(text);
+    //await snek.put(`${gitlabURL}/api/v4/users/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}&projects_limit=${parsedRes.projects_limit++}`);
+    await snek.post(`${gitlabURL}/api/v4/projects/user/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}&name=${name}&visibility=private`);
+
     req.flash('info', 'Project created');
     res.redirect('/dashboard');
   } catch (err) {

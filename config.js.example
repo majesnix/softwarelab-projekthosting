@@ -22,6 +22,7 @@ const config = {
     'appQuota': 5,
 
     // Gitlab Token and Admin User
+    'gitlabURL': '',
     'gitlabToken': '',
     'gitlabAdmin': '',
 };

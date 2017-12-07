@@ -1,7 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const LdapStrategy = require('passport-ldapauth').Strategy;
-const { url, bindDn, bindCredentials, searchBase, searchFilter, dbURL, gitlabAdmin, gitlabToken } = require('../config');
+const SamlStrategy = require('passport-saml').Strategy;
+const { url, bindDn, bindCredentials, searchBase, searchFilter, dbURL, gitlabURL, gitlabAdmin, gitlabToken } = require('../config');
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(dbURL, { logging: false, operatorsAliases: Sequelize.Op } );
 const snek = require('snekfetch');
@@ -15,29 +16,35 @@ module.exports = (app) => {
   app.use(passport.session());
 
   passport.use(new LdapStrategy({
-    handleErrorsAsFailures: true,
-    usernameField: 'email',
     server: {
       url: url,
       bindDn: bindDn,
       bindCredentials: bindCredentials,
       searchBase: searchBase,
-      searchFilter: searchFilter,
-    }
+      searchFilter: searchFilter
+    },
+    handleErrorsAsFailures: true,
+    usernameField: 'email',
+    passReqToCallback: true,
   },
-  async (user, done) => {
+  async (req, user, done) => {
     // Try to create a DB Entry
     try {
-      const dbUser = await User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn});
-      // TODO: Display password after creation, or maybe make interface to display it.
-      const pass = passwordgen(8, false);
       const salt = bcrypt.genSaltSync(10);
-      const hashedPassword = bcrypt.hashSync(pass, salt);
+      const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+      const dbUser = await User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn, password: hashedPassword, salt: salt});
+      // CREATE new password for gitlab user
+      //const pass = passwordgen(8, false);
+      //const salt = bcrypt.genSaltSync(10);
+      //const hashedPassword = bcrypt.hashSync(pass, salt);
 
-      const { text } = await snek.post(`https://git.majesnix.org/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${pass}&username=${dbUser.email.split('@')[0]}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=0&can_create_group=false`);
+      //const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${pass}&username=${dbUser.email.split('@')[0]}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=0&can_create_group=false`);
+      
+      //user req.body.password for gitlab password creation (could fail if password is to simple)
+      const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${req.body.password}&username=${dbUser.email.split('@')[0]}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=5&can_create_group=false`);
       const parsedRes = JSON.parse(text);
 
-      dbUser.update({ gitlabid: parsedRes.id, password: hashedPassword, salt: salt});
+      dbUser.update({ gitlabid: parsedRes.id });
       
       const userinfo = {
         user: dbUser,
@@ -49,6 +56,10 @@ module.exports = (app) => {
       userinfo.projects.apps = [];
       userinfo.participations.dbs = [];
       userinfo.participations.apps = [];
+
+      // ONLY needed when pw should be seperate to LDAP account.
+      //req.flash('info', `Your Gitlab Account password will be ${pass}. Please copy it to a safe place NOW!`);
+      req.flash('info', 'An Gitlab Account has been created with the same credentials.');
 
       return done(null, userinfo);
     } catch (err) {
@@ -179,6 +190,22 @@ module.exports = (app) => {
       console.error(err);
     }
   }));
+
+  // preparation for Shibboleth (maybe)
+
+  passport.use(new SamlStrategy({
+    path: '',
+    entryPoint: '',
+    issuer: 'passport-saml'
+  },
+  (profile, done) => {
+    findByEmail(profile.email, (err, user) => {
+      if (err) {
+        return done(err);
+      }
+      return done(null, user);
+    })
+}));
 
   // Defines which data will be kept in the session
   passport.serializeUser((userinfo, done) => {
