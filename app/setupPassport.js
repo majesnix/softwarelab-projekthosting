@@ -38,10 +38,10 @@ module.exports = (app) => {
       //const salt = bcrypt.genSaltSync(10);
       //const hashedPassword = bcrypt.hashSync(pass, salt);
 
-      //const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${pass}&username=${dbUser.email.split('@')[0]}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=0&can_create_group=false`);
+      //const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${pass}&username=${dbUser.matrnr}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=0&can_create_group=false`);
       
       //user req.body.password for gitlab password creation (could fail if password is to simple)
-      const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${req.body.password}&username=${dbUser.email.split('@')[0]}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=5&can_create_group=false`);
+      const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${req.body.password}&username=${dbUser.matrnr}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=5&can_create_group=false`);
       const parsedRes = JSON.parse(text);
 
       dbUser.update({ gitlabid: parsedRes.id });
@@ -204,8 +204,8 @@ module.exports = (app) => {
         return done(err);
       }
       return done(null, user);
-    })
-}));
+    });
+  }));
 
   // Defines which data will be kept in the session
   passport.serializeUser((userinfo, done) => {

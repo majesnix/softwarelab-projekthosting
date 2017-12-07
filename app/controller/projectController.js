@@ -35,7 +35,7 @@ module.exports.deleteProject = async (req, res) => {
   const id = req.body.id;
 
   try {
-    Project.destroy({ where: { id: id }});
+    await Project.destroy({ where: { id: id }});
     req.flash('info', 'Project deleted');
     res.redirect('/dashboard');
   } catch (err) {
@@ -50,7 +50,7 @@ module.exports.changeProjectName = async (req, res) => {
   const project = req.body.id;
 
   try {
-    Project.update({ name: name },{ where: { id : project } });
+    await Project.update({ name: name },{ where: { id : project } });
     req.flash('info', 'Successfully change the project name');
     res.redirect(`/settings?id=${project}`);
   } catch (err) {
@@ -65,7 +65,7 @@ module.exports.addParticipant = async (req, res) => {
   const project = req.body.id;
 
   try {
-    ProjectParticipant.create({ userid: matrnr, projectid: project });
+    await ProjectParticipant.create({ userid: matrnr, projectid: project });
     req.flash('info', 'Participant added');
     res.redirect(`/settings?id=${project}`);
   } catch (err) {
