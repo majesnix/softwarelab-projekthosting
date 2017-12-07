@@ -30,6 +30,11 @@ module.exports.attributes = {
     type: Sequelize.STRING,
     defaultValue: '',
   },
+  gitlabid: {
+    type: Sequelize.INTEGER,
+    field: 'gitlab_id',
+    defaultValue: null,
+  },
   active: {
     type: Sequelize.BOOLEAN,
     defaultValue: true,

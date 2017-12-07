@@ -20,12 +20,7 @@ router.post('/', passport.authenticate(['ldapauth', 'local'], {
     if (err) {
       return next(err);
     }
-    res.render('dashboard', {
-      user: req.user.user,
-      projects: req.user.projects,
-      participations: req.user.participations,
-      message: ''
-    });
+    res.redirect('/dashboard');
   });
 });
 

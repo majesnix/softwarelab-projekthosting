@@ -20,6 +20,10 @@ const config = {
     // Quotas (NOT IMPLEMENTED)
     'dbQuota': 5,
     'appQuota': 5,
+
+    // Gitlab Token and Admin User
+    'gitlabToken': '',
+    'gitlabAdmin': '',
 };
 
 module.exports = config;

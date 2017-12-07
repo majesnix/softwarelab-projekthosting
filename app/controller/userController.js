@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models/db');
 const path = require('path');
+const snek = require('snekfetch');
+const { gitlabAdmin, gitlabToken } = require('../../config');
 
 module.exports.show = async (req, res) => {
   res.locals.message = req.flash();
@@ -40,8 +42,15 @@ module.exports.createUser = async (req, res) => {
 
   // create the user in the database
   try {
-    await User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin});
-    
+    const dbUser = await User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin});
+
+    if (req.user && req.user.user.isadmin) {
+      const { text } = await snek.post(`https://git.majesnix.org/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${email}&password=${password}&username=${email.split('@')[0]}&name=${firstname}&skip_confirmation=true&projects_limit=0&can_create_group=false`);
+      const parsedRes = JSON.parse(text);
+
+      dbUser.update({ gitlabid: parsedRes.id});
+    }
+
     if (req.user && req.user.user.isadmin) {
       req.flash('info', 'User successfully created');
       res.redirect('/adminsettings');
@@ -49,6 +58,7 @@ module.exports.createUser = async (req, res) => {
       res.redirect('/');
     }
   } catch (err) {
+    console.log(err);
     if (req.user && req.user.user.isadmin) {
       req.flash('error', 'This e-mail has already been registered');
       res.redirect('/adminsettings');
@@ -71,10 +81,13 @@ module.exports.deactivateUser = async (req, res) => {
     } 
     if (user.active === true) {
       await user.update( {active: false} );
+      await snek.post(`https://git.majesnix.org/api/v4/users/${user.gitlabid}/block?private_token=${gitlabToken}&sudo=${gitlabAdmin}`);
+
       req.flash('info', 'User deactivated');
       res.redirect('/adminsettings');
     } else {
       await user.update( {active: true} );
+      await snek.post(`https://git.majesnix.org/api/v4/users/${user.gitlabid}/unblock?private_token=${gitlabToken}&sudo=${gitlabAdmin}`);
       req.flash('info', 'User activated');
       res.redirect('/adminsettings');
     }

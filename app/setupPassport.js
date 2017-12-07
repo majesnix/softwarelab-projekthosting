@@ -1,9 +1,11 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const LdapStrategy = require('passport-ldapauth').Strategy;
-const { url, bindDn, bindCredentials, searchBase, searchFilter, dbURL } = require('../config');
+const { url, bindDn, bindCredentials, searchBase, searchFilter, dbURL, gitlabAdmin, gitlabToken } = require('../config');
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(dbURL, { logging: false, operatorsAliases: Sequelize.Op } );
+const snek = require('snekfetch');
+const passwordgen = require('password-generator');
 
 const bcrypt = require('bcrypt');
 const { User, Project, Application, Database } = require('./models/db');
@@ -26,12 +28,19 @@ module.exports = (app) => {
   async (user, done) => {
     // Try to create a DB Entry
     try {
-      await User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn});
-      // afterwards retriev this entry.
-      const newUser = await User.findOne({ where: { matrnr: user.userPrincipalName.split('@')[0] } });
+      const dbUser = await User.create({ matrnr: user.userPrincipalName.split('@')[0], email: user.userPrincipalName, firstname: user.givenName, lastname: user.sn});
+      // TODO: Display password after creation, or maybe make interface to display it.
+      const pass = passwordgen(8, false);
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(pass, salt);
+
+      const { text } = await snek.post(`https://git.majesnix.org/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${pass}&username=${dbUser.email.split('@')[0]}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=0&can_create_group=false`);
+      const parsedRes = JSON.parse(text);
+
+      dbUser.update({ gitlabid: parsedRes.id, password: hashedPassword, salt: salt});
       
       const userinfo = {
-        user: newUser,
+        user: dbUser,
         projects: [],
         participations: []
       };
