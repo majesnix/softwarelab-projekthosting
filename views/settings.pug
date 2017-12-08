@@ -50,6 +50,21 @@ block content
         .col-md-12
             .box.box-info
                 .box-header.with-border
+                    h3.box-title= 'Remove Participant'
+                    .box-body
+                        form.form-horizontal(action="/api/removeparticipant", method="post")
+                            .form-group.has-feedback
+                                label.control-label.col-sm-2 Name
+                                .col-sm-10
+                                    input.form-control#inputFirstName(type="text", name="matrnr" placeholder="Matrikelnummer", required)
+                                    span.fa.fa-id-card-o.form-control-feedback
+                            .row
+                                .col-xs-4
+                                    button.btn.btn-primary.btn-blockbtn-flat(type="submit" name="id" value=`${activeProject.id}`) Remove
+    .row
+        .col-md-12
+            .box.box-info
+                .box-header.with-border
                     h3.box-title= 'Change this projects name'
                     .box-body
                         form.form-horizontal(action="/api/changeprojectname", method="post")

@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../models/db');
+const { User } = require('../db');
 const path = require('path');
 const snek = require('snekfetch');
 const { gitlabURL, gitlabAdmin, gitlabToken } = require('../../config');
@@ -65,6 +65,7 @@ module.exports.createUser = async (req, res) => {
           req.flash('error', `[GITLAB] ${err.text}`);
         //}
       } else {
+        console.error(err);
         req.flash('error', '[LOCAL] This e-mail has already been registered');
       }
       

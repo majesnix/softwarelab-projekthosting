@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const { changePassword, changeAvatar, deactivateUser, createUser } = require('../app/controller/userController');
-const { createProject, deleteProject, changeProjectName, addParticipant, createApplication, deleteApplication, createDatabase, deleteDatabase } = require('../app/controller/projectController');
+const { createProject, deleteProject, changeProjectName, addParticipant, removeParticipant, createApplication, deleteApplication, createDatabase, deleteDatabase } = require('../app/controller/projectController');
 const asyncHandler = require('express-async-handler');
 
 // File upload handler
@@ -44,6 +44,7 @@ router.post('/createproject', require('connect-ensure-login').ensureLoggedIn('/'
 router.post('/deleteproject', require('connect-ensure-login').ensureLoggedIn('/'), asyncHandler(deleteProject));
 router.post('/changeprojectname', require('connect-ensure-login').ensureLoggedIn('/'), asyncHandler(changeProjectName));
 router.post('/addparticipant', require('connect-ensure-login').ensureLoggedIn('/'), asyncHandler(addParticipant));
+router.post('/removeparticipant', require('connect-ensure-login').ensureLoggedIn('/'), asyncHandler(removeParticipant));
 router.post('/createapplication', require('connect-ensure-login').ensureLoggedIn('/'), asyncHandler(createApplication));
 router.post('/deleteapplication', require('connect-ensure-login').ensureLoggedIn('/'), asyncHandler(deleteApplication));
 router.post('/createdatabase', require('connect-ensure-login').ensureLoggedIn('/'), asyncHandler(createDatabase));

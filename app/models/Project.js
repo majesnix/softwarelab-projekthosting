@@ -12,6 +12,10 @@ module.exports.attributes = {
   name: {
     type: Sequelize.STRING,
   },
+  gitlabid: {
+    type: Sequelize.INTEGER,
+    field: 'gitlab_id',
+  },
   appquota: {
     type: Sequelize.INTEGER,
     field: 'app_quota',

@@ -9,7 +9,7 @@ const snek = require('snekfetch');
 const passwordgen = require('password-generator');
 
 const bcrypt = require('bcrypt');
-const { User, Project, Application, Database } = require('./models/db');
+const { User, Project, Application, Database } = require('./db');
 
 module.exports = (app) => {
   app.use(passport.initialize());
@@ -59,7 +59,7 @@ module.exports = (app) => {
 
       // ONLY needed when pw should be seperate to LDAP account.
       //req.flash('info', `Your Gitlab Account password will be ${pass}. Please copy it to a safe place NOW!`);
-      req.flash('info', 'An Gitlab Account has been created with the same credentials.');
+      req.flash('info', 'An Gitlab Account with the same credentials has been created.');
 
       return done(null, userinfo);
     } catch (err) {

@@ -1,9 +1,9 @@
-const UserMeta = require('./User');
-const ProjectMeta = require('./Project');
-const ProjectParticipantsMeta = require('./ProjectParticipants');
-const ApplicationMeta = require('./Application');
-const DatabaseMeta = require('./Database');
-const connection = require('../sequelize');
+const UserMeta = require('./models/User');
+const ProjectMeta = require('./models/Project');
+const ProjectParticipantsMeta = require('./models/ProjectParticipants');
+const ApplicationMeta = require('./models/Application');
+const DatabaseMeta = require('./models/Database');
+const connection = require('./sequelize');
 
 module.exports.User = connection.define('users', UserMeta.attributes, UserMeta.options);
 
