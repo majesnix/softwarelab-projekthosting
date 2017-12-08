@@ -58,9 +58,16 @@ module.exports.createUser = async (req, res) => {
       res.redirect('/');
     }
   } catch (err) {
-    console.log(err);
     if (req.user && req.user.user.isadmin) {
-      req.flash('error', 'This e-mail has already been registered');
+      if (err.text) {
+        //const errtext = JSON.parse(err.text);
+        //if (errtext.message){
+          req.flash('error', `[GITLAB] ${err.text}`);
+        //}
+      } else {
+        req.flash('error', '[LOCAL] This e-mail has already been registered');
+      }
+      
       res.redirect('/adminsettings');
     } else {
       req.flash('error', 'This e-mail has already been registered');

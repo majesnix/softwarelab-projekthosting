@@ -40,7 +40,7 @@ module.exports = (app) => {
 
       //const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${pass}&username=${dbUser.matrnr}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=0&can_create_group=false`);
       
-      //user req.body.password for gitlab password creation (could fail if password is to simple)
+      //use req.body.password for gitlab password creation (could fail if password is to simple)
       const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${dbUser.email}&password=${req.body.password}&username=${dbUser.matrnr}&name=${dbUser.firstname}&skip_confirmation=true&projects_limit=5&can_create_group=false`);
       const parsedRes = JSON.parse(text);
 
@@ -119,12 +119,22 @@ module.exports = (app) => {
   ));
   
   passport.use(new LocalStrategy({
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback: true,
   },
-  async (username, password, done) => {
+  async (req, username, password, done) => {
     // try to find the user
     try {
-      const user = await User.findOne({ where: { email: username } });
+      const allUser = await User.findAll();
+
+      let user;
+      if (allUser.length < 1) {
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+        user = await User.create({ matrnr: req.body.email.split('@')[0], firstname: 'Administrator', lastname:'', email: req.body.email, password: hashedPassword, salt: salt, isadmin: true, ldap: false,  });
+      } else {
+        user = await User.findOne({ where: { email: username } });
+      }
       
       // if no user was found, return error
       if (!user || user.ldap) {
