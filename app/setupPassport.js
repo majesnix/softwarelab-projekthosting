@@ -125,10 +125,10 @@ module.exports = (app) => {
   async (req, username, password, done) => {
     // try to find the user
     try {
-      const allUser = await User.findAll();
+      const allUsers = await User.findAll();
 
       let user;
-      if (allUser.length < 1) {
+      if (allUsers.length < 1) {
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(req.body.password, salt);
         user = await User.create({ matrnr: req.body.email.split('@')[0], firstname: 'Administrator', lastname:'', email: req.body.email, password: hashedPassword, salt: salt, isadmin: true, ldap: false,  });

@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const { User } = require('../db');
 const path = require('path');
 const snek = require('snekfetch');
+const fs = require('fs');
 const { gitlabURL, gitlabAdmin, gitlabToken } = require('../../config');
 
 module.exports.show = async (req, res) => {
@@ -18,23 +19,13 @@ module.exports.createUser = async (req, res) => {
   const admin = (req.body.admin === 'on') ? true : false;
 
   if (!email || !firstname || !lastname || !password || !password2) {
-    if (req.user && req.user.user.isadmin) {
-      req.flash('error', 'Please, fill in all the fields');
-      return res.redirect('/adminsettings');
-    } else {
-      req.flash('error', 'Please, fill in all the fields');
-      return res.redirect('/signup');
-    }
+    req.flash('error', 'Please, fill in all the fields');
+    return res.redirect('/adminsettings');
   } else
 
   if (password !== password2) {
-    if (req.user && req.user.user.isadmin) {
-      req.flash('error', 'Please, enter the same password twice');
-      return res.redirect('/adminsettings');
-    } else {
-      req.flash('error', 'Please, enter the same password twice');
-      return res.redirect('/signup');
-    }
+    req.flash('error', 'Please, enter the same password twice');
+    return res.redirect('/adminsettings');
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -43,6 +34,14 @@ module.exports.createUser = async (req, res) => {
   // create the user in the database
   try {
     const dbUser = await User.create({matrnr: email.split('@')[0], email: email, firstname: firstname, lastname: lastname, salt: salt, password: hashedPassword, ldap: false, isadmin: admin});
+    
+    if (!fs.exists(`storage/${dbUser.matrnr}`)) {
+      fs.mkdir(`storage/${dbUser.matrnr}`, (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
 
     if (req.user && req.user.user.isadmin) {
       const { text } = await snek.post(`${gitlabURL}/api/v4/users?private_token=${gitlabToken}&sudo=${gitlabAdmin}&email=${email}&password=${password}&username=${email.split('@')[0]}&name=${firstname}&skip_confirmation=true&projects_limit=5&can_create_group=false`);
@@ -51,29 +50,20 @@ module.exports.createUser = async (req, res) => {
       dbUser.update({ gitlabid: parsedRes.id});
     }
 
-    if (req.user && req.user.user.isadmin) {
-      req.flash('info', 'User successfully created');
-      res.redirect('/adminsettings');
-    } else {
-      res.redirect('/');
-    }
+    req.flash('info', 'User successfully created');
+    res.redirect('/adminsettings');
   } catch (err) {
-    if (req.user && req.user.user.isadmin) {
-      if (err.text) {
-        //const errtext = JSON.parse(err.text);
-        //if (errtext.message){
-          req.flash('error', `[GITLAB] ${err.text}`);
-        //}
-      } else {
-        console.error(err);
-        req.flash('error', '[LOCAL] This e-mail has already been registered');
-      }
-      
-      res.redirect('/adminsettings');
+    if (err.text) {
+      //const errtext = JSON.parse(err.text);
+      //if (errtext.message){
+      req.flash('error', `[GITLAB] ${err.text}`);
+      //}
     } else {
-      req.flash('error', 'This e-mail has already been registered');
-      res.redirect('/signup');
+      console.error(err);
+      req.flash('error', `[LOCAL] The following error has occurred: ${err}`);
     }
+    
+    res.redirect('/adminsettings');
   }
 };
 

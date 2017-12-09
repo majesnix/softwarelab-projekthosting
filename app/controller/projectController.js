@@ -15,13 +15,23 @@ module.exports.createProject = async (req, res) => {
   try {
     const project = await Project.create({ userid: matrnr, name: name });
     const dbUser = await User.findOne({ where: { matrnr: matrnr } });
-    //const {text} = await snek.get(`${gitlabURL}/api/v4/users/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}`);
-    //const parsedRes = JSON.parse(text);
-    //await snek.put(`${gitlabURL}/api/v4/users/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}&projects_limit=${parsedRes.projects_limit++}`);
+
+    if(!fs.exists(`storage/${matrnr}/${project.id}-${project.name}`)) {
+      fs.mkdir(`storage/${matrnr}/${project.id}-${project.name}`, async (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
+    
+    // create project
     const { text } = await snek.post(`${gitlabURL}/api/v4/projects/user/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}&name=${name}&visibility=private`);
     const parsedRes = JSON.parse(text);
 
     project.update({ gitlabid: parsedRes.id });
+
+    // Add deploy key to project
+    //const deployResponse = await snek.post(`${gitlabURL}/api/v4/projects/${parsedRes.id}/deploy_keys?private_token=${gitlabToken}&sudo=${gitlabAdmin}&title=deploykey&key=${key}`);
 
     req.flash('info', 'Project created');
     res.redirect('/dashboard');
