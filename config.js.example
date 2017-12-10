@@ -15,7 +15,7 @@ const config = {
     'searchFilter': '(userPrincipalName={{username}})',
 
     // URL for postgres login (for sequelize)
-    'dbURL': 'postgres://webentwicklung:webentwicklung@localhost:5432/webentwicklung',
+    'dbURL': 'postgres://homestead:secret@127.0.0.1:5432/homestead',
 
     // Quotas (NOT IMPLEMENTED)
     'dbQuota': 5,

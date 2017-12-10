@@ -8,3 +8,5 @@ public/vendor/*
 .vscode
 config.js
 storage/*
+.vagrant/
+*.log
