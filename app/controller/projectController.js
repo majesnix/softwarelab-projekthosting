@@ -25,10 +25,10 @@ module.exports.createProject = async (req, res) => {
     }
     
     // create project
-    const { text } = await snek.post(`${gitlabURL}/api/v4/projects/user/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}&name=${name}&visibility=private`);
-    const parsedRes = JSON.parse(text);
+    //const { text } = await snek.post(`${gitlabURL}/api/v4/projects/user/${dbUser.gitlabid}?private_token=${gitlabToken}&sudo=${gitlabAdmin}&name=${name}&visibility=private`);
+    //const parsedRes = JSON.parse(text);
 
-    project.update({ gitlabid: parsedRes.id });
+    //project.update({ gitlabid: parsedRes.id });
 
     // Add deploy key to project
     //const deployResponse = await snek.post(`${gitlabURL}/api/v4/projects/${parsedRes.id}/deploy_keys?private_token=${gitlabToken}&sudo=${gitlabAdmin}&title=deploykey&key=${key}`);
@@ -133,7 +133,24 @@ module.exports.createApplication = async (req, res) => {
   const port = req.body.port;
 
   try {
-    await Application.create({ projectid: project, name: name, type: type, port: port, path: '/not/an/actual/path'});
+    const application = await Application.create({ projectid: project, name: name, type: type, port: port, path: '/not/an/actual/path'});
+
+    if(!fs.existsSync(`storage/${project}/apps`)) {
+      fs.mkdir(`storage/${project}/apps`, async (err) => {
+          if (err) {
+              return console.error(err);
+          }
+      });
+    }
+
+    if(!fs.existsSync(`storage/${project}/apps/${application.id}`)) {
+      fs.mkdir(`storage/${project}/apps/${application.id}`, async (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
+
     req.flash('info', 'Application created');
     res.redirect(`/project?id=${project}`);
   } catch (err) {
@@ -150,6 +167,15 @@ module.exports.deleteApplication = async (req, res) => {
   const project = req.body.project;
 
   try {
+
+    if(fs.existsSync(`storage/${project}/apps/${id}`)) {
+      fs.rmdir(`storage/${project}/apps/${id}`, async (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
+
     await Application.destroy({ where: { id: id } });
     req.flash('info', 'Application deleted');
     res.redirect(`/project?id=${project}`);
@@ -173,8 +199,25 @@ module.exports.createDatabase = async (req, res) => {
   const hashedPassword = bcrypt.hashSync(pw, salt);
 
   try {
-    await Database.create({ projectid: project, name: name, username: 'username', password: hashedPassword, salt: salt });
+    const database = await Database.create({ projectid: project, name: name, username: 'username', password: hashedPassword, salt: salt });
     // TODO: create actual database
+
+    if(!fs.existsSync(`storage/${project}/db`)) {
+      fs.mkdir(`storage/${project}/db`, async (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
+
+    if(!fs.existsSync(`storage/${project}/db/${database.id}`)) {
+      fs.mkdir(`storage/${project}/db/${database.id}`, async (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
+
     req.flash('info', 'Database created');
     res.redirect(`/project?id=${project}`);
   } catch (err) {
@@ -190,8 +233,16 @@ module.exports.deleteDatabase = async (req, res) => {
   const project = req.body.project;
 
   try {
+    if(fs.existsSync(`storage/${project}/db/${id}`)) {
+      fs.rmdir(`storage/${project}/db/${id}`, async (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
     await Database.destroy({ where: { id: id } });
     //TODO: delete actual database
+
     req.flash('info', 'Database deleted');
     res.redirect(`/project?id=${project}`);
   } catch (err) {
