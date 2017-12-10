@@ -16,8 +16,8 @@ module.exports.createProject = async (req, res) => {
     const project = await Project.create({ userid: matrnr, name: name });
     const dbUser = await User.findOne({ where: { matrnr: matrnr } });
 
-    if(!fs.exists(`storage/${matrnr}/${project.id}-${project.name}`)) {
-      fs.mkdir(`storage/${matrnr}/${project.id}-${project.name}`, async (err) => {
+    if(!fs.existsSync(`storage/${project.id}`)) {
+      fs.mkdir(`storage/${project.id}`, async (err) => {
         if (err) {
           return console.error(err);
         }
@@ -48,7 +48,18 @@ module.exports.deleteProject = async (req, res) => {
   const id = req.body.id;
 
   try {
+    const project = await Project.findOne({ where: { id: id }});
+
+    if(fs.existsSync(`storage/${project.id}`)) {
+      fs.rmdir(`storage/${project.id}`, async (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      });
+    }
+
     await Project.destroy({ where: { id: id }});
+
     req.flash('info', 'Project deleted');
     res.redirect('/dashboard');
   } catch (err) {
